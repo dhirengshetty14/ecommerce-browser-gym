@@ -13,40 +13,29 @@ checkout, account management, returns, subscriptions — and a per-step
 Four live recordings of Claude (claude-sonnet-4-5) completing real tasks.
 All four score **1.00 — success**.
 
-<table>
-  <tr>
-    <td align="center" width="50%">
-      <b>C1 — Promo / Partial Discount</b><br/>
-      Buy Studio Laptop + Cotton T-Shirt, apply TECH20 (electronics-only coupon).<br/>
-      Score: 1.00 &nbsp;✅&nbsp; · 15 steps
-      <br/><br/>
-      <video src="demos/C1_promo_partial_seed0.webm" controls width="100%"></video>
-    </td>
-    <td align="center" width="50%">
-      <b>C3 — Subscription + Loyalty Discount</b><br/>
-      Set up weekly subscription for Premium Dog Food (4 deliveries). Gold-tier loyalty auto-applies.<br/>
-      Score: 1.00 &nbsp;✅&nbsp; · 18 steps
-      <br/><br/>
-      <video src="demos/C3_subscription_loyalty_seed0.webm" controls width="100%"></video>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="50%">
-      <b>B2 — Track Order &amp; Initiate Return</b><br/>
-      View tracking timeline on a past order, then initiate a return for the Wireless Mouse only (defective).<br/>
-      Score: 1.00 &nbsp;✅&nbsp; · 14 steps
-      <br/><br/>
-      <video src="demos/B2_track_and_return_seed0.webm" controls width="100%"></video>
-    </td>
-    <td align="center" width="50%">
-      <b>B3 — Account Overhaul</b><br/>
-      In one session: set Work as default address, add backup card + set default, enable 2FA.<br/>
-      Score: 1.00 &nbsp;✅&nbsp; · 16 steps
-      <br/><br/>
-      <video src="demos/B3_account_overhaul_seed0.webm" controls width="100%"></video>
-    </td>
-  </tr>
-</table>
+### C1 — Promo / Partial Discount &nbsp;·&nbsp; 1.00 ✅ &nbsp;·&nbsp; 15 steps
+
+Buy Studio Laptop + Cotton T-Shirt, apply TECH20 (electronics-only coupon — applies to the laptop, not the t-shirt).
+
+https://github.com/dhirengshetty14/ecommerce-browser-gym/releases/download/demos-v1/C1_promo_partial_seed0.webm
+
+### C3 — Subscription + Loyalty Discount &nbsp;·&nbsp; 1.00 ✅ &nbsp;·&nbsp; 18 steps
+
+Set up weekly subscription for Premium Dog Food (4 deliveries). Gold-tier loyalty discount auto-applies.
+
+https://github.com/dhirengshetty14/ecommerce-browser-gym/releases/download/demos-v1/C3_subscription_loyalty_seed0.webm
+
+### B2 — Track Order & Initiate Return &nbsp;·&nbsp; 1.00 ✅ &nbsp;·&nbsp; 14 steps
+
+View tracking timeline on a past order, then initiate a return for the Wireless Mouse only (reason: defective, refund: original payment).
+
+https://github.com/dhirengshetty14/ecommerce-browser-gym/releases/download/demos-v1/B2_track_and_return_seed0.webm
+
+### B3 — Account Overhaul &nbsp;·&nbsp; 1.00 ✅ &nbsp;·&nbsp; 16 steps
+
+In one session: set Work as default address, add backup card and set as default payment, enable 2FA.
+
+https://github.com/dhirengshetty14/ecommerce-browser-gym/releases/download/demos-v1/B3_account_overhaul_seed0.webm
 
 All trajectory JSONL files (per-step scores, screenshots, milestone firings) are in
 [`trajectories/llm/`](./trajectories/llm/).

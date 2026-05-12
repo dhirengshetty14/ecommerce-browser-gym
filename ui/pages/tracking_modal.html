@@ -1,0 +1,26 @@
+{% extends "_layout.html" %}
+{% block title %}Tracking — {{ order.id }}{% endblock %}
+{% block content %}
+<div class="bg-white rounded-lg shadow p-6 max-w-2xl mx-auto" data-test-id="tracking-modal">
+  <h2 class="text-xl font-bold">📦 Tracking for {{ order.id }}</h2>
+
+  {% for sh in order.shipments %}
+    <div class="mt-3 border rounded p-3">
+      <div class="font-bold">{{ sh.carrier }} — <span data-test-id="lbl-tracking-{{ sh.id }}">{{ sh.tracking_number }}</span></div>
+      <div class="text-sm text-slate-500">ETA: {{ sh.estimated_delivery }} | Status: {{ sh.status }}</div>
+      <ol class="mt-2 space-y-1 text-sm" data-test-id="list-events-{{ sh.id }}">
+        {% for ev in sh.events %}
+          <li class="border-l-2 border-blue-400 pl-3">
+            <div class="text-xs text-slate-500">{{ ev.timestamp }} — {{ ev.location }}</div>
+            <div><b>{{ ev.status }}</b> — {{ ev.detail }}</div>
+          </li>
+        {% endfor %}
+      </ol>
+    </div>
+  {% endfor %}
+
+  <div class="mt-4 text-center">
+    <a href="/account/orders/{{ order.id }}" class="text-blue-600 underline" data-test-id="link-tracking-back">← Back to order</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "_layout.html" %}
+{% block title %}Addresses{% endblock %}
+{% block content %}
+<h2 class="text-xl font-bold mb-3">My addresses</h2>
+
+<div class="grid grid-cols-2 gap-4">
+
+  <div data-test-id="list-addresses" class="space-y-3">
+    {% for a in user.addresses.values() %}
+      <div data-test-id="addr-row-{{ a.id }}"
+           class="border rounded p-3 bg-white {% if a.is_default %}border-emerald-500{% endif %}">
+        <div class="font-bold">{{ a.label }}
+          {% if a.is_default %} <span class="status-pill status-applied" data-test-id="pill-default-{{ a.id }}">DEFAULT</span>{% endif %}
+        </div>
+        <div class="text-sm">{{ a.full_name }} — {{ a.line1 }}</div>
+        {% if a.line2 %}<div class="text-sm">{{ a.line2 }}</div>{% endif %}
+        <div class="text-sm text-slate-500">{{ a.city }}, {{ a.state }} {{ a.zip }}</div>
+        {% if not a.is_default %}
+          <form action="/api/account/addresses/{{ a.id }}/default" method="post" class="mt-2">
+            <button type="submit" data-test-id="btn-set-default-{{ a.id }}"
+                    class="text-xs bg-blue-600 hover:bg-blue-500 text-white px-2 py-1 rounded">
+              Set as default
+            </button>
+          </form>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="bg-white rounded shadow p-4">
+    <h3 class="font-bold mb-3">Add a new address</h3>
+    <form action="/api/account/addresses" method="post" class="space-y-2" data-test-id="form-add-address">
+      <div>
+        <label class="block text-xs">Label</label>
+        <input type="text" name="label" required data-test-id="input-addr-label"
+               class="w-full border rounded px-2 py-1" />
+      </div>
+      <div>
+        <label class="block text-xs">Full name</label>
+        <input type="text" name="full_name" required data-test-id="input-addr-full-name"
+               class="w-full border rounded px-2 py-1" />
+      </div>
+      <div>
+        <label class="block text-xs">Address line 1</label>
+        <input type="text" name="line1" required data-test-id="input-addr-line1"
+               class="w-full border rounded px-2 py-1" />
+      </div>
+      <div>
+        <label class="block text-xs">Address line 2 (optional)</label>
+        <input type="text" name="line2" data-test-id="input-addr-line2"
+               class="w-full border rounded px-2 py-1" />
+      </div>
+      <div class="grid grid-cols-3 gap-2">
+        <div>
+          <label class="block text-xs">City</label>
+          <input type="text" name="city" required data-test-id="input-addr-city"
+                 class="w-full border rounded px-2 py-1" />
+        </div>
+        <div>
+          <label class="block text-xs">State</label>
+          <input type="text" name="state" required data-test-id="input-addr-state"
+                 class="w-full border rounded px-2 py-1" />
+        </div>
+        <div>
+          <label class="block text-xs">Zip</label>
+          <input type="text" name="zip" required data-test-id="input-addr-zip"
+                 class="w-full border rounded px-2 py-1" />
+        </div>
+      </div>
+      <label class="flex items-center gap-2 text-sm">
+        <input type="checkbox" name="set_default" value="true" data-test-id="cb-set-default" />
+        Set as default address
+      </label>
+      <button type="submit" data-test-id="btn-save-address"
+              class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded font-bold">
+        Save address
+      </button>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

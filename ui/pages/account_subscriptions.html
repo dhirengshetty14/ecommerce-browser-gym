@@ -1,0 +1,31 @@
+{% extends "_layout.html" %}
+{% block title %}Subscriptions{% endblock %}
+{% block content %}
+<h2 class="text-xl font-bold mb-3">My subscriptions</h2>
+<div data-test-id="list-subscriptions" class="space-y-3">
+  {% for sub in subscriptions %}
+    <div data-test-id="sub-row-{{ sub.id }}" class="border rounded p-3 bg-white">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="font-bold">{{ sub.id }}</div>
+          <div class="text-sm">{{ state.products[sub.product_id].name }} × {{ sub.quantity }}</div>
+          <div class="text-sm text-slate-500">
+            {{ sub.cadence }} — <b data-test-id="lbl-deliveries-{{ sub.id }}">{{ sub.deliveries_remaining }}</b> deliveries remaining
+          </div>
+          <div class="text-sm text-slate-500">
+            Next delivery: {{ sub.next_delivery_date }}
+          </div>
+          {% if sub.loyalty_discount_pct > 0 %}
+            <div class="text-sm text-emerald-700" data-test-id="lbl-loyalty-{{ sub.id }}">
+              ★ Loyalty discount: {{ (sub.loyalty_discount_pct * 100)|round|int }}% off per delivery
+            </div>
+          {% endif %}
+        </div>
+        <span class="status-pill status-applied">{{ sub.status }}</span>
+      </div>
+    </div>
+  {% else %}
+    <div class="italic text-slate-500 py-4">No active subscriptions.</div>
+  {% endfor %}
+</div>
+{% endblock %}

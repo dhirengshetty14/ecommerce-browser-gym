@@ -1,0 +1,28 @@
+{% extends "_layout.html" %}
+{% block title %}My orders{% endblock %}
+{% block content %}
+<h2 class="text-xl font-bold mb-3">My orders</h2>
+<div data-test-id="list-orders" class="space-y-3">
+  {% for o in orders %}
+    <div data-test-id="order-row-{{ o.id }}" class="border rounded p-3 bg-white">
+      <div class="flex items-center justify-between">
+        <div>
+          <a href="/account/orders/{{ o.id }}" data-test-id="link-order-{{ o.id }}"
+             class="font-mono font-bold text-blue-700 underline">{{ o.id }}</a>
+          <span class="status-pill status-applied ml-2">{{ o.status }}</span>
+          <div class="text-xs text-slate-500">Placed {{ o.placed_at }}</div>
+          <div class="text-sm mt-1">
+            {{ o.items|length }} items — ${{ '%.2f'|format(o.total) }}
+          </div>
+        </div>
+        <div>
+          <a href="/account/orders/{{ o.id }}"
+             class="text-blue-600 underline text-sm">View detail →</a>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="italic text-slate-500 py-4">No orders yet.</div>
+  {% endfor %}
+</div>
+{% endblock %}

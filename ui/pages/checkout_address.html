@@ -1,0 +1,37 @@
+{% extends "_layout.html" %}
+{% block title %}Checkout — Address{% endblock %}
+{% block content %}
+{% include "_checkout_progress.html" with context %}
+
+<div class="bg-white rounded-lg shadow p-6">
+  <h2 class="text-xl font-bold mb-3">1. Select shipping address</h2>
+
+  <div data-test-id="list-addresses" class="space-y-3">
+    {% for a in user.addresses.values() %}
+      <div data-test-id="addr-row-{{ a.id }}"
+           class="border rounded p-3 {% if a.is_default %}border-emerald-500 bg-emerald-50{% endif %}">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="font-bold">{{ a.label }}{% if a.is_default %} <span class="status-pill status-applied">DEFAULT</span>{% endif %}</div>
+            <div class="text-sm">{{ a.full_name }} — {{ a.line1 }}{% if a.line2 %}, {{ a.line2 }}{% endif %}</div>
+            <div class="text-sm text-slate-500">{{ a.city }}, {{ a.state }} {{ a.zip }}</div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="mt-4">
+    <a href="/account/addresses" class="text-blue-600 underline text-sm" data-test-id="link-manage-addresses">
+      Manage / add addresses →
+    </a>
+  </div>
+
+  <div class="mt-6 border-t pt-3 flex justify-end">
+    <a href="/checkout/payment" data-test-id="btn-continue-payment"
+       class="bg-amber-500 hover:bg-amber-400 text-slate-900 px-5 py-2 rounded font-bold">
+      Continue to payment →
+    </a>
+  </div>
+</div>
+{% endblock %}

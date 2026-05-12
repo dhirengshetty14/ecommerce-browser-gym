@@ -1,0 +1,11 @@
+<div data-test-id="checkout-progress" class="flex items-center justify-center gap-4 mb-6 max-w-2xl mx-auto">
+  {% set steps = [("address","1. Address"),("payment","2. Payment"),("review","3. Review")] %}
+  {% set cur_step = request.url.path.split("/")[-1] %}
+  {% for slug, label in steps %}
+    <div data-test-id="step-{{ slug }}-pill"
+         class="px-3 py-1 rounded font-medium {% if slug == cur_step %}bg-blue-600 text-white{% else %}bg-slate-200 text-slate-700{% endif %}">
+      {{ label }}
+    </div>
+    {% if not loop.last %}<span class="text-slate-400">→</span>{% endif %}
+  {% endfor %}
+</div>

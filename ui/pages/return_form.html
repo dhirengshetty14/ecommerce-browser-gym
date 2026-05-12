@@ -1,0 +1,62 @@
+{% extends "_layout.html" %}
+{% block title %}Initiate return{% endblock %}
+{% block content %}
+<a href="/account/orders/{{ order.id }}" class="text-blue-600 underline text-sm">← Back to order</a>
+
+<div class="bg-white rounded-lg shadow p-6 mt-3">
+  <h2 class="text-xl font-bold">Initiate a return — {{ order.id }}</h2>
+
+  <form action="/api/returns" method="post" class="mt-4 space-y-3" data-test-id="form-return">
+    <input type="hidden" name="order_id" value="{{ order.id }}" />
+
+    <div>
+      <label class="block font-medium mb-1">Pick the items to return</label>
+      {% for it in order.items %}
+        <label class="flex items-center gap-2 text-sm py-1">
+          <input type="checkbox" name="item_ids" value="{{ it.id }}"
+                 data-test-id="cb-return-item-{{ it.id }}" />
+          {{ it.product_name }} × {{ it.quantity }} — ${{ '%.2f'|format(it.unit_price * it.quantity) }}
+        </label>
+      {% endfor %}
+    </div>
+
+    <div>
+      <label class="block font-medium mb-1">Reason</label>
+      <select name="reason" required data-test-id="select-return-reason"
+              class="w-full border rounded px-2 py-1">
+        <option value="">— pick a reason —</option>
+        <option value="defective">Defective / not working</option>
+        <option value="wrong_item">Wrong item received</option>
+        <option value="wrong_size">Wrong size</option>
+        <option value="changed_mind">Changed my mind</option>
+        <option value="damaged_shipping">Damaged in shipping</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="block font-medium mb-1">Refund method</label>
+      <label class="flex items-center gap-2 text-sm">
+        <input type="radio" name="refund_method" value="original_payment" required
+               data-test-id="radio-refund-original" />
+        Refund to original payment method
+      </label>
+      <label class="flex items-center gap-2 text-sm">
+        <input type="radio" name="refund_method" value="store_credit"
+               data-test-id="radio-refund-credit" />
+        Store credit
+      </label>
+    </div>
+
+    <div>
+      <label class="block font-medium mb-1">Notes (optional)</label>
+      <textarea name="notes" data-test-id="textarea-return-notes"
+                class="w-full border rounded px-2 py-1" rows="3"></textarea>
+    </div>
+
+    <button type="submit" data-test-id="btn-submit-return"
+            class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded font-bold">
+      Submit return
+    </button>
+  </form>
+</div>
+{% endblock %}

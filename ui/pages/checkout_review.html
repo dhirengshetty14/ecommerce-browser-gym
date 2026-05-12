@@ -1,0 +1,108 @@
+{% extends "_layout.html" %}
+{% block title %}Checkout — Review{% endblock %}
+{% block content %}
+{% include "_checkout_progress.html" with context %}
+
+<div class="bg-white rounded-lg shadow p-6">
+  <h2 class="text-xl font-bold mb-3">3. Review and place order</h2>
+
+  <!-- Items summary -->
+  <div data-test-id="review-items" class="mb-4">
+    <h3 class="font-bold mb-2">Items</h3>
+    <ul class="ml-4 list-disc text-sm space-y-1">
+      {% for item in state.cart.items %}
+        {% set p = state.products[item.product_id] %}
+        {% set unit_price = p.base_price %}
+        {% if item.variant_id %}
+          {% for v in p.variants %}{% if v.id == item.variant_id %}{% set unit_price = p.base_price + v.price_delta %}{% endif %}{% endfor %}
+        {% endif %}
+        <li>
+          {{ p.name }}{% if item.variant_id %} ({{ item.variant_id }}){% endif %}
+          × {{ item.quantity }}
+          {% if item.ship_to_address_id %}
+            <span class="text-xs text-blue-600">→ {{ user.addresses[item.ship_to_address_id].label }}</span>
+          {% endif %}
+          {% if item.gift_wrap %}
+            <span class="text-xs text-amber-700">🎁 gift wrap{% if item.gift_message %} "{{ item.gift_message }}"{% endif %}</span>
+          {% endif %}
+          — ${{ '%.2f'|format(unit_price * item.quantity) }}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Promo code -->
+  <div class="border-t pt-3 mb-3">
+    <h3 class="font-bold mb-2">Promo code</h3>
+    <form action="/api/cart/promo" method="post" class="flex items-center gap-2"
+          data-test-id="form-apply-promo">
+      <input type="text" name="code" data-test-id="input-promo-code"
+             value="{{ state.cart.applied_promo or '' }}"
+             placeholder="e.g. TECH20"
+             class="border rounded px-2 py-1 flex-1 max-w-sm" />
+      <button type="submit" name="action" value="apply" data-test-id="btn-apply-promo"
+              class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded text-sm">
+        Apply
+      </button>
+      <button type="submit" name="action" value="remove" data-test-id="btn-remove-promo"
+              class="bg-slate-300 hover:bg-slate-400 px-3 py-1 rounded text-sm">
+        Remove
+      </button>
+    </form>
+    {% if state.cart.applied_promo %}
+      <div data-test-id="lbl-promo-applied" class="mt-2 text-sm">
+        <span class="status-pill status-applied">Applied:</span> {{ state.cart.applied_promo }}
+        {% set promo = state.promotions[state.cart.applied_promo] %}
+        {% if promo %}
+          <span class="text-slate-600 text-xs">— {{ promo.description }}</span>
+          {% if promo.description_fineprint %}
+            <div class="text-xs text-slate-500 mt-1">Fine print: {{ promo.description_fineprint }}</div>
+          {% endif %}
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Totals (computed client-side approximation; real value comes from /place) -->
+  <div class="border-t pt-3 mb-3">
+    <h3 class="font-bold mb-2">Estimated total</h3>
+    <div data-test-id="totals-breakdown" class="text-sm space-y-1">
+      <div class="flex justify-between">
+        <span>Subtotal</span>
+        <span data-test-id="lbl-subtotal">computed at place_order</span>
+      </div>
+      <div class="text-xs text-slate-500">Final discount/tax/shipping calculated when you place the order.</div>
+    </div>
+  </div>
+
+  <!-- Place order -->
+  <form action="/api/checkout/place" method="post" data-test-id="form-place-order">
+    {% set default_payment = none %}
+    {% for pm in user.payment_methods.values() %}
+      {% if pm.is_default %}{% set default_payment = pm %}{% endif %}
+    {% endfor %}
+    {% if not default_payment %}
+      {% for pm in user.payment_methods.values() %}{% if loop.first %}{% set default_payment = pm %}{% endif %}{% endfor %}
+    {% endif %}
+
+    <label class="block text-sm mb-1">Pay with</label>
+    <select name="payment_id" data-test-id="select-final-payment"
+            class="border rounded px-2 py-1 mb-3">
+      {% for pm in user.payment_methods.values() %}
+        <option value="{{ pm.id }}" {% if default_payment and pm.id == default_payment.id %}selected{% endif %}>
+          {{ pm.label }}
+        </option>
+      {% endfor %}
+    </select>
+
+    <button type="submit" data-test-id="btn-place-order"
+            class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded font-bold">
+      Place order
+    </button>
+  </form>
+
+  <div class="mt-4 text-center">
+    <a href="/checkout/payment" class="text-blue-600 underline text-sm" data-test-id="btn-back-payment">← Back</a>
+  </div>
+</div>
+{% endblock %}

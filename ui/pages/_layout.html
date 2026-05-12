@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ShopGym Browser — {% block title %}Home{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="bg-slate-100 text-slate-900 font-sans min-h-screen flex flex-col">
+
+  <!-- Header — visible on every page -->
+  <header class="bg-slate-900 text-white px-6 py-3 flex items-center gap-4 shadow-md">
+    <a href="/" class="font-bold text-xl tracking-tight" data-test-id="logo">🛒 ShopGym</a>
+
+    <form action="/search" method="get" class="flex-1 flex items-center gap-2 max-w-2xl">
+      <input name="q" placeholder="Search products..." value="{{ q or '' }}"
+             data-test-id="input-header-search"
+             class="text-slate-900 px-3 py-1 rounded flex-1" />
+      <button type="submit" data-test-id="btn-header-search"
+              class="bg-amber-500 hover:bg-amber-400 text-slate-900 px-3 py-1 rounded font-medium">
+        Search
+      </button>
+    </form>
+
+    <a href="/cart" data-test-id="link-cart"
+       class="relative bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded">
+      🛍️ Cart
+      <span data-test-id="lbl-cart-count"
+            class="ml-1 inline-block bg-amber-500 text-slate-900 text-xs font-bold px-1.5 py-0.5 rounded-full">
+        {{ cart_count }}
+      </span>
+    </a>
+
+    {% if user %}
+      <a href="/account" data-test-id="link-account"
+         class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-sm">
+        👤 {{ user.full_name.split(' ')[0] }}
+      </a>
+      <form action="/api/logout" method="post" class="inline">
+        <button type="submit" data-test-id="btn-logout"
+                class="text-xs text-slate-300 hover:text-white">Log out</button>
+      </form>
+    {% else %}
+      <a href="/login" data-test-id="link-login"
+         class="bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded text-sm">Log in</a>
+    {% endif %}
+  </header>
+
+  <!-- Task banner -->
+  <section data-test-id="task-banner" class="bg-amber-100 border-b border-amber-300 px-6 py-3">
+    <div class="flex items-baseline gap-3 max-w-6xl mx-auto">
+      <span data-test-id="lbl-difficulty"
+            class="px-2 py-0.5 rounded bg-amber-700 text-white text-xs uppercase font-bold">
+        {{ task_difficulty }}
+      </span>
+      <span data-test-id="lbl-category"
+            class="px-2 py-0.5 rounded bg-slate-700 text-white text-xs uppercase font-bold">
+        cat {{ task_category }}
+      </span>
+      <span data-test-id="lbl-task-id" class="font-mono text-sm text-amber-900">{{ task_id }}</span>
+    </div>
+    <p data-test-id="lbl-task-brief" class="max-w-6xl mx-auto mt-2 text-amber-950 text-sm">
+      {{ task_brief }}
+    </p>
+  </section>
+
+  <!-- Flash messages -->
+  {% if flashes %}
+  <section class="max-w-6xl mx-auto px-6 mt-3 space-y-1 w-full">
+    {% for f in flashes %}
+      <div data-test-id="flash-{{ f.kind }}"
+           class="{% if f.kind == 'error' %}bg-red-100 text-red-800 border-l-4 border-red-500{% else %}bg-emerald-100 text-emerald-900 border-l-4 border-emerald-500{% endif %} px-4 py-2 rounded">
+        {{ f.body }}
+      </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  <!-- Main content -->
+  <main class="max-w-6xl mx-auto p-6 flex-1 w-full">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-800 text-slate-300 text-sm px-6 py-4 mt-6">
+    <div class="max-w-6xl mx-auto">
+      ShopGym Browser — a UI gym for browser-based RL agents. All data is
+      fake.
+    </div>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

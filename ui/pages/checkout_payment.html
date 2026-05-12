@@ -1,0 +1,37 @@
+{% extends "_layout.html" %}
+{% block title %}Checkout — Payment{% endblock %}
+{% block content %}
+{% include "_checkout_progress.html" with context %}
+
+<div class="bg-white rounded-lg shadow p-6">
+  <h2 class="text-xl font-bold mb-3">2. Select payment method</h2>
+  <div data-test-id="list-payments" class="space-y-3">
+    {% for pm in user.payment_methods.values() %}
+      <div data-test-id="payment-row-{{ pm.id }}"
+           class="border rounded p-3 {% if pm.is_default %}border-emerald-500 bg-emerald-50{% endif %}">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="font-bold">{{ pm.label }}
+              {% if pm.is_default %} <span class="status-pill status-applied">DEFAULT</span>{% endif %}
+            </div>
+            <div class="text-xs text-slate-500 uppercase">{{ pm.kind }}{% if pm.expires %} — exp {{ pm.expires }}{% endif %}</div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="mt-4">
+    <a href="/account/payments" class="text-blue-600 underline text-sm" data-test-id="link-manage-payments">
+      Manage / add payment methods →
+    </a>
+  </div>
+
+  <div class="mt-6 border-t pt-3 flex justify-between">
+    <a href="/checkout/address" class="text-blue-600 underline" data-test-id="btn-back-address">← Back</a>
+    <a href="/checkout/review" data-test-id="btn-continue-review"
+       class="bg-amber-500 hover:bg-amber-400 text-slate-900 px-5 py-2 rounded font-bold">
+      Continue to review →
+    </a>
+  </div>
+</div>
+{% endblock %}

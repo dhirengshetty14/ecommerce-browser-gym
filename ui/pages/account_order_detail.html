@@ -1,0 +1,40 @@
+{% extends "_layout.html" %}
+{% block title %}Order {{ order.id }}{% endblock %}
+{% block content %}
+<a href="/account/orders" class="text-blue-600 underline text-sm" data-test-id="link-back-orders">← Back to orders</a>
+
+<div class="bg-white rounded-lg shadow p-6 mt-3">
+  <div class="flex items-center justify-between">
+    <h2 class="text-xl font-bold">Order <span data-test-id="lbl-order-id">{{ order.id }}</span></h2>
+    <span class="status-pill status-applied" data-test-id="lbl-order-status">{{ order.status }}</span>
+  </div>
+  <div class="text-sm text-slate-500">Placed {{ order.placed_at }}</div>
+
+  <h3 class="mt-4 font-bold">Items</h3>
+  <ul class="ml-4 list-disc text-sm space-y-1" data-test-id="list-order-items">
+    {% for it in order.items %}
+      <li>{{ it.product_name }} × {{ it.quantity }} — ${{ '%.2f'|format(it.unit_price * it.quantity) }}</li>
+    {% endfor %}
+  </ul>
+
+  <h3 class="mt-4 font-bold">Shipments</h3>
+  <div class="space-y-2" data-test-id="list-shipments">
+    {% for sh in order.shipments %}
+      <div class="border rounded p-3 bg-slate-50">
+        <div class="font-bold">{{ sh.carrier }} — {{ sh.tracking_number }}</div>
+        <div class="text-sm text-slate-500">ETA: {{ sh.estimated_delivery }} — status: {{ sh.status }}</div>
+        <a href="/account/orders/{{ order.id }}/track" data-test-id="link-view-tracking"
+           onclick="window.open(this.href, 'tracking', 'width=560,height=600'); return false;"
+           class="text-blue-600 underline text-sm">View tracking →</a>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="mt-4 flex items-center gap-3">
+    <a href="/account/returns/new?order_id={{ order.id }}" data-test-id="btn-initiate-return"
+       class="bg-amber-500 hover:bg-amber-400 text-slate-900 px-4 py-2 rounded font-bold">
+      Initiate return
+    </a>
+  </div>
+</div>
+{% endblock %}

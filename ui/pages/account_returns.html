@@ -1,0 +1,17 @@
+{% extends "_layout.html" %}
+{% block title %}Returns{% endblock %}
+{% block content %}
+<h2 class="text-xl font-bold mb-3">My returns</h2>
+<div data-test-id="list-returns" class="space-y-3">
+  {% for r in returns %}
+    <div data-test-id="return-row-{{ r.id }}" class="border rounded p-3 bg-white">
+      <div class="font-mono font-bold">{{ r.id }}</div>
+      <div class="text-sm">Order: {{ r.order_id }} — Status: <span class="status-pill status-applied">{{ r.status }}</span></div>
+      <div class="text-xs text-slate-500">Reason: {{ r.reason }} — Refund via {{ r.refund_method }}</div>
+      <div class="text-xs text-slate-500">Created at: {{ r.created_at }}</div>
+    </div>
+  {% else %}
+    <div class="italic text-slate-500 py-4">No returns initiated yet.</div>
+  {% endfor %}
+</div>
+{% endblock %}

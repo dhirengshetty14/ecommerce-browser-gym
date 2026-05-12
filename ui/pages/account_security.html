@@ -1,0 +1,35 @@
+{% extends "_layout.html" %}
+{% block title %}Security{% endblock %}
+{% block content %}
+<h2 class="text-xl font-bold mb-3">Security settings</h2>
+
+<div class="bg-white rounded-lg shadow p-6 max-w-lg">
+  <h3 class="font-bold">Two-factor authentication</h3>
+
+  {% if user.two_fa_enabled %}
+    <div class="mt-2 status-pill status-applied" data-test-id="lbl-2fa-status">2FA ENABLED</div>
+    <p class="text-sm text-slate-600 mt-2">
+      Your account is secured with 2FA. You'll be asked for a code when
+      logging in from new devices.
+    </p>
+  {% else %}
+    <div class="mt-2 status-pill status-out-of-stock" data-test-id="lbl-2fa-status">2FA DISABLED</div>
+
+    <form action="/api/account/security/two-fa" method="post" class="mt-3 space-y-2"
+          data-test-id="form-enable-2fa">
+      <p class="text-sm text-slate-600">
+        Enter the 6-digit code from your authenticator app to enable 2FA.
+        (For this demo, the code is <span class="font-mono">123456</span>.)
+      </p>
+      <input type="text" name="code" required maxlength="6"
+             placeholder="123456"
+             data-test-id="input-2fa-code"
+             class="border rounded px-3 py-2 w-32 font-mono text-center" />
+      <button type="submit" data-test-id="btn-enable-2fa"
+              class="block bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded font-bold">
+        Enable 2FA
+      </button>
+    </form>
+  {% endif %}
+</div>
+{% endblock %}

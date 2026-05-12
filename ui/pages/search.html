@@ -1,0 +1,85 @@
+{% extends "_layout.html" %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<div class="grid grid-cols-12 gap-4">
+
+  <!-- Filter sidebar -->
+  <aside data-test-id="sidebar-filters" class="col-span-3 bg-white rounded-lg shadow p-4 h-fit">
+    <h3 class="font-bold mb-3">Filters</h3>
+    <form action="/search" method="get" class="space-y-3">
+      <input type="hidden" name="q" value="{{ q or '' }}" />
+
+      <div>
+        <label class="block text-sm mb-1">Category</label>
+        <select name="category" data-test-id="filter-category"
+                class="w-full border rounded px-2 py-1 text-sm">
+          <option value="">(any)</option>
+          {% for cat in ["electronics","audio","books","clothing","home","pet","office"] %}
+            <option value="{{ cat }}" {% if category == cat %}selected{% endif %}>{{ cat }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm mb-1">Max price ($)</label>
+        <input type="number" name="max_price" value="{{ max_price or '' }}"
+               data-test-id="filter-max-price"
+               class="w-full border rounded px-2 py-1 text-sm" />
+      </div>
+
+      <div>
+        <label class="block text-sm mb-1">Min rating</label>
+        <input type="number" name="min_rating" step="0.1" min="0" max="5"
+               value="{{ min_rating or '' }}"
+               data-test-id="filter-min-rating"
+               class="w-full border rounded px-2 py-1 text-sm" />
+      </div>
+
+      <label class="flex items-center gap-2 text-sm">
+        <input type="checkbox" name="in_stock" value="true"
+               data-test-id="filter-in-stock-only"
+               {% if in_stock %}checked{% endif %} />
+        In stock only
+      </label>
+
+      <button type="submit" data-test-id="btn-apply-filters"
+              class="w-full bg-blue-600 hover:bg-blue-500 text-white py-1 rounded text-sm">
+        Apply
+      </button>
+    </form>
+  </aside>
+
+  <!-- Results -->
+  <div class="col-span-9">
+    <h2 class="text-xl font-bold mb-3">
+      {% if q %}Results for "{{ q }}"{% else %}All products{% endif %}
+      <span data-test-id="lbl-result-count" class="text-sm text-slate-500">({{ results|length }})</span>
+    </h2>
+    <div data-test-id="grid-search-results" class="grid grid-cols-3 gap-3">
+      {% for p in results %}
+        <a href="/product/{{ p.id }}" data-test-id="card-product-{{ p.id }}"
+           class="product-card bg-white rounded-lg shadow p-3 block">
+          <div class="text-4xl text-center">{{ p.image_emoji }}</div>
+          <div class="mt-2 text-sm font-semibold truncate">{{ p.name }}</div>
+          <div class="text-xs text-slate-500">{{ p.brand }} — {{ p.category }}</div>
+          <div class="mt-1 flex items-center justify-between">
+            <span class="font-bold">${{ '%.2f'|format(p.base_price) }}</span>
+            <span class="text-amber-500 text-xs">★ {{ '%.1f'|format(p.rating) }}</span>
+          </div>
+          <div class="mt-1">
+            {% if p.stock <= 0 %}
+              <span class="status-pill status-out-of-stock">Out of stock</span>
+            {% elif p.stock < 5 %}
+              <span class="status-pill status-low-stock">Low: {{ p.stock }} left</span>
+            {% else %}
+              <span class="status-pill status-in-stock">In stock</span>
+            {% endif %}
+          </div>
+        </a>
+      {% else %}
+        <div class="col-span-3 text-slate-500 italic py-6">No products match.</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

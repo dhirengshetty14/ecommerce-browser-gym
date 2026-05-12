@@ -1,0 +1,35 @@
+{% extends "_layout.html" %}
+{% block title %}My account{% endblock %}
+{% block content %}
+<h2 class="text-xl font-bold mb-3">My account</h2>
+<div class="grid grid-cols-3 gap-3">
+  <a href="/account/addresses" data-test-id="link-addresses" class="bg-white rounded-lg shadow p-4 hover:shadow-md">
+    <div class="text-2xl">📦</div>
+    <div class="font-bold">Addresses</div>
+    <div class="text-xs text-slate-500">{{ user.addresses|length }} saved</div>
+  </a>
+  <a href="/account/payments" data-test-id="link-payments" class="bg-white rounded-lg shadow p-4 hover:shadow-md">
+    <div class="text-2xl">💳</div>
+    <div class="font-bold">Payment methods</div>
+    <div class="text-xs text-slate-500">{{ user.payment_methods|length }} saved</div>
+  </a>
+  <a href="/account/orders" data-test-id="link-orders" class="bg-white rounded-lg shadow p-4 hover:shadow-md">
+    <div class="text-2xl">🧾</div>
+    <div class="font-bold">Orders</div>
+    <div class="text-xs text-slate-500">View order history</div>
+  </a>
+  <a href="/account/returns" data-test-id="link-returns" class="bg-white rounded-lg shadow p-4 hover:shadow-md">
+    <div class="text-2xl">↩️</div>
+    <div class="font-bold">Returns</div>
+  </a>
+  <a href="/account/security" data-test-id="link-security" class="bg-white rounded-lg shadow p-4 hover:shadow-md">
+    <div class="text-2xl">🔒</div>
+    <div class="font-bold">Security</div>
+    <div class="text-xs text-slate-500">2FA: {{ "ON" if user.two_fa_enabled else "OFF" }}</div>
+  </a>
+  <a href="/account/subscriptions" data-test-id="link-subscriptions" class="bg-white rounded-lg shadow p-4 hover:shadow-md">
+    <div class="text-2xl">🔁</div>
+    <div class="font-bold">Subscriptions</div>
+  </a>
+</div>
+{% endblock %}

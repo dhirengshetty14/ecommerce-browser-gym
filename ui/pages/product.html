@@ -1,0 +1,178 @@
+{% extends "_layout.html" %}
+{% block title %}{{ p.name }}{% endblock %}
+{% block content %}
+<div class="bg-white rounded-lg shadow p-6 grid grid-cols-12 gap-6">
+
+  <!-- Left: image -->
+  <div class="col-span-4 text-9xl text-center" data-test-id="product-image">
+    {{ p.image_emoji }}
+  </div>
+
+  <!-- Right: details -->
+  <div class="col-span-8">
+    <div class="text-xs uppercase text-slate-500" data-test-id="lbl-brand">{{ p.brand }}</div>
+    <h2 class="text-2xl font-bold" data-test-id="lbl-product-name">{{ p.name }}</h2>
+    <div class="mt-2 flex items-center gap-3">
+      <span class="text-2xl font-bold text-emerald-700"
+            data-test-id="lbl-product-price">${{ '%.2f'|format(p.base_price) }}</span>
+      <span class="text-amber-500" data-test-id="lbl-rating">
+        {{ '★' * (p.rating|round|int) }} {{ '%.1f'|format(p.rating) }}
+        <span class="text-slate-500 text-xs">({{ p.review_count }})</span>
+      </span>
+      {% if p.stock <= 0 %}
+        <span class="status-pill status-out-of-stock" data-test-id="lbl-stock">Out of stock</span>
+      {% elif p.stock < 5 %}
+        <span class="status-pill status-low-stock" data-test-id="lbl-stock">Low: {{ p.stock }} left</span>
+      {% else %}
+        <span class="status-pill status-in-stock" data-test-id="lbl-stock">In stock</span>
+      {% endif %}
+    </div>
+
+    <p class="mt-3 text-sm text-slate-700" data-test-id="lbl-short-description">{{ p.short_description }}</p>
+
+    <!-- Add-to-cart form (with variant picker if any) -->
+    <form action="/api/cart/add" method="post" class="mt-6 space-y-3"
+          data-test-id="form-add-to-cart">
+      <input type="hidden" name="product_id" value="{{ p.id }}" />
+      <input type="hidden" name="redirect" value="/cart" />
+
+      {% if p.variants %}
+        <div>
+          <label class="block text-xs font-medium uppercase text-slate-500 mb-1">Pick an option</label>
+          <select name="variant_id" required data-test-id="select-variant"
+                  class="border rounded px-2 py-1 w-full">
+            <option value="">— select —</option>
+            {% for v in p.variants %}
+              <option value="{{ v.id }}" data-test-id="option-variant-{{ v.id }}"
+                      {% if v.stock <= 0 %}disabled{% endif %}>
+                {{ v.label }}
+                {% if v.price_delta > 0 %} (+${{ '%.2f'|format(v.price_delta) }}){% endif %}
+                {% if v.stock <= 0 %} — OUT OF STOCK{% endif %}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      {% endif %}
+
+      <div class="flex items-center gap-3">
+        <label class="text-sm">Qty</label>
+        <input type="number" name="quantity" min="1" value="1"
+               data-test-id="input-qty"
+               class="border rounded px-2 py-1 w-20" />
+        <button type="submit" data-test-id="btn-add-to-cart"
+                {% if p.stock <= 0 %}disabled{% endif %}
+                class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded font-bold disabled:opacity-50">
+          Add to cart
+        </button>
+      </div>
+    </form>
+
+    {% if p.is_subscribable %}
+      <div class="mt-6 border-t pt-4">
+        <h3 class="font-bold mb-2">Subscribe & save</h3>
+        <p class="text-sm text-slate-600 mb-2">
+          Get this delivered weekly, biweekly, or monthly. Gold tier members
+          get an automatic 10% loyalty discount.
+        </p>
+        <a href="#subscribe" data-test-id="link-subscribe"
+           onclick="document.getElementById('subscribe-form').classList.toggle('hidden')"
+           class="text-blue-600 underline">Set up a subscription →</a>
+
+        {% if user %}
+        <form id="subscribe-form" action="/api/subscriptions" method="post"
+              data-test-id="form-subscribe"
+              class="hidden mt-3 space-y-2 bg-slate-50 p-3 rounded">
+          <input type="hidden" name="product_id" value="{{ p.id }}" />
+          <div class="flex items-center gap-2">
+            <label class="text-sm w-32">Cadence</label>
+            <select name="cadence" data-test-id="select-cadence"
+                    class="border rounded px-2 py-1 text-sm">
+              <option value="weekly">Weekly</option>
+              <option value="biweekly">Biweekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
+          <div class="flex items-center gap-2">
+            <label class="text-sm w-32">Deliveries</label>
+            <input type="number" name="deliveries" value="4" min="1" max="52"
+                   data-test-id="input-deliveries"
+                   class="border rounded px-2 py-1 w-20" />
+          </div>
+          <div class="flex items-center gap-2">
+            <label class="text-sm w-32">Ship to</label>
+            <select name="address_id" data-test-id="select-sub-address"
+                    class="border rounded px-2 py-1 text-sm">
+              {% for a in user.addresses.values() %}
+                <option value="{{ a.id }}" {% if a.is_default %}selected{% endif %}>
+                  {{ a.label }} — {{ a.line1 }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="flex items-center gap-2">
+            <label class="text-sm w-32">Pay with</label>
+            <select name="payment_id" data-test-id="select-sub-payment"
+                    class="border rounded px-2 py-1 text-sm">
+              {% for pm in user.payment_methods.values() %}
+                <option value="{{ pm.id }}" {% if pm.is_default %}selected{% endif %}>
+                  {{ pm.label }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" data-test-id="btn-create-subscription"
+                  class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-sm font-bold">
+            Create subscription
+          </button>
+        </form>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <!-- Tabs -->
+    <div class="mt-8 border-t pt-4">
+      <nav class="flex gap-1 mb-3" data-test-id="tabs-product">
+        {% for t in ["description","specs","reviews"] %}
+          <a href="/product/{{ p.id }}?tab={{ t }}"
+             data-test-id="tab-{{ t }}"
+             class="px-3 py-1 rounded text-sm font-medium {% if tab == t %}bg-slate-900 text-white{% else %}bg-slate-200 text-slate-700{% endif %}">
+            {{ t.title() }}
+          </a>
+        {% endfor %}
+      </nav>
+
+      {% if tab == "description" %}
+        <div data-test-id="tab-panel-description" class="text-sm text-slate-700">
+          {{ p.long_description }}
+        </div>
+      {% elif tab == "specs" %}
+        <div data-test-id="tab-panel-specs" class="text-sm">
+          <ul class="list-disc ml-5 text-slate-700 space-y-1">
+            <li><b>Brand:</b> {{ p.brand }}</li>
+            <li><b>Category:</b> {{ p.category }}</li>
+            <li><b>Weight:</b> {{ p.weight_kg }} kg</li>
+            {% if p.tags %}
+              <li><b>Tags:</b> {{ p.tags|join(", ") }}</li>
+            {% endif %}
+          </ul>
+        </div>
+      {% else %}
+        <div data-test-id="tab-panel-reviews" class="text-sm space-y-3">
+          {% for r in p.reviews %}
+            <div class="border-b pb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-amber-500">{{ '★' * r.rating }}</span>
+                <b>{{ r.title }}</b>
+                <span class="text-xs text-slate-500">by {{ r.author }}{% if r.verified_purchase %} ✓ verified{% endif %}</span>
+              </div>
+              <p class="text-slate-700">{{ r.body }}</p>
+            </div>
+          {% else %}
+            <div class="italic text-slate-500">No reviews yet.</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

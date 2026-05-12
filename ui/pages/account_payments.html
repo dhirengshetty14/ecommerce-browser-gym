@@ -1,0 +1,81 @@
+{% extends "_layout.html" %}
+{% block title %}Payment methods{% endblock %}
+{% block content %}
+<h2 class="text-xl font-bold mb-3">My payment methods</h2>
+
+<div class="grid grid-cols-2 gap-4">
+  <div data-test-id="list-payments" class="space-y-3">
+    {% for pm in user.payment_methods.values() %}
+      <div data-test-id="payment-row-{{ pm.id }}"
+           class="border rounded p-3 bg-white {% if pm.is_default %}border-emerald-500{% endif %}">
+        <div class="font-bold">{{ pm.label }}
+          {% if pm.is_default %} <span class="status-pill status-applied" data-test-id="pill-default-{{ pm.id }}">DEFAULT</span>{% endif %}
+        </div>
+        <div class="text-xs uppercase text-slate-500">{{ pm.kind }}{% if pm.expires %} — exp {{ pm.expires }}{% endif %}</div>
+        {% if pm.nickname %}<div class="text-xs">Nickname: {{ pm.nickname }}</div>{% endif %}
+        {% if not pm.is_default %}
+          <form action="/api/account/payments/{{ pm.id }}/default" method="post" class="mt-2">
+            <button type="submit" data-test-id="btn-set-default-pay-{{ pm.id }}"
+                    class="text-xs bg-blue-600 hover:bg-blue-500 text-white px-2 py-1 rounded">
+              Set as default
+            </button>
+          </form>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="bg-white rounded shadow p-4">
+    <h3 class="font-bold mb-3">Add a new payment method</h3>
+    <form action="/api/account/payments" method="post" class="space-y-2" data-test-id="form-add-payment">
+      <div>
+        <label class="block text-xs">Label (optional, autocomputed if blank)</label>
+        <input type="text" name="label" data-test-id="input-pay-label"
+               class="w-full border rounded px-2 py-1" />
+      </div>
+      <div>
+        <label class="block text-xs">Nickname</label>
+        <input type="text" name="nickname" data-test-id="input-pay-nickname"
+               placeholder='e.g. "Backup Card"'
+               class="w-full border rounded px-2 py-1" />
+      </div>
+      <div>
+        <label class="block text-xs">Kind</label>
+        <select name="kind" data-test-id="select-pay-kind"
+                class="w-full border rounded px-2 py-1">
+          <option value="credit_card">Credit card</option>
+          <option value="paypal">PayPal</option>
+          <option value="apple_pay">Apple Pay</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs">Card number</label>
+        <input type="text" name="card_number" maxlength="19" data-test-id="input-card-number"
+               placeholder="4111 1111 1111 1111"
+               class="w-full border rounded px-2 py-1" />
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="block text-xs">Expires (MM/YY)</label>
+          <input type="text" name="expires" data-test-id="input-card-expires"
+                 placeholder="12/29"
+                 class="w-full border rounded px-2 py-1" />
+        </div>
+        <div>
+          <label class="block text-xs">CVV</label>
+          <input type="text" name="cvv" maxlength="4" data-test-id="input-card-cvv"
+                 class="w-full border rounded px-2 py-1" />
+        </div>
+      </div>
+      <label class="flex items-center gap-2 text-sm">
+        <input type="checkbox" name="set_default" value="true" data-test-id="cb-set-default-pay" />
+        Set as default
+      </label>
+      <button type="submit" data-test-id="btn-save-payment"
+              class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded font-bold">
+        Save payment method
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

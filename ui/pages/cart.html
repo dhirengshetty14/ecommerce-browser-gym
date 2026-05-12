@@ -1,0 +1,128 @@
+{% extends "_layout.html" %}
+{% block title %}Cart{% endblock %}
+{% block content %}
+<div class="bg-white rounded-lg shadow p-6">
+  <h2 class="text-xl font-bold mb-3">Your cart</h2>
+
+  {% if state.cart.items %}
+    <div data-test-id="list-cart-items">
+      {% set subtotal = namespace(value=0.0) %}
+      {% for item in state.cart.items %}
+        {% set p = state.products[item.product_id] %}
+        {% set unit_price = p.base_price %}
+        {% if item.variant_id %}
+          {% for v in p.variants %}
+            {% if v.id == item.variant_id %}{% set unit_price = p.base_price + v.price_delta %}{% endif %}
+          {% endfor %}
+        {% endif %}
+        {% set line_total = unit_price * item.quantity %}
+        {% if item.gift_wrap %}{% set line_total = line_total + 4.99 %}{% endif %}
+        {% set subtotal.value = subtotal.value + line_total %}
+
+        <div data-test-id="cart-row-{{ item.id }}"
+             class="border-b py-3 grid grid-cols-12 gap-3 items-center">
+          <div class="col-span-1 text-3xl">{{ p.image_emoji }}</div>
+          <div class="col-span-5">
+            <div class="font-medium" data-test-id="cart-name-{{ item.id }}">{{ p.name }}</div>
+            {% if item.variant_id %}
+              <div class="text-xs text-slate-500">{{ item.variant_id }}</div>
+            {% endif %}
+            <div class="text-xs text-slate-500">${{ '%.2f'|format(unit_price) }} each</div>
+
+            <!-- Line options -->
+            <details class="mt-2 text-sm">
+              <summary class="text-blue-600 cursor-pointer" data-test-id="toggle-line-options-{{ item.id }}">Options</summary>
+              <form action="/api/cart/update" method="post"
+                    class="mt-2 space-y-1 bg-slate-50 p-2 rounded"
+                    data-test-id="form-update-line-{{ item.id }}">
+                <input type="hidden" name="line_id" value="{{ item.id }}" />
+
+                <label class="flex items-center gap-2 text-xs">
+                  <input type="checkbox" name="gift_wrap" value="true"
+                         data-test-id="cb-gift-wrap-{{ item.id }}"
+                         {% if item.gift_wrap %}checked{% endif %} />
+                  Gift wrap (+$4.99)
+                </label>
+
+                <div class="flex items-center gap-2 text-xs">
+                  <label class="w-28">Gift message</label>
+                  <input type="text" name="gift_message" maxlength="200"
+                         value="{{ item.gift_message }}"
+                         data-test-id="input-gift-message-{{ item.id }}"
+                         class="flex-1 border rounded px-2 py-1" />
+                </div>
+
+                {% if user %}
+                <div class="flex items-center gap-2 text-xs">
+                  <label class="w-28">Ship to</label>
+                  <select name="ship_to_address_id"
+                          data-test-id="select-ship-address-{{ item.id }}"
+                          class="flex-1 border rounded px-2 py-1">
+                    <option value="">(default)</option>
+                    {% for a in user.addresses.values() %}
+                      <option value="{{ a.id }}" {% if item.ship_to_address_id == a.id %}selected{% endif %}>
+                        {{ a.label }} — {{ a.line1 }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+                {% endif %}
+
+                <button type="submit" data-test-id="btn-save-line-{{ item.id }}"
+                        class="text-xs bg-blue-600 text-white px-2 py-1 rounded">
+                  Save line options
+                </button>
+              </form>
+            </details>
+          </div>
+
+          <!-- Quantity -->
+          <div class="col-span-2 flex items-center gap-1">
+            <form action="/api/cart/update" method="post" class="contents">
+              <input type="hidden" name="line_id" value="{{ item.id }}" />
+              <input type="hidden" name="quantity" value="{{ item.quantity - 1 }}" />
+              <button type="submit" data-test-id="btn-qty-down-{{ item.id }}"
+                      class="bg-slate-200 px-2 rounded">−</button>
+            </form>
+            <span class="w-8 text-center font-mono" data-test-id="lbl-qty-{{ item.id }}">{{ item.quantity }}</span>
+            <form action="/api/cart/update" method="post" class="contents">
+              <input type="hidden" name="line_id" value="{{ item.id }}" />
+              <input type="hidden" name="quantity" value="{{ item.quantity + 1 }}" />
+              <button type="submit" data-test-id="btn-qty-up-{{ item.id }}"
+                      class="bg-slate-200 px-2 rounded">+</button>
+            </form>
+          </div>
+
+          <div class="col-span-3 text-right">
+            <div class="font-bold" data-test-id="lbl-line-total-{{ item.id }}">${{ '%.2f'|format(line_total) }}</div>
+            {% if item.gift_wrap %}<div class="text-xs text-slate-500">incl. gift wrap</div>{% endif %}
+          </div>
+
+          <div class="col-span-1 text-right">
+            <form action="/api/cart/remove" method="post">
+              <input type="hidden" name="line_id" value="{{ item.id }}" />
+              <button type="submit" data-test-id="btn-remove-{{ item.id }}"
+                      class="text-red-600 hover:text-red-500">✕</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="mt-4 flex justify-between items-center border-t pt-3">
+      <div>
+        <div class="text-sm text-slate-500">Subtotal (incl. gift wrap)</div>
+        <div class="text-2xl font-bold" data-test-id="lbl-cart-subtotal">${{ '%.2f'|format(subtotal.value) }}</div>
+        <div class="text-xs text-slate-500">+ tax + shipping at checkout</div>
+      </div>
+      <a href="/checkout/address" data-test-id="btn-proceed-checkout"
+         class="bg-amber-500 hover:bg-amber-400 text-slate-900 px-5 py-2 rounded font-bold">
+        Proceed to checkout →
+      </a>
+    </div>
+  {% else %}
+    <div data-test-id="cart-empty" class="text-slate-400 italic py-4">Your cart is empty.</div>
+    <a href="/" class="text-blue-600 underline">← Continue shopping</a>
+  {% endif %}
+</div>
+{% endblock %}

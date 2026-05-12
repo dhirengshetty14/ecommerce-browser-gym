@@ -120,17 +120,22 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
         )).json()
     traj.finished_at = time.time()
 
-    # Capture video path before closing
-    try:
-        traj.video_path = (
-            page.video.path() if record_video and page.video else ""
-        )
-    except Exception:
-        traj.video_path = ""
-
+    # Close browser BEFORE asking for video path — Playwright finalizes
+    # the file on close, so a path requested before close may not exist yet.
     await ctx_browser.close()
     await browser.close()
     await pw.stop()
+
+    # Capture video path after close. page.video.path() is async in
+    # modern Playwright — must await.
+    if record_video and page.video is not None:
+        try:
+            video_path = await page.video.path()
+            traj.video_path = str(video_path) if video_path else ""
+        except Exception:
+            traj.video_path = ""
+    else:
+        traj.video_path = ""
 
     save_trajectory(traj, out_traj_dir)
     return traj

@@ -102,7 +102,12 @@ def save_trajectory(traj: Trajectory, out_dir: str | Path) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
     safe_task = traj.task_id.replace("/", "_")
     path = out_dir / f"{safe_task}__{traj.seed}__{traj.episode_id}.jsonl"
-    path.write_text(json.dumps(traj.to_json(), indent=2), encoding="utf-8")
+    # default=str makes the serializer resilient to unusual values
+    # (Path objects, datetime, accidental coroutines, etc.).
+    path.write_text(
+        json.dumps(traj.to_json(), indent=2, default=str),
+        encoding="utf-8",
+    )
     return path
 
 

@@ -26,11 +26,14 @@ test-results/
 .vscode/
 *.swp
 
-# Outputs
-trajectories/*.jsonl
-videos/*.webm
-videos/*.mp4
+# Outputs — raw Playwright recordings (large, local-only)
+videos/
 screenshots/
 *.log
 .env
 .env.local
+
+# Keep demo runs and trajectory data
+!demos/
+!trajectories/llm/
+!trajectories/oracle/

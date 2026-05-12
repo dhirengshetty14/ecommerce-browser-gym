@@ -1,0 +1,45 @@
+{
+  "agent": "llm",
+  "model": null,
+  "n_episodes": 9,
+  "overall_score": 0.7666666666666667,
+  "overall_success_rate": 0.6666666666666666,
+  "by_task": {
+    "A1/buy_wireless_mouse": {
+      "n": 1,
+      "score": 1.0
+    },
+    "A2/filter_laptop": {
+      "n": 1,
+      "score": 0.8
+    },
+    "A3/configure_bundle": {
+      "n": 1,
+      "score": 0.1
+    },
+    "B1/add_address": {
+      "n": 1,
+      "score": 1.0
+    },
+    "B2/track_and_return": {
+      "n": 1,
+      "score": 1.0
+    },
+    "B3/account_overhaul": {
+      "n": 1,
+      "score": 1.0
+    },
+    "C1/promo_partial": {
+      "n": 1,
+      "score": 1.0
+    },
+    "C2/split_shipping_gift": {
+      "n": 1,
+      "score": 0.0
+    },
+    "C3/subscription_loyalty": {
+      "n": 1,
+      "score": 1.0
+    }
+  }
+}

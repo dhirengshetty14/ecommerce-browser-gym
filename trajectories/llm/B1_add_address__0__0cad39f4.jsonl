@@ -1,0 +1,335 @@
+{
+  "episode_id": "0cad39f4",
+  "task_id": "B1/add_address",
+  "seed": 0,
+  "agent_name": "llm[default]",
+  "started_at": 1778555096.4668102,
+  "finished_at": 1778555290.011365,
+  "task_brief": "You're logged in as Alice. Go to your Account \u2192 Addresses and add a new address. Label it 'Beach House', recipient 'Alice Anderson', line 1 '17 Ocean Drive', city 'Montauk', state 'NY', zip '11954'. Set it as the new default address. Submit when you see the new address in the list marked default.",
+  "task_difficulty": "easy",
+  "task_category": "B",
+  "initial_url": "about:blank",
+  "initial_snapshot": {
+    "task_id": "B1/add_address",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/"
+      },
+      "url_after": "http://localhost:8000/",
+      "screenshot_path": "screenshots\\llm\\B1_add_address__0__0cad39f4\\step_000.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Starting from the home page to access the account navigation"
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"link-account\"]"
+      },
+      "url_after": "http://localhost:8000/account",
+      "screenshot_path": "screenshots\\llm\\B1_add_address__0__0cad39f4\\step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Clicking on the account link to access account settings and addresses"
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"link-addresses\"]"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\llm\\B1_add_address__0__0cad39f4\\step_002.png",
+      "milestones_fired_this_step": [
+        "navigated_to_addresses"
+      ],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Clicking on the Addresses link to view and manage addresses"
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "[data-test-id=\"input-addr-label\"]",
+        "value": "Beach House"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\llm\\B1_add_address__0__0cad39f4\\step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Filling in the address label"
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "[data-test-id=\"input-addr-full-name\"]",
+        "value": "Alice Anderson"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\llm\\B1_add_address__0__0cad39f4\\step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Filling in the recipient's full name"
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "[data-test-id=\"input-addr-line1\"]",
+        "value": "17 Ocean Drive"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\llm\\B1_add_address__0__0cad39f4\\step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Filling in address line 1"
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "[data-test-id=\"input-addr-city\"]",
+        "value": "Montauk"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\llm\\B1_add_address__0__0cad39f4\\step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Filling in the city"
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "[data-test-id=\"input-addr-state\"]",
+        "value": "NY"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\llm\\B1_add_address__0__0cad39f4\\step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Filling in the state"
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "[data-test-id=\"input-addr-zip\"]",
+        "value": "11954"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\llm\\B1_add_address__0__0cad39f4\\step_008.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Filling in the zip code"
+    },
+    {
+      "step_idx": 9,
+      "action_kind": "check",
+      "action_args": {
+        "selector": "[data-test-id=\"cb-set-default\"]"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\llm\\B1_add_address__0__0cad39f4\\step_009.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 8,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Checking the box to set this as the default address"
+    },
+    {
+      "step_idx": 10,
+      "action_kind": "submit",
+      "action_args": {
+        "selector": "[data-test-id=\"btn-save-address\"]"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\llm\\B1_add_address__0__0cad39f4\\step_010.png",
+      "milestones_fired_this_step": [
+        "address_added",
+        "address_fields_correct",
+        "address_set_as_default"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 9,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Submitting the form to save the new Beach House address as default"
+    }
+  ],
+  "final_url": "http://localhost:8000/account/addresses",
+  "final_snapshot": {
+    "task_id": "B1/add_address",
+    "step": 10,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "all_milestones": [
+      {
+        "name": "navigated_to_addresses",
+        "weight": 0.2,
+        "fired_at_step": 2,
+        "required": false
+      },
+      {
+        "name": "address_added",
+        "weight": 0.3,
+        "fired_at_step": 10,
+        "required": true
+      },
+      {
+        "name": "address_fields_correct",
+        "weight": 0.2,
+        "fired_at_step": 10,
+        "required": false
+      },
+      {
+        "name": "address_set_as_default",
+        "weight": 0.3,
+        "fired_at_step": 10,
+        "required": true
+      }
+    ]
+  },
+  "video_path": "C:\\Users\\dhire\\Downloads\\ecommerce-browser-gym\\videos\\llm\\page@c974c885d90f900913df6e0695d4643a.webm",
+  "error": null
+}

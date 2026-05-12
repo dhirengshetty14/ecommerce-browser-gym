@@ -1,0 +1,423 @@
+{
+  "episode_id": "88e8fe51",
+  "task_id": "C1/promo_partial",
+  "seed": 0,
+  "agent_name": "llm[default]",
+  "started_at": 1778556021.254126,
+  "finished_at": 1778556492.996494,
+  "task_brief": "Add 1 of the Studio Laptop AND 1 of the Cotton T-Shirt to your cart. At checkout, apply promo code 'TECH20' \u2014 it should discount only the electronics item, not the t-shirt. Place the order using Home + Visa. Submit when confirmation shows the discount applied to the laptop only.",
+  "task_difficulty": "medium",
+  "task_category": "C",
+  "initial_url": "about:blank",
+  "initial_snapshot": {
+    "task_id": "C1/promo_partial",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/"
+      },
+      "url_after": "http://localhost:8000/",
+      "screenshot_path": "screenshots\\llm\\C1_promo_partial__0__88e8fe51\\step_000.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Starting from about:blank, need to navigate to the homepage to find and add the Studio Laptop and Cotton T-Shirt to cart"
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "[data-test-id=\"input-header-search\"]",
+        "value": "Cotton T-Shirt"
+      },
+      "url_after": "http://localhost:8000/",
+      "screenshot_path": "screenshots\\llm\\C1_promo_partial__0__88e8fe51\\step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Searching for the Cotton T-Shirt product which is not visible on the current page"
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"btn-header-search\"]"
+      },
+      "url_after": "http://localhost:8000/search?q=Cotton+T-Shirt",
+      "screenshot_path": "screenshots\\llm\\C1_promo_partial__0__88e8fe51\\step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Clicking search button to search for Cotton T-Shirt"
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"card-product-p_clothing_tshirt\"]"
+      },
+      "url_after": "http://localhost:8000/product/p_clothing_tshirt",
+      "screenshot_path": "screenshots\\llm\\C1_promo_partial__0__88e8fe51\\step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Clicking on the Cotton T-Shirt product card to view its details and add it to cart"
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "[data-test-id=\"select-variant\"]",
+        "value": "v_ts_m_blk"
+      },
+      "url_after": "http://localhost:8000/product/p_clothing_tshirt",
+      "screenshot_path": "screenshots\\llm\\C1_promo_partial__0__88e8fe51\\step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Selecting M - Black variant for the Cotton T-Shirt"
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"btn-add-to-cart\"]"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\llm\\C1_promo_partial__0__88e8fe51\\step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Adding the Cotton T-Shirt (M - Black) to cart with quantity 1"
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"logo\"]"
+      },
+      "url_after": "http://localhost:8000/",
+      "screenshot_path": "screenshots\\llm\\C1_promo_partial__0__88e8fe51\\step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Navigating back to homepage to find and add the Studio Laptop to cart"
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"card-product-p_laptop_studio\"]"
+      },
+      "url_after": "http://localhost:8000/product/p_laptop_studio",
+      "screenshot_path": "screenshots\\llm\\C1_promo_partial__0__88e8fe51\\step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Clicking on the Studio Laptop 14 product card to view its details and add it to cart"
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"btn-add-to-cart\"]"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\llm\\C1_promo_partial__0__88e8fe51\\step_008.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Adding the Studio Laptop 14 to cart with quantity 1"
+    },
+    {
+      "step_idx": 9,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"btn-proceed-checkout\"]"
+      },
+      "url_after": "http://localhost:8000/checkout/address",
+      "screenshot_path": "screenshots\\llm\\C1_promo_partial__0__88e8fe51\\step_009.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 8,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Proceeding to checkout to apply the promo code TECH20 and complete the order"
+    },
+    {
+      "step_idx": 10,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"btn-continue-payment\"]"
+      },
+      "url_after": "http://localhost:8000/checkout/payment",
+      "screenshot_path": "screenshots\\llm\\C1_promo_partial__0__88e8fe51\\step_010.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 9,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Continuing to payment step with the Home address (already selected as default)"
+    },
+    {
+      "step_idx": 11,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"btn-continue-review\"]"
+      },
+      "url_after": "http://localhost:8000/checkout/review",
+      "screenshot_path": "screenshots\\llm\\C1_promo_partial__0__88e8fe51\\step_011.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 10,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Continuing to review step with Visa payment method (already selected as default)"
+    },
+    {
+      "step_idx": 12,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "[data-test-id=\"input-promo-code\"]",
+        "value": "TECH20"
+      },
+      "url_after": "http://localhost:8000/checkout/review",
+      "screenshot_path": "screenshots\\llm\\C1_promo_partial__0__88e8fe51\\step_012.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 11,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Entering the promo code TECH20 which should discount only the electronics item (laptop)"
+    },
+    {
+      "step_idx": 13,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"btn-apply-promo\"]"
+      },
+      "url_after": "http://localhost:8000/checkout/review",
+      "screenshot_path": "screenshots\\llm\\C1_promo_partial__0__88e8fe51\\step_013.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 12,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": "TECH20"
+      },
+      "reasoning": "Clicking Apply button to apply the TECH20 promo code"
+    },
+    {
+      "step_idx": 14,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"btn-place-order\"]"
+      },
+      "url_after": "http://localhost:8000/order/ORD_4996A319",
+      "screenshot_path": "screenshots\\llm\\C1_promo_partial__0__88e8fe51\\step_014.png",
+      "milestones_fired_this_step": [
+        "both_items_in_order",
+        "tech20_applied",
+        "discount_is_20pct_of_laptop_only",
+        "on_confirmation_page"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 13,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Placing the order to see the final confirmation showing the discount applied only to the laptop"
+    }
+  ],
+  "final_url": "http://localhost:8000/order/ORD_4996A319",
+  "final_snapshot": {
+    "task_id": "C1/promo_partial",
+    "step": 14,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 1,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "all_milestones": [
+      {
+        "name": "both_items_in_order",
+        "weight": 0.25,
+        "fired_at_step": 14,
+        "required": true
+      },
+      {
+        "name": "tech20_applied",
+        "weight": 0.3,
+        "fired_at_step": 14,
+        "required": true
+      },
+      {
+        "name": "discount_is_20pct_of_laptop_only",
+        "weight": 0.3,
+        "fired_at_step": 14,
+        "required": true
+      },
+      {
+        "name": "on_confirmation_page",
+        "weight": 0.15,
+        "fired_at_step": 14,
+        "required": false
+      }
+    ]
+  },
+  "video_path": "C:\\Users\\dhire\\Downloads\\ecommerce-browser-gym\\videos\\llm\\page@5b13539867859cb15ccfda66432d5c3b.webm",
+  "error": null
+}

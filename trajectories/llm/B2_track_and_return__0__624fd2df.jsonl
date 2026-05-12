@@ -1,0 +1,422 @@
+{
+  "episode_id": "624fd2df",
+  "task_id": "B2/track_and_return",
+  "seed": 0,
+  "agent_name": "llm[default]",
+  "started_at": 1778555296.352964,
+  "finished_at": 1778555541.3986208,
+  "task_brief": "Order ORD-EXISTING-1234 is in your order history. View its tracking modal (the carrier and tracking number should be visible), then initiate a return for the Wireless Mouse only. Reason: 'defective'. Refund method: 'original payment'. Submit when the return is created.",
+  "task_difficulty": "medium",
+  "task_category": "B",
+  "initial_url": "about:blank",
+  "initial_snapshot": {
+    "task_id": "B2/track_and_return",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 1,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/orders"
+      },
+      "url_after": "http://localhost:8000/orders",
+      "screenshot_path": "screenshots\\llm\\B2_track_and_return__0__624fd2df\\step_000.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Navigate to the orders page to find order ORD-EXISTING-1234"
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/orders"
+      },
+      "url_after": "http://localhost:8000/orders",
+      "screenshot_path": "screenshots\\llm\\B2_track_and_return__0__624fd2df\\step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Refresh the orders page to see the order list"
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/orders/ORD-EXISTING-1234"
+      },
+      "url_after": "http://localhost:8000/orders/ORD-EXISTING-1234",
+      "screenshot_path": "screenshots\\llm\\B2_track_and_return__0__624fd2df\\step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Navigate directly to the order detail page for ORD-EXISTING-1234"
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/account"
+      },
+      "url_after": "http://localhost:8000/account",
+      "screenshot_path": "screenshots\\llm\\B2_track_and_return__0__624fd2df\\step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Navigate to the account page to access order history"
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id='link-orders']"
+      },
+      "url_after": "http://localhost:8000/account/orders",
+      "screenshot_path": "screenshots\\llm\\B2_track_and_return__0__624fd2df\\step_004.png",
+      "milestones_fired_this_step": [
+        "navigated_to_orders"
+      ],
+      "running_score": 0.15,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click on the Orders link to view order history and find ORD-EXISTING-1234"
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id='link-order-ORD-EXISTING-1234']"
+      },
+      "url_after": "http://localhost:8000/account/orders/ORD-EXISTING-1234",
+      "screenshot_path": "screenshots\\llm\\B2_track_and_return__0__624fd2df\\step_005.png",
+      "milestones_fired_this_step": [
+        "opened_order_detail"
+      ],
+      "running_score": 0.3,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click on the order link to view order details and access tracking information"
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id='link-view-tracking']"
+      },
+      "url_after": "http://localhost:8000/account/orders/ORD-EXISTING-1234",
+      "screenshot_path": "screenshots\\llm\\B2_track_and_return__0__624fd2df\\step_006.png",
+      "milestones_fired_this_step": [
+        "opened_tracking_modal"
+      ],
+      "running_score": 0.45,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click to view the tracking modal to see carrier and tracking number details"
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id='btn-initiate-return']"
+      },
+      "url_after": "http://localhost:8000/account/returns/new?order_id=ORD-EXISTING-1234",
+      "screenshot_path": "screenshots\\llm\\B2_track_and_return__0__624fd2df\\step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.45,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click to initiate return for the Wireless Mouse item"
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "check",
+      "action_args": {
+        "selector": "[data-test-id='cb-return-item-ln_mouse']"
+      },
+      "url_after": "http://localhost:8000/account/returns/new?order_id=ORD-EXISTING-1234",
+      "screenshot_path": "screenshots\\llm\\B2_track_and_return__0__624fd2df\\step_008.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.45,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Check the checkbox to return the Wireless Mouse"
+    },
+    {
+      "step_idx": 9,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "[data-test-id='select-return-reason']",
+        "value": "defective"
+      },
+      "url_after": "http://localhost:8000/account/returns/new?order_id=ORD-EXISTING-1234",
+      "screenshot_path": "screenshots\\llm\\B2_track_and_return__0__624fd2df\\step_009.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.45,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 8,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Select 'Defective / not working' as the return reason"
+    },
+    {
+      "step_idx": 10,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id='radio-refund-original']"
+      },
+      "url_after": "http://localhost:8000/account/returns/new?order_id=ORD-EXISTING-1234",
+      "screenshot_path": "screenshots\\llm\\B2_track_and_return__0__624fd2df\\step_010.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.45,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 9,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Select 'original payment' as the refund method"
+    },
+    {
+      "step_idx": 11,
+      "action_kind": "submit",
+      "action_args": {
+        "selector": "[data-test-id='btn-submit-return']"
+      },
+      "url_after": "http://localhost:8000/account/returns",
+      "screenshot_path": "screenshots\\llm\\B2_track_and_return__0__624fd2df\\step_011.png",
+      "milestones_fired_this_step": [
+        "return_initiated",
+        "return_is_for_mouse_only",
+        "return_reason_defective",
+        "refund_method_original_payment"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 10,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 1,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Submit the return request for the Wireless Mouse"
+    },
+    {
+      "step_idx": 12,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/account/orders/ORD-EXISTING-1234"
+      },
+      "url_after": "http://localhost:8000/account/orders/ORD-EXISTING-1234",
+      "screenshot_path": "screenshots\\llm\\B2_track_and_return__0__624fd2df\\step_012.png",
+      "milestones_fired_this_step": [],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 11,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 1,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Go back to the order page to verify the tracking modal step"
+    },
+    {
+      "step_idx": 13,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id='link-view-tracking']"
+      },
+      "url_after": "http://localhost:8000/account/orders/ORD-EXISTING-1234",
+      "screenshot_path": "screenshots\\llm\\B2_track_and_return__0__624fd2df\\step_013.png",
+      "milestones_fired_this_step": [],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 12,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 1,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Open the tracking modal to view carrier and tracking number details"
+    }
+  ],
+  "final_url": "http://localhost:8000/account/orders/ORD-EXISTING-1234",
+  "final_snapshot": {
+    "task_id": "B2/track_and_return",
+    "step": 13,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 1,
+    "returns_count": 1,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "all_milestones": [
+      {
+        "name": "navigated_to_orders",
+        "weight": 0.15,
+        "fired_at_step": 4,
+        "required": false
+      },
+      {
+        "name": "opened_order_detail",
+        "weight": 0.15,
+        "fired_at_step": 5,
+        "required": false
+      },
+      {
+        "name": "opened_tracking_modal",
+        "weight": 0.15,
+        "fired_at_step": 6,
+        "required": false
+      },
+      {
+        "name": "return_initiated",
+        "weight": 0.25,
+        "fired_at_step": 11,
+        "required": true
+      },
+      {
+        "name": "return_is_for_mouse_only",
+        "weight": 0.2,
+        "fired_at_step": 11,
+        "required": true
+      },
+      {
+        "name": "return_reason_defective",
+        "weight": 0.05,
+        "fired_at_step": 11,
+        "required": false
+      },
+      {
+        "name": "refund_method_original_payment",
+        "weight": 0.05,
+        "fired_at_step": 11,
+        "required": false
+      }
+    ]
+  },
+  "video_path": "C:\\Users\\dhire\\Downloads\\ecommerce-browser-gym\\videos\\llm\\page@897c00cfa6138e5ad4574f278dbcfcac.webm",
+  "error": null
+}

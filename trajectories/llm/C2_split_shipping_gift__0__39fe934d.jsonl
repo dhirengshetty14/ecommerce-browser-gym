@@ -1,0 +1,541 @@
+{
+  "episode_id": "39fe934d",
+  "task_id": "C2/split_shipping_gift",
+  "seed": 0,
+  "agent_name": "llm[default]",
+  "started_at": 1778556499.1531515,
+  "finished_at": 1778557212.8065703,
+  "task_brief": "Buy 1 Bluetooth Headphone Studio AND 1 Wireless Mouse. Ship the headphones to your 'Home' address with gift wrap (gift message: 'Happy birthday'). Ship the mouse to your 'Work' address with NO gift wrap. Pay with Visa. Submit when confirmation shows TWO shipments.",
+  "task_difficulty": "medium",
+  "task_category": "C",
+  "initial_url": "about:blank",
+  "initial_snapshot": {
+    "task_id": "C2/split_shipping_gift",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/"
+      },
+      "url_after": "http://localhost:8000/",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_000.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Starting the shopping task by navigating to the homepage"
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "[data-test-id=\"input-header-search\"]",
+        "value": "Bluetooth Headphone Studio"
+      },
+      "url_after": "http://localhost:8000/",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Searching for the Bluetooth Headphone Studio product"
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"btn-header-search\"]"
+      },
+      "url_after": "http://localhost:8000/search?q=Bluetooth+Headphone+Studio",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Clicking the search button to find Bluetooth Headphone Studio"
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"card-product-p_hp_studio\"]"
+      },
+      "url_after": "http://localhost:8000/product/p_hp_studio",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Clicking on the Bluetooth Headphone Studio product to view details"
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"btn-add-to-cart\"]"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Adding 1 Bluetooth Headphone Studio to cart"
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"toggle-line-options-ln_df6a94d1\"]"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Expanding options to configure gift wrap and shipping address for the headphones"
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "check",
+      "action_args": {
+        "selector": "[data-test-id=\"cb-gift-wrap-ln_df6a94d1\"]"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Enabling gift wrap for the headphones"
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "[data-test-id=\"input-gift-message-ln_df6a94d1\"]",
+        "value": "Happy birthday"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Entering the gift message for the headphones"
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"link-account\"]"
+      },
+      "url_after": "http://localhost:8000/account",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_008.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Checking account page to see address IDs"
+    },
+    {
+      "step_idx": 9,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"link-addresses\"]"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_009.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 8,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Viewing saved addresses to identify the correct address IDs"
+    },
+    {
+      "step_idx": 10,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"link-cart\"]"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_010.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 9,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Going back to cart to configure shipping addresses"
+    },
+    {
+      "step_idx": 11,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"toggle-line-options-ln_df6a94d1\"]"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_011.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 10,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Expanding options to complete the headphones configuration"
+    },
+    {
+      "step_idx": 12,
+      "action_kind": "check",
+      "action_args": {
+        "selector": "[data-test-id=\"cb-gift-wrap-ln_df6a94d1\"]"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_012.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 11,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Re-checking gift wrap for headphones"
+    },
+    {
+      "step_idx": 13,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "[data-test-id=\"input-gift-message-ln_df6a94d1\"]",
+        "value": "Happy birthday"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_013.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 12,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Entering gift message for headphones"
+    },
+    {
+      "step_idx": 14,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "[data-test-id=\"select-ship-address-ln_df6a94d1\"]",
+        "value": "addr_home"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_014.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 13,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Selecting Home address for headphones shipping"
+    },
+    {
+      "step_idx": 15,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"btn-save-line-ln_df6a94d1\"]"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_015.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 14,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Saving the gift wrap, gift message, and Home address configuration for headphones"
+    },
+    {
+      "step_idx": 16,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "[data-test-id=\"input-header-search\"]",
+        "value": "Wireless Mouse"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_016.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 15,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Searching for the Wireless Mouse product"
+    },
+    {
+      "step_idx": 17,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"btn-header-search\"]"
+      },
+      "url_after": "http://localhost:8000/search?q=Wireless+Mouse",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_017.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 16,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Searching for Wireless Mouse"
+    },
+    {
+      "step_idx": 18,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"card-product-p_mouse_wireless\"]"
+      },
+      "url_after": "http://localhost:8000/product/p_mouse_wireless",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_018.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 17,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Clicking on the Wireless Mouse product to view details"
+    },
+    {
+      "step_idx": 19,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "[data-test-id=\"btn-add-to-cart\"]"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\llm\\C2_split_shipping_gift__0__39fe934d\\step_019.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 18,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Adding 1 Wireless Mouse to cart"
+    }
+  ],
+  "final_url": "http://localhost:8000/cart",
+  "final_snapshot": {
+    "task_id": "C2/split_shipping_gift",
+    "step": 19,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 2,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 0.0,
+    "success": false,
+    "newly_fired": [],
+    "all_milestones": [
+      {
+        "name": "two_items_ordered",
+        "weight": 0.15,
+        "fired_at_step": -1,
+        "required": true
+      },
+      {
+        "name": "headphones_home_with_giftwrap",
+        "weight": 0.3,
+        "fired_at_step": -1,
+        "required": true
+      },
+      {
+        "name": "mouse_work_no_giftwrap",
+        "weight": 0.25,
+        "fired_at_step": -1,
+        "required": true
+      },
+      {
+        "name": "two_shipments_in_confirmation",
+        "weight": 0.2,
+        "fired_at_step": -1,
+        "required": true
+      },
+      {
+        "name": "on_confirmation_page",
+        "weight": 0.1,
+        "fired_at_step": -1,
+        "required": false
+      }
+    ]
+  },
+  "video_path": "C:\\Users\\dhire\\Downloads\\ecommerce-browser-gym\\videos\\llm\\page@6a9c2578245454eebc0481aeea27bb0b.webm",
+  "error": "RateLimitError: Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 30,000 input tokens per minute (org: 7cc5cf60-0590-41aa-9c84-6989d7568485, model: claude-sonnet-4-5-20250929). For details, refer to: https://docs.claude.com/en/api/rate-limits. You can see the response headers for current usage. Please reduce the prompt length or the maximum tokens requested, or try again later. You may also contact sales at https://claude.com/contact-sales to discuss your options for a rate limit increase.\"}, 'request_id': 'req_011CawyozRadAD9EZ3P2GDpX'}"
+}

@@ -6,9 +6,52 @@ search, filter, product variants, cart with per-line options, multi-step
 checkout, account management, returns, subscriptions — and a per-step
 **milestone verifier** grades progress action-by-action.
 
-You can **watch the agent click**. Videos are recorded automatically.
-Screenshots saved per step. Trajectories include the running reward
-after every action.
+---
+
+## 🎬 Agent in Action
+
+Four live recordings of Claude (claude-sonnet-4-5) completing real tasks.
+All four score **1.00 — success**.
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <b>C1 — Promo / Partial Discount</b><br/>
+      Buy Studio Laptop + Cotton T-Shirt, apply TECH20 (electronics-only coupon).<br/>
+      Score: 1.00 &nbsp;✅&nbsp; · 15 steps
+      <br/><br/>
+      <video src="demos/C1_promo_partial_seed0.webm" controls width="100%"></video>
+    </td>
+    <td align="center" width="50%">
+      <b>C3 — Subscription + Loyalty Discount</b><br/>
+      Set up weekly subscription for Premium Dog Food (4 deliveries). Gold-tier loyalty auto-applies.<br/>
+      Score: 1.00 &nbsp;✅&nbsp; · 18 steps
+      <br/><br/>
+      <video src="demos/C3_subscription_loyalty_seed0.webm" controls width="100%"></video>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <b>B2 — Track Order &amp; Initiate Return</b><br/>
+      View tracking timeline on a past order, then initiate a return for the Wireless Mouse only (defective).<br/>
+      Score: 1.00 &nbsp;✅&nbsp; · 14 steps
+      <br/><br/>
+      <video src="demos/B2_track_and_return_seed0.webm" controls width="100%"></video>
+    </td>
+    <td align="center" width="50%">
+      <b>B3 — Account Overhaul</b><br/>
+      In one session: set Work as default address, add backup card + set default, enable 2FA.<br/>
+      Score: 1.00 &nbsp;✅&nbsp; · 16 steps
+      <br/><br/>
+      <video src="demos/B3_account_overhaul_seed0.webm" controls width="100%"></video>
+    </td>
+  </tr>
+</table>
+
+All trajectory JSONL files (per-step scores, screenshots, milestone firings) are in
+[`trajectories/llm/`](./trajectories/llm/).
+
+---
 
 ## Why this exists
 
@@ -32,6 +75,8 @@ an order?") OR have super coarse rewards. This one combines:
   names, expired and category-restricted coupons, miscategorized items,
   variants that matter, OOS ringers.
 
+---
+
 ## What's in here
 
 ```
@@ -49,7 +94,7 @@ ecommerce-browser-gym/
 │   ├── mutations.py       business logic (cart/checkout/account/...)
 │   └── main.py            FastAPI app (16 page routes + 12 form POSTs)
 ├── ui/
-│   ├── pages/             15 Jinja templates (home/search/product/...)
+│   ├── pages/             21 Jinja templates (home/search/product/...)
 │   └── static/            CSS + tiny JS
 ├── harness/
 │   └── runner.py          Playwright wrapper + per-step verifier probe
@@ -58,10 +103,12 @@ ecommerce-browser-gym/
 │   └── llm_agent.py       Anthropic Claude DOM-action loop
 ├── eval/
 │   └── run.py             CLI runner + scorecard
-├── tests/                 pytest suite (37 tests)
-└── scripts/
-    └── start_server.sh
+├── demos/                 4 recorded agent runs (.webm)
+├── trajectories/llm/      10 JSONL trajectory files + scorecard
+└── tests/                 pytest suite (37 tests)
 ```
+
+---
 
 ## Quick start
 
@@ -122,6 +169,8 @@ Output:
 - A **trajectory JSONL** includes the running score, which milestones
   fired this step, and the URL after every action.
 
+---
+
 ## 9 tasks across 3 categories
 
 | ID | Cat | Diff | Brief |
@@ -137,6 +186,27 @@ Output:
 | C3 | Checkout | hard | Set up weekly subscription with loyalty discount |
 
 See [`TASKS.md`](./TASKS.md) for full briefs and milestone tables.
+
+---
+
+## LLM agent results (claude-sonnet-4-5, seed 0)
+
+| Task | Score | Success | Steps |
+|---|---|---|---|
+| A1 buy_wireless_mouse | 1.00 | ✅ | 8 |
+| A2 filter_laptop | 0.80 | ❌ | 8 |
+| A3 configure_bundle | 0.10 | ❌ | 15 |
+| B1 add_address | 1.00 | ✅ | 11 |
+| B2 track_and_return | 1.00 | ✅ | 14 |
+| B3 account_overhaul | 1.00 | ✅ | 16 |
+| C1 promo_partial | 1.00 | ✅ | 15 |
+| C2 split_shipping_gift | 0.00 | ❌ | 20 |
+| C3 subscription_loyalty | 1.00 | ✅ | 18 |
+| **Overall** | **0.77** | **6/9** | |
+
+Full scorecard: [`trajectories/llm/_scorecard.json`](./trajectories/llm/_scorecard.json)
+
+---
 
 ## See also
 

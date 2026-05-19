@@ -144,8 +144,25 @@ def _ctx(request: Request, **extra: Any) -> dict[str, Any]:
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     s = _state()
-    featured = [p for p in s.products.values()][:8]
+    # Show a diverse set across categories so the featured rail is varied.
+    featured = sorted(
+        s.products.values(), key=lambda p: -p.rating,
+    )[:12]
     return templates.TemplateResponse(request, "home.html", _ctx(request, featured=featured))
+
+
+# --- Sort helpers for search/category pages --------------------------------
+def _sort_products(items: list, sort: str) -> list:
+    if sort == "price_asc":
+        return sorted(items, key=lambda p: p.base_price)
+    if sort == "price_desc":
+        return sorted(items, key=lambda p: -p.base_price)
+    if sort == "rating":
+        return sorted(items, key=lambda p: -p.rating)
+    if sort == "reviews":
+        return sorted(items, key=lambda p: -p.review_count)
+    # default: featured (rating desc with mild stock bias)
+    return sorted(items, key=lambda p: (-p.rating, -p.stock))
 
 
 @app.get("/search", response_class=HTMLResponse)
@@ -156,6 +173,7 @@ async def search(
     max_price: Optional[float] = None,
     min_rating: Optional[float] = None,
     in_stock: bool = False,
+    sort: str = "featured",
 ):
     s = _state()
     products = list(s.products.values())
@@ -175,12 +193,64 @@ async def search(
         if in_stock and p.stock <= 0:
             continue
         results.append(p)
+    results = _sort_products(results, sort)
     log_action(s, "search", q=q, category=category,
                max_price=max_price, min_rating=min_rating,
-               in_stock=in_stock, n_results=len(results))
-    return templates.TemplateResponse(request, "search.html", _ctx(request, results=results, q=q, category=category,
+               in_stock=in_stock, sort=sort, n_results=len(results))
+    return templates.TemplateResponse(
+        request, "search.html",
+        _ctx(request, results=results, q=q, category=category,
              max_price=max_price, min_rating=min_rating,
-             in_stock=in_stock))
+             in_stock=in_stock, sort=sort),
+    )
+
+
+@app.get("/category/{cat}", response_class=HTMLResponse)
+async def category_page(
+    request: Request, cat: str,
+    max_price: Optional[float] = None,
+    min_rating: Optional[float] = None,
+    in_stock: bool = False,
+    sort: str = "featured",
+):
+    """Category landing page — same backend as /search but with a
+    category-specific hero and breadcrumbs. Browsing via the mega-menu
+    lands here. This pattern matches real e-commerce sites."""
+    s = _state()
+    products = list(s.products.values())
+    results = [p for p in products if p.category == cat]
+    if max_price is not None:
+        results = [p for p in results if p.base_price <= max_price]
+    if min_rating is not None:
+        results = [p for p in results if p.rating >= min_rating]
+    if in_stock:
+        results = [p for p in results if p.stock > 0]
+    results = _sort_products(results, sort)
+    log_action(s, "view_category", category=cat,
+               max_price=max_price, min_rating=min_rating,
+               in_stock=in_stock, sort=sort, n_results=len(results))
+    return templates.TemplateResponse(
+        request, "category.html",
+        _ctx(request, results=results, cat=cat,
+             max_price=max_price, min_rating=min_rating,
+             in_stock=in_stock, sort=sort),
+    )
+
+
+@app.get("/deals", response_class=HTMLResponse)
+async def deals_page(request: Request):
+    """Today's deals page — highlights the discounted items."""
+    s = _state()
+    # Pick lower-priced, high-rated items as the "deals" set.
+    deals = sorted(
+        [p for p in s.products.values() if p.stock > 0],
+        key=lambda p: (-p.rating, p.base_price),
+    )[:12]
+    log_action(s, "view_deals")
+    return templates.TemplateResponse(
+        request, "deals.html",
+        _ctx(request, deals=deals),
+    )
 
 
 @app.get("/product/{product_id}", response_class=HTMLResponse)

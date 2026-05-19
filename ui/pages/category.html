@@ -1,0 +1,170 @@
+{% extends "_layout.html" %}
+{% block title %}{{ cat|title }}{% endblock %}
+{% block content %}
+
+{% set cat_meta = {
+  "electronics": {"emoji": "💻", "label": "Electronics", "tagline": "Laptops, monitors, keyboards & more"},
+  "audio":       {"emoji": "🎧", "label": "Audio",       "tagline": "Premium sound for everyday"},
+  "books":       {"emoji": "📚", "label": "Books",       "tagline": "Fiction, nonfiction, and cookbooks"},
+  "clothing":    {"emoji": "👕", "label": "Clothing",    "tagline": "Casual essentials"},
+  "home":        {"emoji": "🏠", "label": "Home",        "tagline": "Make your space yours"},
+  "pet":         {"emoji": "🐶", "label": "Pet Supplies","tagline": "Food, toys, and accessories"},
+  "office":      {"emoji": "🖨️", "label": "Office",      "tagline": "Productivity essentials"}
+} %}
+{% set meta = cat_meta.get(cat, {"emoji": "📦", "label": cat|title, "tagline": ""}) %}
+
+<!-- Breadcrumbs -->
+<nav class="breadcrumbs mb-3" data-test-id="breadcrumbs">
+  <a href="/" data-test-id="breadcrumb-home">Home</a>
+  <span class="separator">›</span>
+  <span class="font-medium text-slate-900">{{ meta.label }}</span>
+</nav>
+
+<!-- Category header -->
+<section data-test-id="category-hero"
+         class="bg-gradient-to-r from-emerald-600 to-emerald-800 text-white rounded-lg p-6 mb-6 flex items-center gap-4 shadow-md">
+  <div class="text-6xl">{{ meta.emoji }}</div>
+  <div>
+    <h1 class="text-3xl font-bold" data-test-id="lbl-category-title">{{ meta.label }}</h1>
+    <p class="text-emerald-100 text-sm">{{ meta.tagline }}</p>
+  </div>
+  <div class="ml-auto text-right">
+    <div class="text-3xl font-extrabold" data-test-id="lbl-category-count">{{ results|length }}</div>
+    <div class="text-xs text-emerald-100 uppercase tracking-wider">products</div>
+  </div>
+</section>
+
+<div class="grid grid-cols-12 gap-6">
+
+  <!-- ─── FILTER SIDEBAR ─────────────────────────────────────── -->
+  <aside data-test-id="sidebar-filters"
+         class="col-span-12 md:col-span-3 bg-white rounded-lg shadow-sm p-5 h-fit border border-slate-200">
+    <h3 class="font-bold mb-4 flex items-center gap-2">
+      <span>🔍</span> Refine results
+    </h3>
+
+    <!-- Active filter pills -->
+    {% if max_price or min_rating or in_stock %}
+      <div class="mb-3 flex flex-wrap gap-1" data-test-id="active-filters">
+        {% if max_price %}<span class="filter-pill">≤ ${{ max_price }} ✕</span>{% endif %}
+        {% if min_rating %}<span class="filter-pill">★ ≥ {{ min_rating }} ✕</span>{% endif %}
+        {% if in_stock %}<span class="filter-pill">In Stock ✕</span>{% endif %}
+        <a href="/category/{{ cat }}" data-test-id="link-clear-filters" class="text-xs text-blue-600 ml-1">Clear all</a>
+      </div>
+    {% endif %}
+
+    <form action="/category/{{ cat }}" method="get" class="space-y-4">
+      <div>
+        <label class="block text-sm font-semibold mb-1.5 text-slate-700">Price range</label>
+        <div class="space-y-1">
+          {% for label, val in [("Under $25", 25), ("Under $50", 50), ("Under $100", 100), ("Under $250", 250), ("Under $500", 500)] %}
+            <label class="flex items-center gap-2 text-sm">
+              <input type="radio" name="max_price" value="{{ val }}"
+                     data-test-id="radio-price-{{ val }}"
+                     {% if max_price|int == val %}checked{% endif %} />
+              <span>{{ label }}</span>
+            </label>
+          {% endfor %}
+        </div>
+        <input type="number" name="max_price_custom" placeholder="Or custom $"
+               data-test-id="input-custom-max-price"
+               class="w-full border rounded px-2 py-1 text-sm mt-2" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold mb-1.5 text-slate-700">Customer rating</label>
+        <div class="space-y-1">
+          {% for r in [4.5, 4.0, 3.5, 3.0] %}
+            <label class="flex items-center gap-2 text-sm">
+              <input type="radio" name="min_rating" value="{{ r }}"
+                     data-test-id="radio-rating-{{ (r * 10)|int }}"
+                     {% if min_rating == r %}checked{% endif %} />
+              <span class="star-rating text-sm">{{ '★' * (r|round|int) }}</span>
+              <span class="text-xs text-slate-500">& up</span>
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <label class="flex items-center gap-2 text-sm font-semibold">
+        <input type="checkbox" name="in_stock" value="true"
+               data-test-id="filter-in-stock"
+               {% if in_stock %}checked{% endif %} />
+        In stock only
+      </label>
+
+      <input type="hidden" name="sort" value="{{ sort }}" />
+
+      <button type="submit" data-test-id="btn-apply-filters"
+              class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded font-semibold text-sm">
+        Apply Filters
+      </button>
+    </form>
+  </aside>
+
+  <!-- ─── RESULTS ────────────────────────────────────────────── -->
+  <div class="col-span-12 md:col-span-9">
+    <div class="flex items-center justify-between mb-3 bg-white border border-slate-200 rounded-lg px-4 py-3">
+      <div class="text-sm text-slate-600">
+        Showing <span class="font-semibold text-slate-900" data-test-id="lbl-result-range">1-{{ results|length }}</span>
+        of <span class="font-semibold text-slate-900">{{ results|length }}</span> results
+      </div>
+      <form action="/category/{{ cat }}" method="get" class="flex items-center gap-2 text-sm">
+        {% if max_price %}<input type="hidden" name="max_price" value="{{ max_price }}" />{% endif %}
+        {% if min_rating %}<input type="hidden" name="min_rating" value="{{ min_rating }}" />{% endif %}
+        {% if in_stock %}<input type="hidden" name="in_stock" value="true" />{% endif %}
+        <label>Sort by:</label>
+        <select name="sort" data-test-id="select-sort"
+                onchange="this.form.submit()"
+                class="border border-slate-300 rounded px-2 py-1 text-sm">
+          <option value="featured"   {% if sort=='featured'   %}selected{% endif %}>Featured</option>
+          <option value="price_asc"  {% if sort=='price_asc'  %}selected{% endif %}>Price: Low to High</option>
+          <option value="price_desc" {% if sort=='price_desc' %}selected{% endif %}>Price: High to Low</option>
+          <option value="rating"     {% if sort=='rating'     %}selected{% endif %}>Avg. Rating</option>
+          <option value="reviews"    {% if sort=='reviews'    %}selected{% endif %}>Most Reviewed</option>
+        </select>
+      </form>
+    </div>
+
+    <div data-test-id="grid-category-results"
+         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {% for p in results %}
+        <a href="/product/{{ p.id }}" data-test-id="card-product-{{ p.id }}"
+           class="product-card bg-white rounded-lg shadow-sm p-4 block relative">
+          {% if p.stock < 5 and p.stock > 0 %}
+            <span class="product-badge bg-amber-500 text-white">Only {{ p.stock }} left</span>
+          {% elif loop.index == 1 and sort == 'featured' %}
+            <span class="product-badge bg-pink-500 text-white">★ Top Pick</span>
+          {% endif %}
+          <div class="text-6xl text-center my-3">{{ p.image_emoji }}</div>
+          <div class="text-xs text-slate-500 uppercase tracking-wide">{{ p.brand }}</div>
+          <div class="font-semibold text-sm mt-1 line-clamp-2 min-h-[40px]">{{ p.name }}</div>
+          <div class="mt-1 flex items-center gap-1">
+            <span class="star-rating text-sm">{{ '★' * (p.rating|round|int) }}</span>
+            <span class="text-xs text-slate-500">({{ p.review_count }})</span>
+          </div>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span class="text-lg font-bold text-emerald-700">${{ '%.2f'|format(p.base_price) }}</span>
+          </div>
+          <div class="mt-2">
+            {% if p.stock <= 0 %}
+              <span class="status-pill status-out-of-stock">Out of Stock</span>
+            {% elif p.stock < 5 %}
+              <span class="status-pill status-low-stock">{{ p.stock }} left</span>
+            {% else %}
+              <span class="status-pill status-in-stock">In Stock</span>
+            {% endif %}
+          </div>
+        </a>
+      {% else %}
+        <div class="col-span-3 text-slate-500 italic py-10 text-center bg-white rounded-lg">
+          <div class="text-5xl mb-3">🔍</div>
+          <div class="font-semibold mb-1">No products match your filters</div>
+          <a href="/category/{{ cat }}" data-test-id="link-reset-filters" class="text-emerald-600 hover:underline text-sm">Clear filters and show all</a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

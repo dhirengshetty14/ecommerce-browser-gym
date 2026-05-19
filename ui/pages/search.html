@@ -1,41 +1,80 @@
 {% extends "_layout.html" %}
 {% block title %}Search{% endblock %}
 {% block content %}
+
+<!-- Breadcrumbs -->
+<nav class="breadcrumbs mb-3" data-test-id="breadcrumbs">
+  <a href="/" data-test-id="breadcrumb-home">Home</a>
+  <span class="separator">›</span>
+  <span class="font-medium text-slate-900">Search results</span>
+</nav>
+
+<!-- Result summary header -->
+<div class="bg-white border border-slate-200 rounded-lg px-4 py-3 mb-4 flex items-center justify-between flex-wrap gap-2">
+  <h2 class="text-lg font-bold">
+    {% if q %}Results for "<span class="text-emerald-700">{{ q }}</span>"{% else %}All products{% endif %}
+    <span data-test-id="lbl-result-count" class="text-sm font-normal text-slate-500">({{ results|length }} found)</span>
+  </h2>
+
+  <form action="/search" method="get" class="flex items-center gap-2 text-sm">
+    {% if q %}<input type="hidden" name="q" value="{{ q }}" />{% endif %}
+    {% if category %}<input type="hidden" name="category" value="{{ category }}" />{% endif %}
+    {% if max_price %}<input type="hidden" name="max_price" value="{{ max_price }}" />{% endif %}
+    {% if min_rating %}<input type="hidden" name="min_rating" value="{{ min_rating }}" />{% endif %}
+    {% if in_stock %}<input type="hidden" name="in_stock" value="true" />{% endif %}
+    <label>Sort:</label>
+    <select name="sort" data-test-id="select-sort"
+            onchange="this.form.submit()"
+            class="border border-slate-300 rounded px-2 py-1 text-sm">
+      <option value="featured"   {% if sort=='featured'   %}selected{% endif %}>Featured</option>
+      <option value="price_asc"  {% if sort=='price_asc'  %}selected{% endif %}>Price: Low→High</option>
+      <option value="price_desc" {% if sort=='price_desc' %}selected{% endif %}>Price: High→Low</option>
+      <option value="rating"     {% if sort=='rating'     %}selected{% endif %}>Avg. Rating</option>
+      <option value="reviews"    {% if sort=='reviews'    %}selected{% endif %}>Most Reviewed</option>
+    </select>
+  </form>
+</div>
+
 <div class="grid grid-cols-12 gap-4">
 
   <!-- Filter sidebar -->
-  <aside data-test-id="sidebar-filters" class="col-span-3 bg-white rounded-lg shadow p-4 h-fit">
-    <h3 class="font-bold mb-3">Filters</h3>
-    <form action="/search" method="get" class="space-y-3">
+  <aside data-test-id="sidebar-filters"
+         class="col-span-12 md:col-span-3 bg-white rounded-lg shadow-sm p-4 h-fit border border-slate-200">
+    <h3 class="font-bold mb-3 flex items-center gap-2"><span>🔍</span> Filters</h3>
+
+    <form action="/search" method="get" class="space-y-4">
       <input type="hidden" name="q" value="{{ q or '' }}" />
+      <input type="hidden" name="sort" value="{{ sort or 'featured' }}" />
 
       <div>
-        <label class="block text-sm mb-1">Category</label>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Category</label>
         <select name="category" data-test-id="filter-category"
-                class="w-full border rounded px-2 py-1 text-sm">
-          <option value="">(any)</option>
+                class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm">
+          <option value="">All categories</option>
           {% for cat in ["electronics","audio","books","clothing","home","pet","office"] %}
-            <option value="{{ cat }}" {% if category == cat %}selected{% endif %}>{{ cat }}</option>
+            <option value="{{ cat }}" {% if category == cat %}selected{% endif %}>{{ cat|title }}</option>
           {% endfor %}
         </select>
       </div>
 
       <div>
-        <label class="block text-sm mb-1">Max price ($)</label>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Max price</label>
         <input type="number" name="max_price" value="{{ max_price or '' }}"
                data-test-id="filter-max-price"
-               class="w-full border rounded px-2 py-1 text-sm" />
+               placeholder="$ —"
+               class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" />
       </div>
 
       <div>
-        <label class="block text-sm mb-1">Min rating</label>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Min rating</label>
         <input type="number" name="min_rating" step="0.1" min="0" max="5"
                value="{{ min_rating or '' }}"
                data-test-id="filter-min-rating"
-               class="w-full border rounded px-2 py-1 text-sm" />
+               placeholder="0–5"
+               class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" />
       </div>
 
-      <label class="flex items-center gap-2 text-sm">
+      <label class="flex items-center gap-2 text-sm font-semibold">
         <input type="checkbox" name="in_stock" value="true"
                data-test-id="filter-in-stock-only"
                {% if in_stock %}checked{% endif %} />
@@ -43,43 +82,47 @@
       </label>
 
       <button type="submit" data-test-id="btn-apply-filters"
-              class="w-full bg-blue-600 hover:bg-blue-500 text-white py-1 rounded text-sm">
+              class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded font-semibold text-sm">
         Apply
       </button>
     </form>
   </aside>
 
   <!-- Results -->
-  <div class="col-span-9">
-    <h2 class="text-xl font-bold mb-3">
-      {% if q %}Results for "{{ q }}"{% else %}All products{% endif %}
-      <span data-test-id="lbl-result-count" class="text-sm text-slate-500">({{ results|length }})</span>
-    </h2>
-    <div data-test-id="grid-search-results" class="grid grid-cols-3 gap-3">
+  <div class="col-span-12 md:col-span-9">
+    <div data-test-id="grid-search-results" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {% for p in results %}
         <a href="/product/{{ p.id }}" data-test-id="card-product-{{ p.id }}"
-           class="product-card bg-white rounded-lg shadow p-3 block">
-          <div class="text-4xl text-center">{{ p.image_emoji }}</div>
-          <div class="mt-2 text-sm font-semibold truncate">{{ p.name }}</div>
-          <div class="text-xs text-slate-500">{{ p.brand }} — {{ p.category }}</div>
-          <div class="mt-1 flex items-center justify-between">
-            <span class="font-bold">${{ '%.2f'|format(p.base_price) }}</span>
-            <span class="text-amber-500 text-xs">★ {{ '%.1f'|format(p.rating) }}</span>
-          </div>
-          <div class="mt-1">
+           class="product-card bg-white rounded-lg shadow-sm p-4 block relative">
+          {% if p.stock <= 0 %}
+            <span class="product-badge bg-slate-500 text-white">OOS</span>
+          {% elif p.stock < 5 %}
+            <span class="product-badge bg-amber-500 text-white">Only {{ p.stock }} left</span>
+          {% endif %}
+          <div class="text-5xl text-center my-3">{{ p.image_emoji }}</div>
+          <div class="text-xs text-slate-500 uppercase tracking-wide">{{ p.brand }} · <span class="capitalize">{{ p.category }}</span></div>
+          <div class="font-semibold text-sm mt-1 line-clamp-2 min-h-[40px]">{{ p.name }}</div>
+          <div class="mt-1 star-rating text-xs">{{ '★' * (p.rating|round|int) }} <span class="text-slate-500">({{ p.review_count }})</span></div>
+          <div class="mt-2 flex items-center justify-between">
+            <span class="font-bold text-emerald-700 text-lg">${{ '%.2f'|format(p.base_price) }}</span>
             {% if p.stock <= 0 %}
-              <span class="status-pill status-out-of-stock">Out of stock</span>
+              <span class="status-pill status-out-of-stock">OOS</span>
             {% elif p.stock < 5 %}
-              <span class="status-pill status-low-stock">Low: {{ p.stock }} left</span>
+              <span class="status-pill status-low-stock">{{ p.stock }} left</span>
             {% else %}
-              <span class="status-pill status-in-stock">In stock</span>
+              <span class="status-pill status-in-stock">In Stock</span>
             {% endif %}
           </div>
         </a>
       {% else %}
-        <div class="col-span-3 text-slate-500 italic py-6">No products match.</div>
+        <div class="col-span-3 text-slate-500 italic py-10 text-center bg-white rounded-lg">
+          <div class="text-5xl mb-3">🔍</div>
+          <div class="font-semibold mb-1">No products match your search</div>
+          <div class="text-sm">Try removing some filters or browse <a href="/" class="text-emerald-600 hover:underline">all products</a>.</div>
+        </div>
       {% endfor %}
     </div>
   </div>
 </div>
+
 {% endblock %}

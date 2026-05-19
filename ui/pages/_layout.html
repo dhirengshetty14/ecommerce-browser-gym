@@ -5,88 +5,366 @@
   <title>ShopGym Browser — {% block title %}Home{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <link rel="stylesheet" href="/static/style.css" />
 </head>
-<body class="bg-slate-100 text-slate-900 font-sans min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col antialiased"
+      x-data="shopGym()"
+      x-init="initGym()">
 
-  <!-- Header — visible on every page -->
-  <header class="bg-slate-900 text-white px-6 py-3 flex items-center gap-4 shadow-md">
-    <a href="/" class="font-bold text-xl tracking-tight" data-test-id="logo">🛒 ShopGym</a>
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <!-- UTILITY BAR (small, real-world e-commerce pattern)               -->
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <div class="bg-slate-900 text-slate-300 text-xs">
+    <div class="max-w-7xl mx-auto px-4 py-1.5 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <span data-test-id="utility-deliver-to" class="hidden md:flex items-center gap-1">
+          📍 Deliver to <span class="font-semibold text-white">{{ user.addresses.values()|list|first|attr('zip') if user and user.addresses else 'San Francisco 94103' }}</span>
+        </span>
+        <a href="/account/orders" data-test-id="link-utility-orders" class="hover:text-white">Track Order</a>
+        <a href="#help" data-test-id="link-utility-help" class="hover:text-white">Help &amp; Support</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <span data-test-id="utility-promo" class="text-amber-300 font-medium">
+          🔥 Free shipping on orders over $50
+        </span>
+        {% if user %}
+          <span data-test-id="utility-loyalty" class="text-amber-300 capitalize">{{ user.loyalty_tier }} member</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 
-    <form action="/search" method="get" class="flex-1 flex items-center gap-2 max-w-2xl">
-      <input name="q" placeholder="Search products..." value="{{ q or '' }}"
-             data-test-id="input-header-search"
-             class="text-slate-900 px-3 py-1 rounded flex-1" />
-      <button type="submit" data-test-id="btn-header-search"
-              class="bg-amber-500 hover:bg-amber-400 text-slate-900 px-3 py-1 rounded font-medium">
-        Search
-      </button>
-    </form>
-
-    <a href="/cart" data-test-id="link-cart"
-       class="relative bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded">
-      🛍️ Cart
-      <span data-test-id="lbl-cart-count"
-            class="ml-1 inline-block bg-amber-500 text-slate-900 text-xs font-bold px-1.5 py-0.5 rounded-full">
-        {{ cart_count }}
-      </span>
-    </a>
-
-    {% if user %}
-      <a href="/account" data-test-id="link-account"
-         class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-sm">
-        👤 {{ user.full_name.split(' ')[0] }}
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <!-- MAIN HEADER                                                      -->
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-6">
+      <a href="/" class="flex items-center gap-2" data-test-id="logo">
+        <span class="text-2xl">🛒</span>
+        <span class="font-extrabold text-xl tracking-tight">Shop<span class="text-emerald-600">Gym</span></span>
       </a>
-      <form action="/api/logout" method="post" class="inline">
-        <button type="submit" data-test-id="btn-logout"
-                class="text-xs text-slate-300 hover:text-white">Log out</button>
-      </form>
-    {% else %}
-      <a href="/login" data-test-id="link-login"
-         class="bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded text-sm">Log in</a>
-    {% endif %}
+
+      <!-- Search with autocomplete (Alpine) -->
+      <div class="flex-1 max-w-2xl relative"
+           x-data="{ open: false, query: '' }"
+           @click.outside="open = false">
+        <form action="/search" method="get" class="flex" data-test-id="form-header-search">
+          <select name="category" data-test-id="select-search-category"
+                  class="bg-slate-100 border border-slate-300 border-r-0 rounded-l-md px-3 py-2 text-sm text-slate-700 focus:outline-none">
+            <option value="">All</option>
+            <option value="electronics">Electronics</option>
+            <option value="audio">Audio</option>
+            <option value="books">Books</option>
+            <option value="clothing">Clothing</option>
+            <option value="home">Home</option>
+            <option value="pet">Pet Supplies</option>
+            <option value="office">Office</option>
+          </select>
+          <input name="q" placeholder="Search 23,000+ products..."
+                 value="{{ q or '' }}"
+                 x-model="query"
+                 @focus="open = true"
+                 @input="open = query.length > 0"
+                 data-test-id="input-header-search"
+                 autocomplete="off"
+                 class="flex-1 border-y border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-emerald-500" />
+          <button type="submit" data-test-id="btn-header-search"
+                  class="bg-amber-500 hover:bg-amber-400 text-slate-900 px-5 py-2 rounded-r-md font-semibold text-sm">
+            🔍 Search
+          </button>
+        </form>
+
+        <!-- Autocomplete dropdown (Alpine) -->
+        <div x-show="open && query.length > 0"
+             x-transition.opacity
+             class="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-md shadow-lg z-50"
+             data-test-id="search-autocomplete"
+             style="display:none">
+          <div class="p-2 text-xs text-slate-500 border-b">Suggestions</div>
+          <template x-for="suggestion in autocompleteSuggestions(query)" :key="suggestion">
+            <a :href="'/search?q=' + encodeURIComponent(suggestion)"
+               class="block px-3 py-2 hover:bg-slate-50 text-sm"
+               :data-test-id="'autocomplete-' + suggestion.replace(/\s+/g, '-')">
+              🔍 <span x-text="suggestion"></span>
+            </a>
+          </template>
+        </div>
+      </div>
+
+      <!-- Account dropdown -->
+      <div x-data="{ open: false }" @click.outside="open = false" class="relative">
+        <button @click="open = !open" data-test-id="btn-account-menu"
+                class="flex items-center gap-1 text-sm hover:bg-slate-100 px-2 py-2 rounded">
+          {% if user %}
+            <span class="text-lg">👤</span>
+            <div class="text-left leading-tight">
+              <div class="text-xs text-slate-500">Hello, {{ user.full_name.split(' ')[0] }}</div>
+              <div class="font-semibold">Account &amp; Lists ▾</div>
+            </div>
+          {% else %}
+            <span class="text-lg">👤</span>
+            <div class="text-left leading-tight">
+              <div class="text-xs text-slate-500">Hello, sign in</div>
+              <div class="font-semibold">Account &amp; Lists ▾</div>
+            </div>
+          {% endif %}
+        </button>
+        <div x-show="open" x-transition
+             class="absolute right-0 mt-1 w-64 bg-white border border-slate-200 rounded-md shadow-lg z-50"
+             data-test-id="dropdown-account-menu"
+             style="display:none">
+          {% if user %}
+            <a href="/account" data-test-id="link-account" class="block px-4 py-2 text-sm hover:bg-slate-50">📋 Your Account</a>
+            <a href="/account/orders" data-test-id="link-account-orders" class="block px-4 py-2 text-sm hover:bg-slate-50">📦 Your Orders</a>
+            <a href="/account/subscriptions" data-test-id="link-account-subs" class="block px-4 py-2 text-sm hover:bg-slate-50">🔁 Subscriptions</a>
+            <a href="/account/returns" data-test-id="link-account-returns" class="block px-4 py-2 text-sm hover:bg-slate-50">↩️ Returns</a>
+            <a href="/account/addresses" data-test-id="link-account-addresses" class="block px-4 py-2 text-sm hover:bg-slate-50">📍 Addresses</a>
+            <a href="/account/payments" data-test-id="link-account-payments" class="block px-4 py-2 text-sm hover:bg-slate-50">💳 Payment Methods</a>
+            <a href="/account/security" data-test-id="link-account-security" class="block px-4 py-2 text-sm hover:bg-slate-50">🔒 Security &amp; 2FA</a>
+            <div class="border-t my-1"></div>
+            <form action="/api/logout" method="post" class="px-4 py-2">
+              <button type="submit" data-test-id="btn-logout" class="text-sm text-red-600 hover:text-red-700">
+                Sign out
+              </button>
+            </form>
+          {% else %}
+            <a href="/login" data-test-id="link-login"
+               class="block mx-4 mt-3 mb-2 bg-amber-500 hover:bg-amber-400 text-center text-slate-900 px-4 py-2 rounded font-semibold text-sm">
+              Sign in
+            </a>
+            <p class="text-center text-xs text-slate-500 pb-3">
+              New here? <a href="/login" class="text-blue-600">Create account</a>
+            </p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Cart with badge -->
+      <a href="/cart" data-test-id="link-cart"
+         class="flex items-center gap-2 hover:bg-slate-100 px-3 py-2 rounded relative">
+        <div class="relative">
+          <span class="text-2xl">🛍️</span>
+          <span data-test-id="lbl-cart-count"
+                class="absolute -top-1 -right-2 bg-amber-500 text-slate-900 text-xs font-bold px-1.5 rounded-full min-w-[20px] text-center">
+            {{ cart_count }}
+          </span>
+        </div>
+        <div class="hidden md:block leading-tight">
+          <div class="text-xs text-slate-500">{{ cart_count }} items</div>
+          <div class="font-semibold text-sm">Cart</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- CATEGORY MEGA-NAV (Amazon-style hover dropdowns)         -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <nav class="border-t border-slate-200 bg-slate-50">
+      <div class="max-w-7xl mx-auto px-4 flex items-center gap-1 overflow-x-auto"
+           data-test-id="nav-categories">
+        <!-- "Shop by Department" dropdown - HIDES major categories -->
+        <div x-data="{ open: false }"
+             @mouseenter="open = true"
+             @mouseleave="open = false"
+             class="relative">
+          <button data-test-id="btn-all-departments"
+                  class="px-4 py-2.5 text-sm font-semibold hover:bg-slate-200 flex items-center gap-1">
+            <span>☰</span> All Departments
+          </button>
+          <div x-show="open" x-transition
+               class="absolute top-full left-0 w-72 bg-white border border-slate-200 shadow-xl rounded-b-md z-30"
+               data-test-id="mega-menu-departments"
+               style="display:none">
+            <a href="/category/electronics" data-test-id="mega-link-electronics" class="flex items-center gap-3 px-4 py-3 hover:bg-emerald-50 border-b">
+              <span class="text-2xl">💻</span>
+              <div><div class="font-medium">Electronics</div><div class="text-xs text-slate-500">Laptops, monitors, keyboards</div></div>
+            </a>
+            <a href="/category/audio" data-test-id="mega-link-audio" class="flex items-center gap-3 px-4 py-3 hover:bg-emerald-50 border-b">
+              <span class="text-2xl">🎧</span>
+              <div><div class="font-medium">Audio</div><div class="text-xs text-slate-500">Headphones, speakers</div></div>
+            </a>
+            <a href="/category/books" data-test-id="mega-link-books" class="flex items-center gap-3 px-4 py-3 hover:bg-emerald-50 border-b">
+              <span class="text-2xl">📚</span>
+              <div><div class="font-medium">Books</div><div class="text-xs text-slate-500">Fiction, nonfiction, cookbooks</div></div>
+            </a>
+            <a href="/category/clothing" data-test-id="mega-link-clothing" class="flex items-center gap-3 px-4 py-3 hover:bg-emerald-50 border-b">
+              <span class="text-2xl">👕</span>
+              <div><div class="font-medium">Clothing</div><div class="text-xs text-slate-500">T-shirts, hoodies, accessories</div></div>
+            </a>
+            <a href="/category/home" data-test-id="mega-link-home" class="flex items-center gap-3 px-4 py-3 hover:bg-emerald-50 border-b">
+              <span class="text-2xl">🏠</span>
+              <div><div class="font-medium">Home</div><div class="text-xs text-slate-500">Lighting, kitchen, decor</div></div>
+            </a>
+            <a href="/category/pet" data-test-id="mega-link-pet" class="flex items-center gap-3 px-4 py-3 hover:bg-emerald-50 border-b">
+              <span class="text-2xl">🐶</span>
+              <div><div class="font-medium">Pet Supplies</div><div class="text-xs text-slate-500">Food, toys, accessories</div></div>
+            </a>
+            <a href="/category/office" data-test-id="mega-link-office" class="flex items-center gap-3 px-4 py-3 hover:bg-emerald-50">
+              <span class="text-2xl">🖨️</span>
+              <div><div class="font-medium">Office</div><div class="text-xs text-slate-500">Displays, supplies</div></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Direct category shortcuts (visible) -->
+        <a href="/category/electronics" data-test-id="nav-electronics" class="px-3 py-2.5 text-sm hover:bg-slate-200 whitespace-nowrap">Electronics</a>
+        <a href="/category/audio" data-test-id="nav-audio" class="px-3 py-2.5 text-sm hover:bg-slate-200 whitespace-nowrap">Audio</a>
+        <a href="/category/books" data-test-id="nav-books" class="px-3 py-2.5 text-sm hover:bg-slate-200 whitespace-nowrap">Books</a>
+        <a href="/category/clothing" data-test-id="nav-clothing" class="px-3 py-2.5 text-sm hover:bg-slate-200 whitespace-nowrap">Clothing</a>
+
+        <!-- "More" dropdown - HIDES categories (edge case for agents) -->
+        <div x-data="{ open: false }" @click.outside="open = false" class="relative">
+          <button @click="open = !open" data-test-id="btn-more-categories"
+                  class="px-3 py-2.5 text-sm hover:bg-slate-200 flex items-center gap-1 whitespace-nowrap">
+            More ▾
+          </button>
+          <div x-show="open" x-transition
+               class="absolute top-full left-0 w-48 bg-white border border-slate-200 shadow-lg rounded-b-md z-30"
+               data-test-id="dropdown-more-categories"
+               style="display:none">
+            <a href="/category/home" data-test-id="nav-home-cat" class="block px-4 py-2 text-sm hover:bg-slate-50">🏠 Home</a>
+            <a href="/category/pet" data-test-id="nav-pet" class="block px-4 py-2 text-sm hover:bg-slate-50">🐶 Pet Supplies</a>
+            <a href="/category/office" data-test-id="nav-office" class="block px-4 py-2 text-sm hover:bg-slate-50">🖨️ Office</a>
+          </div>
+        </div>
+
+        <span class="flex-1"></span>
+
+        <a href="/deals" data-test-id="nav-deals" class="px-3 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 whitespace-nowrap">
+          🔥 Today's Deals
+        </a>
+        <a href="/account/subscriptions" data-test-id="nav-subscriptions" class="px-3 py-2.5 text-sm hover:bg-slate-200 whitespace-nowrap">🔁 Subscribe &amp; Save</a>
+      </div>
+    </nav>
   </header>
 
-  <!-- Task banner -->
-  <section data-test-id="task-banner" class="bg-amber-100 border-b border-amber-300 px-6 py-3">
-    <div class="flex items-baseline gap-3 max-w-6xl mx-auto">
-      <span data-test-id="lbl-difficulty"
-            class="px-2 py-0.5 rounded bg-amber-700 text-white text-xs uppercase font-bold">
-        {{ task_difficulty }}
-      </span>
-      <span data-test-id="lbl-category"
-            class="px-2 py-0.5 rounded bg-slate-700 text-white text-xs uppercase font-bold">
-        cat {{ task_category }}
-      </span>
-      <span data-test-id="lbl-task-id" class="font-mono text-sm text-amber-900">{{ task_id }}</span>
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <!-- TASK BANNER (collapsible — important for screenshots)            -->
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <section data-test-id="task-banner"
+           class="bg-gradient-to-r from-amber-50 to-amber-100 border-b border-amber-200"
+           x-data="{ open: true }">
+    <div class="max-w-7xl mx-auto px-4 py-2">
+      <div class="flex items-baseline gap-3 flex-wrap">
+        <span data-test-id="lbl-difficulty"
+              class="px-2 py-0.5 rounded text-white text-[10px] uppercase font-bold tracking-wider
+                     {% if task_difficulty == 'easy' %}bg-emerald-600
+                     {% elif task_difficulty == 'medium' %}bg-amber-600
+                     {% else %}bg-red-600{% endif %}">
+          {{ task_difficulty }}
+        </span>
+        <span data-test-id="lbl-category"
+              class="px-2 py-0.5 rounded bg-slate-700 text-white text-[10px] uppercase font-bold tracking-wider">
+          Track {{ task_category }}
+        </span>
+        <span data-test-id="lbl-task-id" class="font-mono text-xs text-amber-900">{{ task_id }}</span>
+        <button @click="open = !open" class="ml-auto text-xs text-amber-800 hover:text-amber-900" data-test-id="btn-toggle-banner">
+          <span x-text="open ? '▼ Hide brief' : '▶ Show brief'"></span>
+        </button>
+      </div>
+      <p x-show="open" data-test-id="lbl-task-brief"
+         class="mt-1 text-amber-950 text-sm leading-relaxed">{{ task_brief }}</p>
     </div>
-    <p data-test-id="lbl-task-brief" class="max-w-6xl mx-auto mt-2 text-amber-950 text-sm">
-      {{ task_brief }}
-    </p>
   </section>
 
-  <!-- Flash messages -->
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <!-- FLASH MESSAGES (persistent, server-rendered)                     -->
+  <!-- ─────────────────────────────────────────────────────────────── -->
   {% if flashes %}
-  <section class="max-w-6xl mx-auto px-6 mt-3 space-y-1 w-full">
+  <section class="max-w-7xl mx-auto px-4 mt-3 space-y-1 w-full">
     {% for f in flashes %}
       <div data-test-id="flash-{{ f.kind }}"
-           class="{% if f.kind == 'error' %}bg-red-100 text-red-800 border-l-4 border-red-500{% else %}bg-emerald-100 text-emerald-900 border-l-4 border-emerald-500{% endif %} px-4 py-2 rounded">
-        {{ f.body }}
+           class="{% if f.kind == 'error' %}bg-red-50 text-red-800 border-l-4 border-red-500{% else %}bg-emerald-50 text-emerald-900 border-l-4 border-emerald-500{% endif %} px-4 py-2 rounded shadow-sm flex items-center gap-2">
+        <span>{% if f.kind == 'error' %}⚠️{% else %}✅{% endif %}</span>
+        <span>{{ f.body }}</span>
       </div>
     {% endfor %}
   </section>
   {% endif %}
 
-  <!-- Main content -->
-  <main class="max-w-6xl mx-auto p-6 flex-1 w-full">
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <!-- TOAST CONTAINER (Alpine.js-driven, transient)                    -->
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <div class="fixed top-20 right-4 z-50 space-y-2"
+       data-test-id="toast-container"
+       x-show="toasts.length > 0"
+       style="display:none">
+    <template x-for="toast in toasts" :key="toast.id">
+      <div :data-test-id="'toast-' + toast.kind"
+           x-transition:enter="transform transition ease-out duration-300"
+           x-transition:enter-start="translate-x-full opacity-0"
+           x-transition:enter-end="translate-x-0 opacity-100"
+           x-transition:leave="transform transition ease-in duration-200"
+           x-transition:leave-end="translate-x-full opacity-0"
+           :class="toast.kind === 'success' ? 'bg-emerald-600' : (toast.kind === 'error' ? 'bg-red-600' : 'bg-slate-800')"
+           class="text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 min-w-[280px]">
+        <span x-text="toast.kind === 'success' ? '✅' : (toast.kind === 'error' ? '⚠️' : 'ℹ️')"></span>
+        <span x-text="toast.body" class="text-sm"></span>
+      </div>
+    </template>
+  </div>
+
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <!-- MAIN CONTENT                                                     -->
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full">
     {% block content %}{% endblock %}
   </main>
 
-  <!-- Footer -->
-  <footer class="bg-slate-800 text-slate-300 text-sm px-6 py-4 mt-6">
-    <div class="max-w-6xl mx-auto">
-      ShopGym Browser — a UI gym for browser-based RL agents. All data is
-      fake.
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <!-- FOOTER                                                           -->
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <footer class="bg-slate-900 text-slate-300 mt-12">
+    <div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
+      <div>
+        <h4 class="text-white font-bold mb-3">Get to Know Us</h4>
+        <ul class="space-y-1.5">
+          <li><a href="#about" class="hover:text-white">About ShopGym</a></li>
+          <li><a href="#careers" class="hover:text-white">Careers</a></li>
+          <li><a href="#press" class="hover:text-white">Press</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-3">Customer Service</h4>
+        <ul class="space-y-1.5">
+          <li><a href="/account/orders" class="hover:text-white">Track Your Order</a></li>
+          <li><a href="/account/returns" class="hover:text-white">Returns &amp; Refunds</a></li>
+          <li><a href="#contact" class="hover:text-white">Contact Us</a></li>
+          <li><a href="#help" class="hover:text-white">Help Center</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-3">Shop With Us</h4>
+        <ul class="space-y-1.5">
+          <li><a href="/account/subscriptions" class="hover:text-white">Subscribe &amp; Save</a></li>
+          <li><a href="/deals" class="hover:text-white">Today's Deals</a></li>
+          <li><a href="#gift" class="hover:text-white">Gift Cards</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-3">Stay Connected</h4>
+        <p class="mb-2 text-xs">Get exclusive offers and updates.</p>
+        <form class="flex gap-1">
+          <input type="email" placeholder="Email address"
+                 data-test-id="input-newsletter"
+                 class="flex-1 px-2 py-1.5 rounded text-slate-900 text-xs" />
+          <button data-test-id="btn-newsletter-subscribe"
+                  class="bg-amber-500 hover:bg-amber-400 text-slate-900 px-3 py-1.5 rounded font-semibold text-xs">
+            Subscribe
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="border-t border-slate-700 px-4 py-4">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-slate-400">
+        <div>© 2026 ShopGym Browser — UI gym for browser-based RL agents. All data is fake.</div>
+        <div class="flex gap-4">
+          <a href="#privacy" class="hover:text-white">Privacy</a>
+          <a href="#terms" class="hover:text-white">Terms</a>
+          <a href="#cookies" class="hover:text-white">Cookies</a>
+        </div>
+      </div>
     </div>
   </footer>
 

@@ -1,28 +1,186 @@
 {% extends "_layout.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<h2 class="text-xl font-bold mb-3">Featured products</h2>
-<div data-test-id="grid-featured-products" class="grid grid-cols-4 gap-4">
-  {% for p in featured %}
-    <a href="/product/{{ p.id }}" data-test-id="card-product-{{ p.id }}"
-       class="product-card bg-white rounded-lg shadow p-3 block hover:-translate-y-1 transition">
-      <div class="text-5xl text-center">{{ p.image_emoji }}</div>
-      <div class="mt-2 text-sm font-semibold truncate" title="{{ p.name }}">{{ p.name }}</div>
-      <div class="text-xs text-slate-500">{{ p.brand }}</div>
-      <div class="mt-1 flex items-center justify-between">
-        <span class="font-bold">${{ '%.2f'|format(p.base_price) }}</span>
-        <span class="text-amber-500 text-xs">★ {{ '%.1f'|format(p.rating) }}</span>
-      </div>
-      <div class="mt-1">
-        {% if p.stock <= 0 %}
-          <span class="status-pill status-out-of-stock">Out of stock</span>
-        {% elif p.stock < 5 %}
-          <span class="status-pill status-low-stock">Low: {{ p.stock }} left</span>
-        {% else %}
-          <span class="status-pill status-in-stock">In stock</span>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- HERO BANNER                                                  -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section data-test-id="hero-banner"
+         class="hero-banner rounded-xl text-white p-8 md:p-12 mb-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center shadow-lg">
+  <div>
+    <div class="inline-block bg-amber-400 text-slate-900 px-3 py-0.5 text-xs font-bold uppercase tracking-wider rounded mb-3">
+      Memorial Day Sale
+    </div>
+    <h1 class="text-3xl md:text-5xl font-extrabold leading-tight mb-3">
+      Up to <span class="text-amber-300">40% off</span><br />electronics
+    </h1>
+    <p class="text-lg text-emerald-50 mb-5 max-w-md">
+      Save big on laptops, headphones, and accessories. Free shipping on orders over $50.
+    </p>
+    <div class="flex flex-wrap gap-3">
+      <a href="/category/electronics" data-test-id="btn-hero-shop-electronics"
+         class="bg-amber-500 hover:bg-amber-400 text-slate-900 px-6 py-2.5 rounded-md font-bold shadow-md inline-flex items-center gap-2">
+        Shop Electronics →
+      </a>
+      <a href="/deals" data-test-id="btn-hero-view-deals"
+         class="bg-white/10 hover:bg-white/20 text-white px-6 py-2.5 rounded-md font-semibold border border-white/30 backdrop-blur">
+        View All Deals
+      </a>
+    </div>
+  </div>
+  <div class="hidden md:flex items-center justify-center text-9xl gap-2">
+    <span class="opacity-80">💻</span>
+    <span class="text-7xl opacity-60">🎧</span>
+    <span class="opacity-80">⌨️</span>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- DEAL BANNER (animated shimmer)                              -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section data-test-id="deal-banner"
+         class="deal-banner rounded-lg p-4 mb-6 flex items-center justify-between text-white shadow-md">
+  <div class="flex items-center gap-3">
+    <span class="text-3xl">⚡</span>
+    <div>
+      <div class="font-bold text-lg">Flash Sale Ends in 04:23:17</div>
+      <div class="text-sm text-red-100">Limited stock on top items — grab yours before they're gone!</div>
+    </div>
+  </div>
+  <a href="/deals" data-test-id="btn-deal-banner-shop"
+     class="bg-white text-red-600 hover:bg-red-50 px-5 py-2 rounded-md font-bold whitespace-nowrap shadow">
+    Shop Now →
+  </a>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- CATEGORY TILES                                               -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section data-test-id="section-categories" class="mb-8">
+  <h2 class="text-xl font-bold mb-4 text-slate-900">Shop by category</h2>
+  <div data-test-id="grid-categories" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+    {% for cat, emoji, label in [
+      ("electronics", "💻", "Electronics"),
+      ("audio", "🎧", "Audio"),
+      ("books", "📚", "Books"),
+      ("clothing", "👕", "Clothing"),
+      ("home", "🏠", "Home"),
+      ("pet", "🐶", "Pet"),
+      ("office", "🖨️", "Office")
+    ] %}
+      <a href="/category/{{ cat }}" data-test-id="tile-category-{{ cat }}"
+         class="category-tile rounded-lg p-4 text-center block hover:shadow-md">
+        <div class="text-4xl mb-2">{{ emoji }}</div>
+        <div class="font-semibold text-sm">{{ label }}</div>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- FEATURED PRODUCTS RAIL                                       -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section data-test-id="section-featured" class="mb-8">
+  <div class="flex items-baseline justify-between mb-4">
+    <h2 class="text-xl font-bold text-slate-900">Featured for you</h2>
+    <a href="/search" data-test-id="link-see-all-featured" class="text-sm text-emerald-700 hover:text-emerald-800 font-semibold">See all →</a>
+  </div>
+  <div data-test-id="grid-featured-products" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    {% for p in featured[:8] %}
+      <a href="/product/{{ p.id }}" data-test-id="card-product-{{ p.id }}"
+         class="product-card bg-white rounded-lg shadow-sm p-4 block relative">
+        {% if loop.index == 1 %}
+          <span class="product-badge bg-pink-500 text-white" data-test-id="badge-bestseller">★ Best Seller</span>
+        {% elif loop.index == 2 %}
+          <span class="product-badge bg-purple-600 text-white" data-test-id="badge-new">New</span>
+        {% elif p.stock < 5 and p.stock > 0 %}
+          <span class="product-badge bg-amber-500 text-white" data-test-id="badge-low-stock">Only {{ p.stock }} left</span>
         {% endif %}
-      </div>
-    </a>
-  {% endfor %}
-</div>
+        <div class="text-7xl text-center mb-3 mt-2">{{ p.image_emoji }}</div>
+        <div class="text-xs text-slate-500 uppercase tracking-wide">{{ p.brand }}</div>
+        <div class="font-semibold text-sm mt-1 line-clamp-2 min-h-[40px]" title="{{ p.name }}">{{ p.name }}</div>
+        <div class="mt-1.5 flex items-center gap-1">
+          <span class="star-rating text-sm">{{ '★' * (p.rating|round|int) }}</span>
+          <span class="text-xs text-slate-500">({{ p.review_count }})</span>
+        </div>
+        <div class="mt-2 flex items-baseline gap-2">
+          <span class="text-lg font-bold text-emerald-700">${{ '%.2f'|format(p.base_price) }}</span>
+          {% if loop.index <= 3 %}
+            <span class="price-was">${{ '%.2f'|format(p.base_price * 1.25) }}</span>
+            <span class="price-save">-20%</span>
+          {% endif %}
+        </div>
+        <div class="mt-2">
+          {% if p.stock <= 0 %}
+            <span class="status-pill status-out-of-stock">Out of Stock</span>
+          {% elif p.stock < 5 %}
+            <span class="status-pill status-low-stock">Only {{ p.stock }} left</span>
+          {% else %}
+            <span class="status-pill status-in-stock">In Stock</span>
+          {% endif %}
+          {% if p.is_subscribable %}
+            <span class="status-pill status-prime ml-1">🔁 Sub &amp; Save</span>
+          {% endif %}
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- DEALS / DISCOUNT RAIL                                       -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section data-test-id="section-deals" class="mb-8">
+  <div class="flex items-baseline justify-between mb-4">
+    <h2 class="text-xl font-bold text-slate-900">🔥 Today's hot deals</h2>
+    <a href="/deals" data-test-id="link-see-all-deals" class="text-sm text-emerald-700 hover:text-emerald-800 font-semibold">See all deals →</a>
+  </div>
+  <div class="rail-container">
+    <div data-test-id="rail-deals" class="product-rail">
+      {% for p in featured[2:9] %}
+        <a href="/product/{{ p.id }}" data-test-id="rail-card-{{ p.id }}"
+           class="product-card bg-white rounded-lg shadow-sm p-3 block w-56 relative">
+          <span class="product-badge bg-red-600 text-white" data-test-id="badge-deal-{{ p.id }}">
+            -{{ 15 + (loop.index * 3) }}%
+          </span>
+          <div class="text-5xl text-center my-3">{{ p.image_emoji }}</div>
+          <div class="text-xs text-slate-500">{{ p.brand }}</div>
+          <div class="font-semibold text-sm line-clamp-1">{{ p.name }}</div>
+          <div class="mt-1 flex items-baseline gap-2">
+            <span class="font-bold text-emerald-700">${{ '%.2f'|format(p.base_price * 0.85) }}</span>
+            <span class="price-was">${{ '%.2f'|format(p.base_price) }}</span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- TRUST / SOCIAL PROOF STRIP                                  -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section data-test-id="section-trust"
+         class="bg-white border border-slate-200 rounded-lg p-6 mb-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-sm">
+  <div>
+    <div class="text-3xl mb-1">🚚</div>
+    <div class="font-semibold">Free shipping</div>
+    <div class="text-slate-500">On orders over $50</div>
+  </div>
+  <div>
+    <div class="text-3xl mb-1">↩️</div>
+    <div class="font-semibold">Easy returns</div>
+    <div class="text-slate-500">30-day return policy</div>
+  </div>
+  <div>
+    <div class="text-3xl mb-1">🔒</div>
+    <div class="font-semibold">Secure checkout</div>
+    <div class="text-slate-500">SSL encrypted</div>
+  </div>
+  <div>
+    <div class="text-3xl mb-1">⭐</div>
+    <div class="font-semibold">4.8 / 5 rating</div>
+    <div class="text-slate-500">From 250k+ reviews</div>
+  </div>
+</section>
+
 {% endblock %}

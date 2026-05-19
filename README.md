@@ -244,9 +244,48 @@ Full scorecard: [`trajectories/llm/_scorecard.json`](./trajectories/llm/_scoreca
 
 ---
 
+## 🆕 Pixel-based agent variant (branch `feat/pixel-agent-fork`)
+
+This branch adds a second agent variant — **PixelBrowserAgent** —
+that perceives the page through annotated screenshots only, with no
+DOM/JSON observation. It uses **Set-of-Mark prompting** with marks
+derived from the accessibility tree (not from our `data-test-id`
+attributes), so the same agent code would deploy unchanged against
+any real web app with basic ARIA roles.
+
+What the pixel agent sees per turn:
+- A 1280×800 screenshot with numbered colored boxes drawn over every
+  interactable (button/link/textbox/combobox/checkbox/...)
+- The current URL
+- A text manifest: `[7] button "Add to Cart"`, `[12] textbox "Search"`, ...
+- The result of its last action
+
+How it acts:
+- `click(mark_id)`, `type_text(mark_id, text)`, `key(name)`,
+  `scroll(direction, amount_px)`, `finish()`
+- No `navigate(url)` — must reach every page through visible clicks
+- Discrete mark IDs only — no pixel coordinates emitted by the model
+- Anthropic extended thinking enabled (4000-token reasoning budget)
+- Plan-then-act response structure enforced (Plan / What I see / Next action)
+
+Run it:
+```bash
+# Same gym, same verifier, same trajectory schema — just different agent
+python -m eval.run --agent pixel --tasks A1/buy_wireless_mouse --seeds 0
+
+# Head-to-head comparison on the full 12-task matrix
+python -m eval.compare --agents llm,pixel --seeds 0,1,2 --tasks all
+```
+
+See [`PIXEL_VS_JSON.md`](./PIXEL_VS_JSON.md) for the full
+methodology, hypotheses, and (once run) results.
+
+---
+
 ## See also
 
 - [`DESIGN.md`](./DESIGN.md) — architecture
 - [`MILESTONES.md`](./MILESTONES.md) — per-step reward model
 - [`WALKTHROUGH.md`](./WALKTHROUGH.md) — interview-ready deep dive
 - [`TASKS.md`](./TASKS.md) — task briefs + milestone weights
+- [`PIXEL_VS_JSON.md`](./PIXEL_VS_JSON.md) — pixel vs DOM comparison study (branch)

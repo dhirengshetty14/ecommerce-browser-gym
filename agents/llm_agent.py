@@ -140,6 +140,41 @@ selector. Forms post to /api/* endpoints automatically; you never call
 those endpoints directly.
 
 ═══════════════════════════════════════════════════════════════════════════
+PRODUCT VARIANTS — required workflow when present
+═══════════════════════════════════════════════════════════════════════════
+
+Some products (t-shirts, laptops, etc.) have CONFIGURATIONS (size,
+color, RAM/SSD). If the observation contains a `variant_picker` field,
+the product has variants and you MUST select one BEFORE clicking
+btn-add-to-cart, or the form will reject with an error.
+
+The CORRECT order is:
+  Turn N:   action=select, selector=[data-test-id='select-variant'],
+            value=<variant_id from variant_picker.options>
+  Turn N+1: action=click, selector=[data-test-id='btn-add-to-cart']
+
+Variant IDs look like v_ts_m_blk (T-Shirt, Medium, Black) or
+v_lt_32_1tb (Laptop, 32GB RAM, 1TB SSD). They are NOT predictable —
+read them from observation.variant_picker.options.
+
+If you see flash_messages in the observation containing "Please pick
+an option for ...", that means your last add-to-cart was rejected
+because no variant was selected. Pick a variant and try again.
+
+═══════════════════════════════════════════════════════════════════════════
+ERROR RECOVERY — read flash_messages
+═══════════════════════════════════════════════════════════════════════════
+
+The observation will include `flash_messages` if the last action
+produced a server-side error or success. ALWAYS check this field
+before deciding your next action. If kind="error", figure out why
+and adjust. Examples:
+  "Please pick an option for Cotton T-Shirt"   → select variant first
+  "Only 2 of that variant in stock"            → reduce quantity
+  "Apply a different promo — TECH20 only       → wrong cart contents
+   applies to electronics"                       for the promo
+
+═══════════════════════════════════════════════════════════════════════════
 General rules:
 ═══════════════════════════════════════════════════════════════════════════
 
@@ -148,6 +183,10 @@ General rules:
 - If a form field is required and you skip it, the form will reject with an error banner — read those banners.
 - If you see [data-test-id='page-not-found'] in the interactables, you
   hit a 404 — recover by clicking [data-test-id='btn-nf-home'] (go home).
+- If you see [data-test-id='page-product-not-found'], the page shows
+  "Did you mean..." cards. Click one of [data-test-id='suggestion-X'].
+- VERIFY before you finish: check `snapshot.cart` and `snapshot.orders`
+  to confirm the goal is actually achieved before calling `finish`.
 - Call `finish` only when you believe the task is complete.
 
 The task brief is your goal. Everything else is a hint.
@@ -258,15 +297,22 @@ class LLMBrowserAgent:
             })
 
     async def _observation(self, ctx: BrowserCtx) -> str:
-        """Compact observation: URL + accessible interactables + cart snapshot.
-
-        Also includes an `href` for anchor tags so the model can navigate
-        without guessing — and a short `valid_route_patterns` reminder
-        that the model sees every turn (not just at system-prompt time).
+        """Compact observation. Surfaces:
+          - URL
+          - all [data-test-id] interactables (with hrefs for anchors)
+          - backend GymState snapshot (products, cart, orders, etc.)
+          - valid route patterns (anti-hallucination reminder every turn)
+          - VARIANT OPTIONS when a select-variant is on the page (so the
+            agent can see what variant_ids exist without guessing)
+          - PROMO CODES when a code input is on the page
+          - any flash messages from the previous action (errors!)
+          - critical FORM SHAPE hints (e.g. required fields)
         """
         page = ctx.page
         url = page.url
+
         # Extract data-test-id'd interactables — include href for <a> tags
+        # and value for <input>/<select> tags so the model sees pre-filled state
         elements = await page.evaluate("""() => {
             const out = [];
             document.querySelectorAll('[data-test-id]').forEach(el => {
@@ -280,16 +326,56 @@ class LLMBrowserAgent:
                 if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href')) {
                     item.href = el.getAttribute('href');
                 }
+                if (el.tagName.toLowerCase() === 'select' || el.tagName.toLowerCase() === 'input') {
+                    item.value = el.value || '';
+                    item.name = el.getAttribute('name') || '';
+                    if (el.hasAttribute('required')) item.required = true;
+                    if (el.hasAttribute('disabled')) item.disabled = true;
+                }
                 out.push(item);
             });
-            return out.slice(0, 100);
+            return out.slice(0, 120);
         }""")
+
+        # Special: when a product page has a variant picker, extract the
+        # exact <option> list so the agent can see what variant_id values
+        # are valid without having to parse HTML. This is the fix for the
+        # "agent stuck on Cotton T-Shirt" loop.
+        variant_options = await page.evaluate("""() => {
+            const sel = document.querySelector('[data-test-id="select-variant"]');
+            if (!sel) return null;
+            const opts = [];
+            sel.querySelectorAll('option').forEach(o => {
+                if (!o.value) return;  // skip placeholder
+                opts.push({
+                    variant_id: o.value,
+                    label: o.innerText.trim(),
+                    disabled: o.disabled || false,
+                });
+            });
+            return opts;
+        }""")
+
+        # Pull flash banners from the rendered DOM. The server-side
+        # _ctx() clears state.flash_messages after rendering, so the
+        # /_harness/snapshot would return [] — but the BANNERS are still
+        # visible on the page. Extract them directly.
+        dom_flashes = await page.evaluate("""() => {
+            const out = [];
+            document.querySelectorAll('[data-test-id^="flash-"]').forEach(el => {
+                const tid = el.getAttribute('data-test-id');
+                const kind = tid.replace('flash-', '');
+                out.push({ kind, body: el.innerText.trim() });
+            });
+            return out;
+        }""")
+
         # Backend snapshot for context
         snap = ctx.http.get(f"{ctx.server_url}/_harness/snapshot").json()
 
-        # Surface valid product/order IDs so the model uses real ones
-        product_ids = sorted(snap.get("products", {}).keys()) if isinstance(snap.get("products"), dict) else []
-        order_ids = sorted(snap.get("orders", {}).keys()) if isinstance(snap.get("orders"), dict) else []
+        # Surface flash messages PROMINENTLY so the agent sees errors.
+        # Prefer DOM-extracted (won't get cleared between renders).
+        flash_messages = dom_flashes or snap.get("flash_messages", [])
 
         # In-prompt reminder of what URLs are real
         valid_route_patterns = [
@@ -303,7 +389,7 @@ class LLMBrowserAgent:
             "/account/returns/new", "/deals",
         ]
 
-        obs = {
+        obs: dict[str, Any] = {
             "url": url,
             "snapshot": snap,
             "interactables": elements,
@@ -313,4 +399,24 @@ class LLMBrowserAgent:
                         "Prefer clicking visible links over navigating.",
             },
         }
-        return f"```json\n{json.dumps(obs, indent=2)[:10000]}\n```"
+
+        # Highlight critical context that often gets lost in element noise
+        if variant_options:
+            obs["variant_picker"] = {
+                "instructions": (
+                    "This product has variants. You MUST `select` one "
+                    "before `click`ing btn-add-to-cart. Use the `select` "
+                    "action with selector=[data-test-id='select-variant'] "
+                    "and value=<one of the variant_id values below>."
+                ),
+                "selector": "[data-test-id='select-variant']",
+                "options": variant_options,
+            }
+        if flash_messages:
+            obs["flash_messages"] = flash_messages
+            obs["hints"]["recent_errors"] = (
+                "The previous action produced these flash messages. "
+                "Read them — they explain why the last action may have failed."
+            )
+
+        return f"```json\n{json.dumps(obs, indent=2)[:12000]}\n```"

@@ -591,8 +591,17 @@ async def api_add_to_cart(
     redirect: Optional[str] = Form(None),
 ):
     s = _state()
-    mutations.add_to_cart(s, product_id=product_id,
-                          quantity=quantity, variant_id=variant_id)
+    result = mutations.add_to_cart(
+        s, product_id=product_id,
+        quantity=quantity, variant_id=variant_id,
+    )
+    # If add-to-cart failed (e.g. variant required), stay on the
+    # product page so the agent sees both the error flash AND the
+    # variant picker. Don't honor the form's `redirect` field in this
+    # case — that would silently land the agent on /cart with only a
+    # toast that's easy to miss in a heavy observation.
+    if not result.get("ok"):
+        return RedirectResponse(f"/product/{product_id}", 303)
     return RedirectResponse(redirect or f"/product/{product_id}", 303)
 
 

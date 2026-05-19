@@ -206,7 +206,14 @@ def _newest_order(probe: Probe):
 
 def _suite_a1() -> TaskSuite:
     target = "p_mouse_wireless"
-    distractor = "p_mouse_gaming"
+    # The catalog has multiple "wireless" mice; reject ANY non-target mouse.
+    # Updated when the catalog grew (May 2026) — was just p_mouse_gaming.
+    mouse_distractors = (
+        "p_mouse_gaming",
+        "p_mouse_ergonomic",
+        "p_mouse_mini",
+        "p_mouse_trackpad",
+    )
     return TaskSuite(
         task_id="A1/buy_wireless_mouse",
         milestones=[
@@ -223,9 +230,9 @@ def _suite_a1() -> TaskSuite:
                           for it in o.items
                       ),
                       failure_category="wrong_product_in_cart"),
-            Milestone("avoided_distractor", weight=0.10,
+            Milestone("avoided_all_distractors", weight=0.10,
                       check=lambda p: not any(
-                          it.product_id == distractor
+                          it.product_id in mouse_distractors
                           for o in p.state.orders.values()
                           for it in o.items
                       ),
@@ -236,6 +243,7 @@ def _suite_a1() -> TaskSuite:
             Milestone("order_placed", weight=0.30,
                       check=lambda p: _order_with(
                           p, product_ids=(target,), exactly_n_items=1,
+                          exclude_product_ids=mouse_distractors,
                       ),
                       required_for_success=True,
                       failure_category="goal_incomplete_no_order"),
@@ -262,13 +270,22 @@ def _suite_a2() -> TaskSuite:
         task_id="A2/filter_laptop",
         milestones=[
             Milestone("searched_or_filtered_laptops", weight=0.20,
-                      check=lambda p: _on_url(p, "/search")),
+                      check=lambda p: (
+                          _on_url(p, "/search")
+                          or _on_url(p, "/category/electronics")
+                      ),
+                      failure_category="never_searched"),
             Milestone("viewed_an_electronics_laptop", weight=0.15,
                       check=lambda p: any(
                           s in p.url for s in (
                               "/product/p_laptop_studio",
                               "/product/p_laptop_pro",
                               "/product/p_laptop_budget",
+                              # New laptops added May 2026; viewing them
+                              # counts as exploration but they won't
+                              # satisfy the rating/price constraints.
+                              "/product/p_laptop_studio_pro",
+                              "/product/p_laptop_creator",
                           )
                       )),
             Milestone("ordered_a_laptop", weight=0.30,

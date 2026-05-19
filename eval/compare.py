@@ -117,6 +117,14 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
         screenshot_dir=shots_dir,
     )
 
+    # Pre-navigate to the gym home page so the agent starts on a
+    # rendered page, not about:blank. See eval/run.py for full context.
+    try:
+        await page.goto(f"{server_url}/", wait_until="load")
+        traj.initial_url = page.url
+    except Exception as e:
+        print(f"[compare] WARNING: failed to pre-load {server_url}/: {e}")
+
     try:
         if agent_kind == "oracle":
             await ORACLE_SOLVERS[task_id](bctx)

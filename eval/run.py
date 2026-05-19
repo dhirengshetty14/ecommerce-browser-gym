@@ -95,7 +95,24 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
         screenshot_dir=shots_dir,
     )
 
-    # Initial snapshot
+    # Pre-navigate to the gym home page so the agent starts on the
+    # rendered site, not about:blank. This simulates "user opens the
+    # website in their browser" — the website loading is NOT an agent
+    # action, the agent just begins interacting from a loaded page.
+    #
+    # Without this, the pixel agent (which has no navigate() tool by
+    # design — see PIXEL_VS_JSON.md) gets stuck on about:blank with
+    # zero interactable marks and bounces uselessly through scrolls
+    # and keyboard presses. The DOM agent has navigate() and would
+    # emit navigate("/") as its first action anyway — pre-loading
+    # just saves it that step.
+    try:
+        await page.goto(f"{server_url}/", wait_until="load")
+    except Exception as e:
+        print(f"[runner] WARNING: failed to pre-load {server_url}/: {e}")
+
+    # Initial snapshot — captured AFTER pre-navigation so initial_url
+    # reflects the actual starting page (typically /), not about:blank.
     traj.initial_url = page.url
     async with httpx.AsyncClient() as c:
         snap = (await c.get(f"{server_url}/_harness/snapshot")).json()

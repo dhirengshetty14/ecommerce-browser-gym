@@ -203,21 +203,25 @@ Output:
 
 ---
 
-## 9 tasks across 3 categories
+## 12 tasks across 3 categories (4 tiers each)
 
 | ID | Cat | Diff | Brief |
 |---|---|---|---|
-| A1 | Discovery | easy | Buy a specific 'Wireless Mouse' (not the gaming mouse distractor) |
+| A1 | Discovery | easy | Buy specific 'Wireless Mouse' — avoid 4 distractor mice (gaming, ergonomic, mini, trackpad) |
 | A2 | Discovery | medium | Filter laptops under $1000 with ≥4.5★, buy 1 |
 | A3 | Discovery | hard | Configure laptop with 32GB/1TB variant + mouse + keyboard, subtotal < $1900 |
+| **A4** | **Discovery** | **very hard** 🔥 | **Home office bundle: 27" monitor + mech keyboard + ergonomic mouse + USB-C charger, all electronics, < $550, ship to Work, pay PayPal** |
 | B1 | Mgmt | easy | Log in, add 'Beach House' address, set as default |
 | B2 | Mgmt | medium | View tracking on past order, initiate return for one item (defective) |
 | B3 | Mgmt | hard | Set default to Work + add backup card + enable 2FA, all in one session |
+| **B4** | **Mgmt** | **very hard** 🔥 | **Cancel Dog Food sub + create Dog Treats sub (biweekly/6/Work/PayPal) + enable 2FA + partial return for speaker only with store credit** |
 | C1 | Checkout | medium | Apply category-restricted promo (TECH20 only on electronics) |
 | C2 | Checkout | medium | Split shipping: headphones→Home with gift wrap, mouse→Work |
 | C3 | Checkout | hard | Set up weekly subscription with loyalty discount |
+| **C4** | **Checkout** | **very hard** 🔥 | **Mega-checkout: 3 items + variant selection + 3-way split shipping + gift wrap on 1 line + custom message + TECH20 on laptop only** |
 
-See [`TASKS.md`](./TASKS.md) for full briefs and milestone tables.
+See [`TASKS.md`](./TASKS.md) for full briefs, milestone tables, and the
+τ-bench-style failure_category label for every milestone.
 
 ---
 

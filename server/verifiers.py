@@ -627,6 +627,297 @@ def _suite_c3() -> TaskSuite:
 
 
 # --------------------------------------------------------------------------- #
+# VERY HARD tasks — added May 2026. Heavy adversarial pressure + multi-step
+# state inspection.
+# --------------------------------------------------------------------------- #
+
+# --- A4: home_office_bundle ---
+
+def _suite_a4() -> TaskSuite:
+    """4-item bundle: 27" monitor + mechanical keyboard + ergonomic mouse
+    + USB-C charger. All electronics, subtotal < $550, ship to Work, pay
+    PayPal. Heavy distractor pressure (multiple mice, multiple keyboards,
+    Office Display masquerading as electronics)."""
+
+    REQUIRED_PRODUCTS = {
+        "p_monitor_27",           # 27" — NOT p_monitor_24
+        "p_kb_mech",              # mechanical — NOT p_kb_mini / p_kb_wireless / p_kb_membrane
+        "p_mouse_ergonomic",      # ergonomic — NOT p_mouse_wireless / p_mouse_gaming
+        "p_charger",
+    }
+    FORBIDDEN_PRODUCTS = {
+        "p_monitor_24",          # 24" — wrong size
+        "p_office_display",      # office category, not electronics
+        "p_kb_wireless", "p_kb_mini", "p_kb_membrane",  # wrong keyboards
+        "p_mouse_wireless", "p_mouse_gaming", "p_mouse_mini", "p_mouse_trackpad",
+    }
+
+    def _has_all_required(p: Probe) -> bool:
+        o = _newest_order(p)
+        if o is None:
+            return False
+        present = {it.product_id for it in o.items}
+        return REQUIRED_PRODUCTS.issubset(present)
+
+    def _no_forbidden(p: Probe) -> bool:
+        o = _newest_order(p)
+        if o is None:
+            return False
+        return not any(it.product_id in FORBIDDEN_PRODUCTS for it in o.items)
+
+    def _exactly_four_items(p: Probe) -> bool:
+        o = _newest_order(p)
+        return o is not None and len(o.items) == 4
+
+    def _all_electronics(p: Probe) -> bool:
+        o = _newest_order(p)
+        if o is None:
+            return False
+        return all(
+            p.state.products[it.product_id].category == "electronics"
+            for it in o.items
+        )
+
+    def _subtotal_under_550(p: Probe) -> bool:
+        o = _newest_order(p)
+        return o is not None and o.subtotal < 550.0
+
+    def _shipped_to_work(p: Probe) -> bool:
+        o = _newest_order(p)
+        if o is None:
+            return False
+        return all(
+            it.ship_to_address_id == "addr_work"
+            for it in o.items
+        )
+
+    def _paid_with_paypal(p: Probe) -> bool:
+        o = _newest_order(p)
+        return o is not None and o.payment_id == "pay_paypal"
+
+    return TaskSuite(
+        task_id="A4/home_office_bundle",
+        milestones=[
+            Milestone("all_four_required_items", weight=0.20,
+                      check=_has_all_required, required_for_success=True,
+                      failure_category="missing_required_item"),
+            Milestone("no_forbidden_distractor", weight=0.15,
+                      check=_no_forbidden,
+                      failure_category="picked_distractor_product"),
+            Milestone("exactly_four_line_items", weight=0.10,
+                      check=_exactly_four_items,
+                      failure_category="wrong_item_count"),
+            Milestone("all_items_electronics_category", weight=0.10,
+                      check=_all_electronics,
+                      failure_category="wrong_category"),
+            Milestone("subtotal_under_550", weight=0.15,
+                      check=_subtotal_under_550,
+                      failure_category="over_budget"),
+            Milestone("shipped_to_work_address", weight=0.10,
+                      check=_shipped_to_work,
+                      failure_category="wrong_shipping_address"),
+            Milestone("paid_with_paypal", weight=0.10,
+                      check=_paid_with_paypal,
+                      failure_category="wrong_payment_method"),
+            Milestone("on_confirmation_page", weight=0.10,
+                      check=lambda p: _on_url(p, "/order/")),
+        ],
+    )
+
+
+# --- B4: subscription_juggle ---
+
+def _suite_b4() -> TaskSuite:
+    """Four parallel account changes:
+      (1) Cancel the active Dog Food subscription
+      (2) Create a new Dog TREATS subscription (biweekly, 6, Work, PayPal)
+      (3) Enable 2FA
+      (4) Initiate return on speaker only from the existing order
+    """
+
+    def _dogfood_cancelled(p: Probe) -> bool:
+        sub = p.state.subscriptions.get("sub_existing_dogfood")
+        return sub is not None and sub.status == "cancelled"
+
+    def _new_treats_subscription(p: Probe) -> bool:
+        return any(
+            (s.product_id == "p_pet_treats"
+             and s.cadence == "biweekly"
+             and s.deliveries_remaining == 6
+             and s.address_id == "addr_work"
+             and s.payment_id == "pay_paypal"
+             and s.status == "active")
+            for s in p.state.subscriptions.values()
+        )
+
+    def _two_fa_on(p: Probe) -> bool:
+        if p.state.current_user_id is None:
+            return False
+        return p.state.users[p.state.current_user_id].two_fa_enabled
+
+    def _speaker_return_only(p: Probe) -> bool:
+        return any(
+            (r.order_id == "ORD-B4-9999"
+             and r.item_ids == ["ln_speaker"]
+             and r.reason == "changed_mind"
+             and r.refund_method == "store_credit")
+            for r in p.state.returns.values()
+        )
+
+    def _no_mouse_in_return(p: Probe) -> bool:
+        return not any(
+            (r.order_id == "ORD-B4-9999" and "ln_mouse" in r.item_ids)
+            for r in p.state.returns.values()
+        )
+
+    return TaskSuite(
+        task_id="B4/subscription_juggle",
+        milestones=[
+            Milestone("dogfood_sub_cancelled", weight=0.20,
+                      check=_dogfood_cancelled,
+                      required_for_success=True,
+                      failure_category="failed_to_cancel_subscription"),
+            Milestone("dog_treats_sub_created_correctly", weight=0.30,
+                      check=_new_treats_subscription,
+                      required_for_success=True,
+                      failure_category="wrong_subscription_setup"),
+            Milestone("two_fa_enabled", weight=0.15,
+                      check=_two_fa_on,
+                      required_for_success=True,
+                      failure_category="two_fa_not_enabled"),
+            Milestone("speaker_only_return_with_correct_options", weight=0.25,
+                      check=_speaker_return_only,
+                      required_for_success=True,
+                      failure_category="wrong_return_setup"),
+            Milestone("avoided_returning_mouse", weight=0.10,
+                      check=_no_mouse_in_return,
+                      failure_category="returned_wrong_item"),
+        ],
+    )
+
+
+# --- C4: mega_checkout ---
+
+def _suite_c4() -> TaskSuite:
+    """The hardest checkout task. 3 items with 3 different shipping
+    configurations + variant selection on t-shirt + promo + non-default
+    payment. Combines C1 + C2 patterns into one episode."""
+
+    def _has_all_three(p: Probe) -> bool:
+        o = _newest_order(p)
+        if o is None:
+            return False
+        present = {it.product_id for it in o.items}
+        return {"p_laptop_studio", "p_clothing_tshirt", "p_mouse_wireless"}.issubset(present)
+
+    def _no_distractors(p: Probe) -> bool:
+        o = _newest_order(p)
+        if o is None:
+            return False
+        forbidden = {
+            "p_laptop_studio_pro", "p_laptop_pro", "p_laptop_budget",
+            "p_mouse_gaming", "p_mouse_ergonomic", "p_mouse_mini", "p_mouse_trackpad",
+            "p_clothing_polo", "p_clothing_long_sleeve",
+            "p_clothing_graphic", "p_clothing_tank", "p_clothing_hoodie",
+        }
+        return not any(it.product_id in forbidden for it in o.items)
+
+    def _tshirt_size_m_black(p: Probe) -> bool:
+        o = _newest_order(p)
+        if o is None:
+            return False
+        return any(
+            (it.product_id == "p_clothing_tshirt"
+             and it.variant_id == "v_ts_m_blk")
+            for it in o.items
+        )
+
+    def _laptop_to_work(p: Probe) -> bool:
+        o = _newest_order(p)
+        if o is None:
+            return False
+        return any(
+            (it.product_id == "p_laptop_studio"
+             and it.ship_to_address_id == "addr_work")
+            for it in o.items
+        )
+
+    def _tshirt_home_giftwrap_message(p: Probe) -> bool:
+        o = _newest_order(p)
+        if o is None:
+            return False
+        return any(
+            (it.product_id == "p_clothing_tshirt"
+             and it.ship_to_address_id == "addr_home"
+             and it.gift_wrap is True
+             and "happy birthday" in (it.gift_message or "").lower()
+             and "mom" in (it.gift_message or "").lower())
+            for it in o.items
+        )
+
+    def _mouse_home_no_giftwrap(p: Probe) -> bool:
+        o = _newest_order(p)
+        if o is None:
+            return False
+        return any(
+            (it.product_id == "p_mouse_wireless"
+             and it.ship_to_address_id == "addr_home"
+             and it.gift_wrap is False)
+            for it in o.items
+        )
+
+    def _tech20_applied_correctly(p: Probe) -> bool:
+        o = _newest_order(p)
+        if o is None or o.promo_code != "TECH20":
+            return False
+        laptop_total = sum(
+            it.unit_price * it.quantity
+            for it in o.items
+            if p.state.products[it.product_id].category == "electronics"
+            and it.product_id == "p_laptop_studio"
+        )
+        expected = round(laptop_total * 0.20, 2)
+        return abs(o.discount - expected) <= 0.05
+
+    def _paid_with_visa(p: Probe) -> bool:
+        o = _newest_order(p)
+        return o is not None and o.payment_id == "pay_visa"
+
+    return TaskSuite(
+        task_id="C4/mega_checkout",
+        milestones=[
+            Milestone("all_three_required_items", weight=0.15,
+                      check=_has_all_three, required_for_success=True,
+                      failure_category="missing_required_item"),
+            Milestone("no_distractor_picked", weight=0.10,
+                      check=_no_distractors,
+                      failure_category="picked_distractor_product"),
+            Milestone("tshirt_size_m_black", weight=0.10,
+                      check=_tshirt_size_m_black,
+                      failure_category="wrong_variant"),
+            Milestone("laptop_shipped_to_work", weight=0.10,
+                      check=_laptop_to_work,
+                      failure_category="wrong_shipping_address"),
+            Milestone("tshirt_home_with_giftwrap_message", weight=0.15,
+                      check=_tshirt_home_giftwrap_message,
+                      failure_category="wrong_gift_options"),
+            Milestone("mouse_home_no_giftwrap", weight=0.10,
+                      check=_mouse_home_no_giftwrap,
+                      failure_category="wrong_gift_options"),
+            Milestone("tech20_applied_to_laptop_only", weight=0.15,
+                      check=_tech20_applied_correctly,
+                      required_for_success=True,
+                      failure_category="discount_applied_to_wrong_line"),
+            Milestone("paid_with_visa", weight=0.05,
+                      check=_paid_with_visa,
+                      failure_category="wrong_payment_method"),
+            Milestone("on_confirmation_page", weight=0.10,
+                      check=lambda p: _on_url(p, "/order/")),
+        ],
+    )
+
+
+# --------------------------------------------------------------------------- #
 # Registry
 # --------------------------------------------------------------------------- #
 
@@ -634,12 +925,15 @@ SUITE_FACTORIES = {
     "A1/buy_wireless_mouse":     _suite_a1,
     "A2/filter_laptop":          _suite_a2,
     "A3/configure_bundle":       _suite_a3,
+    "A4/home_office_bundle":     _suite_a4,
     "B1/add_address":            _suite_b1,
     "B2/track_and_return":       _suite_b2,
     "B3/account_overhaul":       _suite_b3,
+    "B4/subscription_juggle":    _suite_b4,
     "C1/promo_partial":          _suite_c1,
     "C2/split_shipping_gift":    _suite_c2,
     "C3/subscription_loyalty":   _suite_c3,
+    "C4/mega_checkout":          _suite_c4,
 }
 
 

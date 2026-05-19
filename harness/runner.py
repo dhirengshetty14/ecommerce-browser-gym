@@ -156,6 +156,11 @@ class BrowserCtx:
         await ctx.click("button[data-test-id='btn-login']")
         ...
     Each call yields one StepRecord with full reward / milestone info.
+
+    If ``show_cursor`` is True (default in headed runs), a ghost cursor
+    is animated to each target element BEFORE the underlying Playwright
+    action fires, with an action label tooltip. Pure decoration — does
+    not affect verifier or trajectory.
     """
     page: Page
     server_url: str
@@ -164,6 +169,8 @@ class BrowserCtx:
     http: httpx.Client = field(
         default_factory=lambda: httpx.Client(timeout=30.0),
     )
+    show_cursor: bool = True
+    cursor_pause_ms: int = 450  # how long to linger so the human can see
 
     # --------- helpers the agent calls ---------
     #
@@ -172,10 +179,45 @@ class BrowserCtx:
     # the StepRecord rather than an unhandled exception. This is the
     # "explicit error capture" pattern from BrowserGym/WorkArena.
 
+    async def _animate_cursor(self, selector: str, kind: str,
+                              detail: str = "") -> None:
+        """Move ghost cursor to target + flash an action label. Best-effort:
+        if the JS isn't loaded yet or the selector doesn't match, silently
+        skip so we never break a real action."""
+        if not self.show_cursor:
+            return
+        try:
+            # Move ghost cursor
+            await self.page.evaluate(
+                "(s) => window.__shopgym_cursor && window.__shopgym_cursor.moveTo(s)",
+                selector,
+            )
+            # Show action label
+            await self.page.evaluate(
+                "(args) => window.__shopgym_cursor && window.__shopgym_cursor.showAction(args.kind, args.detail)",
+                {"kind": kind, "detail": detail},
+            )
+            # Step badge
+            step_idx = len(self.trajectory.steps)
+            await self.page.evaluate(
+                "(args) => window.__shopgym_cursor && window.__shopgym_cursor.setStep(args.step, args.kind)",
+                {"step": step_idx, "kind": kind.lower()},
+            )
+            # Pause so the human sees the animation
+            await asyncio.sleep(self.cursor_pause_ms / 1000)
+            # Pulse ring on click-like actions
+            if kind.upper() in ("CLICK", "SUBMIT"):
+                await self.page.evaluate(
+                    "() => window.__shopgym_cursor && window.__shopgym_cursor.pulse()"
+                )
+        except Exception:
+            pass  # decoration only — never block on it
+
     async def goto(self, path: str, reasoning: str = "") -> StepRecord:
         url = self._abs(path)
         t0 = time.monotonic()
         err: str | None = None
+        # No cursor animation here — we haven't loaded the new page yet.
         try:
             await self.page.goto(url, wait_until="load")
         except Exception as e:
@@ -189,6 +231,7 @@ class BrowserCtx:
     async def click(self, selector: str, reasoning: str = "") -> StepRecord:
         t0 = time.monotonic()
         err: str | None = None
+        await self._animate_cursor(selector, "CLICK")
         try:
             await self.page.click(selector)
             await self.page.wait_for_load_state("load")
@@ -204,6 +247,7 @@ class BrowserCtx:
                    reasoning: str = "") -> StepRecord:
         t0 = time.monotonic()
         err: str | None = None
+        await self._animate_cursor(selector, "FILL", detail=value)
         try:
             await self.page.fill(selector, value)
         except Exception as e:
@@ -218,6 +262,7 @@ class BrowserCtx:
                      reasoning: str = "") -> StepRecord:
         t0 = time.monotonic()
         err: str | None = None
+        await self._animate_cursor(selector, "SELECT", detail=value)
         try:
             await self.page.select_option(selector, value=value)
         except Exception as e:
@@ -231,6 +276,7 @@ class BrowserCtx:
     async def check(self, selector: str, reasoning: str = "") -> StepRecord:
         t0 = time.monotonic()
         err: str | None = None
+        await self._animate_cursor(selector, "CHECK")
         try:
             await self.page.check(selector)
         except Exception as e:
@@ -246,6 +292,7 @@ class BrowserCtx:
         """Submit a form by clicking a button inside it."""
         t0 = time.monotonic()
         err: str | None = None
+        await self._animate_cursor(selector, "SUBMIT")
         try:
             await self.page.click(selector)
             try:
@@ -312,13 +359,23 @@ class BrowserCtx:
 # Harness lifecycle
 # --------------------------------------------------------------------------- #
 
+_AGENT_CURSOR_JS_PATH = Path(__file__).resolve().parents[1] / "ui" / "static" / "agent_cursor.js"
+
+
 async def open_browser(
     *, server_url: str = "http://localhost:8000",
     headless: bool = False, record_video: bool = True,
     videos_dir: str | Path = "videos",
     viewport: dict[str, int] | None = None,
+    inject_cursor: bool = True,
 ) -> tuple[Playwright, Browser, BrowserContext, Page]:
-    """Launch a real Chromium and open one page tab."""
+    """Launch a real Chromium and open one page tab.
+
+    If ``inject_cursor`` is True (default), the ghost-cursor JS is
+    injected into every page in this context via ``add_init_script``.
+    This is what makes the red glowing dot and action labels appear so
+    a human watching can SEE the agent move.
+    """
     pw = await async_playwright().start()
     browser = await pw.chromium.launch(headless=headless)
     ctx_kwargs: dict[str, Any] = {
@@ -329,6 +386,15 @@ async def open_browser(
         ctx_kwargs["record_video_dir"] = str(videos_dir)
         ctx_kwargs["record_video_size"] = ctx_kwargs["viewport"]
     context = await browser.new_context(**ctx_kwargs)
+
+    # Inject the ghost cursor on EVERY page load (incl. after redirects).
+    if inject_cursor and _AGENT_CURSOR_JS_PATH.exists():
+        try:
+            cursor_js = _AGENT_CURSOR_JS_PATH.read_text(encoding="utf-8")
+            await context.add_init_script(script=cursor_js)
+        except Exception as e:
+            print(f"[harness] warning: failed to inject cursor JS: {e}")
+
     page = await context.new_page()
     return pw, browser, context, page
 

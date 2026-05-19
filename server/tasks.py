@@ -129,6 +129,56 @@ BRIEFS = {
         "discount. Submit when the subscription confirmation page "
         "shows the 4-delivery schedule and the loyalty discount line."
     ),
+
+    # ──────────────────────────────────────────────────────────────
+    # VERY HARD tasks (May 2026) — each tests a distinct edge case
+    # cluster plus heavy adversarial pressure.
+    # ──────────────────────────────────────────────────────────────
+
+    "A4": (
+        "Build a complete home office bundle in a single order: "
+        "(1) ONE 27-inch monitor (the 1440p one, not the 24-inch), "
+        "(2) ONE mechanical keyboard (not the wireless one, not the "
+        "mini variant, not the membrane keyboard), "
+        "(3) ONE Wireless Ergonomic Mouse (NOT the standard Wireless "
+        "Mouse and NOT the Gaming Mouse), "
+        "(4) ONE USB-C Fast Charger. "
+        "ALL FOUR items must be in the 'electronics' category — the "
+        "'office' category contains adversarial look-alikes. "
+        "Cart subtotal MUST be under $550. Ship the entire order to "
+        "your Work address (not Home). Pay with PayPal (not Visa). "
+        "Submit when the confirmation page shows all 4 line items."
+    ),
+
+    "B4": (
+        "You currently have one ACTIVE subscription for Premium Dog "
+        "Food. Make these account changes IN A SINGLE SESSION: "
+        "(1) Cancel the existing Premium Dog Food subscription. "
+        "(2) Create a NEW subscription for the Premium Dog TREATS — "
+        "biweekly cadence, exactly 6 deliveries, ship to your Work "
+        "address, pay with PayPal (NOT Visa). "
+        "(3) Enable two-factor authentication with code '123456'. "
+        "(4) Initiate a return on the existing order in your history "
+        "for the Bluetooth Speaker ONLY (not the Mouse) — reason "
+        "'changed_mind', refund as 'store_credit' (you want the 5% bonus). "
+        "Submit when all four changes are reflected in your account."
+    ),
+
+    "C4": (
+        "Complex multi-item checkout with all the constraints: "
+        "(1) Add 1 Studio Laptop 14 (NOT the Pro 14) to cart. "
+        "(2) Add 1 Cotton T-Shirt — Size M, color BLACK. "
+        "(3) Add 1 Wireless Mouse (the standard one, NOT ergonomic or "
+        "gaming). "
+        "Then in the cart: ship the LAPTOP to Work, the T-SHIRT to Home "
+        "with gift wrap and message 'Happy Birthday Mom!', and the MOUSE "
+        "to Home with NO gift wrap. "
+        "Apply promo code 'TECH20' — it discounts only the laptop. "
+        "Pay with Visa. Place the order. Submit when the confirmation "
+        "page shows all three line items with correct shipping splits, "
+        "the TECH20 discount on the laptop only, and the gift wrap on "
+        "the t-shirt."
+    ),
 }
 
 
@@ -308,6 +358,101 @@ def task_c3_subscription(seed: int) -> GymState:
 
 
 # --------------------------------------------------------------------------- #
+# VERY HARD tasks — added May 2026. One per category. Each is designed to
+# stress multiple edge-case clusters simultaneously:
+#   - heavy adversarial product naming
+#   - constraints across multiple dimensions (price + category + brand)
+#   - multi-step sequences with order dependencies
+#   - non-default address / non-default payment
+# --------------------------------------------------------------------------- #
+
+def task_a4_home_office_bundle(seed: int) -> GymState:
+    """4-product bundle with strict constraints — tests filtering,
+    distractor avoidance across multiple product types, budget math,
+    non-default address + non-default payment."""
+    return _base_state(seed, "A4/home_office_bundle", "hard", "A",
+                       with_login=True)
+
+
+def task_b4_subscription_juggle(seed: int) -> GymState:
+    """Multi-flow account task: cancel an existing subscription,
+    create a new one (different cadence/payment/address), enable 2FA,
+    initiate a partial return — all in one session.
+
+    Pre-seeds: an active Dog Food subscription + an existing order
+    with both a mouse and a speaker the agent can return.
+    """
+    state = _base_state(seed, "B4/subscription_juggle", "hard", "B",
+                        with_login=True)
+    from server.state import Subscription
+    alice = state.users["u_alice"]
+    addr = alice.addresses["addr_home"]
+    pay = alice.payment_methods["pay_visa"]
+
+    # Pre-existing active Dog Food subscription that agent must cancel
+    state.subscriptions["sub_existing_dogfood"] = Subscription(
+        id="sub_existing_dogfood", user_id="u_alice",
+        product_id="p_pet_food", variant_id=None, quantity=1,
+        cadence="weekly", deliveries_remaining=3,
+        next_delivery_date="2026-06-01",
+        address_id=addr.id, payment_id=pay.id,
+        loyalty_discount_pct=0.10, status="active",
+    )
+
+    # Pre-existing order with mouse + speaker for the return flow
+    items = [
+        OrderItem(id="ln_mouse", product_id="p_mouse_wireless",
+                  product_name="Wireless Mouse", variant_id=None,
+                  variant_label="", quantity=1, unit_price=29.99,
+                  gift_wrap=False, gift_message="",
+                  ship_to_address_id=addr.id, scheduled_delivery=None),
+        OrderItem(id="ln_speaker", product_id="p_speaker",
+                  product_name="Bluetooth Speaker", variant_id=None,
+                  variant_label="", quantity=1, unit_price=79.99,
+                  gift_wrap=False, gift_message="",
+                  ship_to_address_id=addr.id, scheduled_delivery=None),
+    ]
+    sh = Shipment(
+        id="sh_b4", tracking_number="1Z999AA20987654321",
+        carrier="UPS",
+        item_ids=[i.id for i in items],
+        status="delivered",
+        estimated_delivery=(
+            datetime.now(timezone.utc) - timedelta(days=5)
+        ).date().isoformat(),
+        events=[
+            ShipmentEvent("2026-05-01T10:00:00Z", "label_created",
+                          "Distribution Center", "Shipping label created"),
+            ShipmentEvent("2026-05-03T14:20:00Z", "delivered",
+                          "Brooklyn, NY", "Delivered"),
+        ],
+    )
+    state.orders["ORD-B4-9999"] = Order(
+        id="ORD-B4-9999", user_id="u_alice",
+        placed_at="2026-05-01T09:30:00Z",
+        items=items,
+        subtotal=109.98, discount=0.0,
+        tax=round(109.98 * 0.085, 2),
+        shipping=5.99, total=round(109.98 * 1.085 + 5.99, 2),
+        promo_code=None, payment_id=pay.id, status="delivered",
+        shipments=[sh],
+    )
+    return state
+
+
+def task_c4_mega_checkout(seed: int) -> GymState:
+    """The hardest checkout task — combines C1 (promo on right line) +
+    C2 (split shipping + gift wrap) + variant selection on the t-shirt.
+    Three line items, three different shipping/gift-wrap configurations,
+    a category-restricted promo, and a non-default payment vs address mix.
+    """
+    state = _base_state(seed, "C4/mega_checkout", "hard", "C",
+                        with_login=True)
+    state.promotions = _promos_for_c1()
+    return state
+
+
+# --------------------------------------------------------------------------- #
 # Registry
 # --------------------------------------------------------------------------- #
 
@@ -315,12 +460,15 @@ TASKS = {
     "A1/buy_wireless_mouse":     task_a1_buy_wireless_mouse,
     "A2/filter_laptop":          task_a2_filter_laptop,
     "A3/configure_bundle":       task_a3_configure_bundle,
+    "A4/home_office_bundle":     task_a4_home_office_bundle,
     "B1/add_address":            task_b1_add_address,
     "B2/track_and_return":       task_b2_track_and_return,
     "B3/account_overhaul":       task_b3_account_overhaul,
+    "B4/subscription_juggle":    task_b4_subscription_juggle,
     "C1/promo_partial":          task_c1_promo_partial,
     "C2/split_shipping_gift":    task_c2_split_shipping,
     "C3/subscription_loyalty":   task_c3_subscription,
+    "C4/mega_checkout":          task_c4_mega_checkout,
 }
 
 

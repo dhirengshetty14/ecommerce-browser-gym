@@ -97,6 +97,46 @@ class Session:
 SESSION = Session()
 
 
+# --------------------------------------------------------------------------- #
+# Global exception handlers — make 404s recoverable for the agent
+# --------------------------------------------------------------------------- #
+
+from fastapi.exceptions import RequestValidationError
+from starlette.exceptions import HTTPException as StarletteHTTPException
+
+
+@app.exception_handler(StarletteHTTPException)
+async def http_exception_handler(request: Request, exc: StarletteHTTPException):
+    """When a page doesn't exist, render an HTML recovery page instead of
+    JSON. This is critical for agents: they can READ HTML and find the
+    link back home, but a JSON 404 is a dead-end."""
+    if exc.status_code == 404:
+        # Don't 404-render for harness or API endpoints — they should
+        # stay as JSON so the harness/agent code can detect failure.
+        path = request.url.path
+        if path.startswith("/_harness") or path.startswith("/api"):
+            return JSONResponse(
+                {"detail": exc.detail or "Not Found"},
+                status_code=exc.status_code,
+            )
+        try:
+            return templates.TemplateResponse(
+                request, "not_found.html",
+                _ctx(request, attempted_path=path,
+                     detail=exc.detail or "Page not found"),
+                status_code=404,
+            )
+        except Exception:
+            # If template rendering itself fails, fall back to JSON.
+            return JSONResponse(
+                {"detail": exc.detail or "Not Found"},
+                status_code=exc.status_code,
+            )
+    return JSONResponse(
+        {"detail": exc.detail}, status_code=exc.status_code,
+    )
+
+
 def _state() -> GymState:
     if SESSION.current is None:
         # Default to the easiest task so the UI doesn't crash if a human
@@ -251,6 +291,88 @@ async def deals_page(request: Request):
         request, "deals.html",
         _ctx(request, deals=deals),
     )
+
+
+# --------------------------------------------------------------------------- #
+# Safety-net alias routes — catch URL patterns agents commonly hallucinate
+# and redirect to the canonical route. Real e-commerce sites do this; it
+# also prevents the agent from getting stuck on a 404 mid-episode.
+# --------------------------------------------------------------------------- #
+
+@app.get("/products", include_in_schema=False)
+@app.get("/products/", include_in_schema=False)
+@app.get("/items", include_in_schema=False)
+@app.get("/shop", include_in_schema=False)
+@app.get("/store", include_in_schema=False)
+@app.get("/catalog", include_in_schema=False)
+@app.get("/browse", include_in_schema=False)
+async def alias_to_search():
+    """Catch /products, /items, /shop etc. — agent meant /search."""
+    return RedirectResponse("/search", 303)
+
+
+@app.get("/products/{product_id}", include_in_schema=False)
+@app.get("/item/{product_id}", include_in_schema=False)
+@app.get("/p/{product_id}", include_in_schema=False)
+async def alias_product_detail(product_id: str):
+    """Catch /products/{id} → /product/{id} (singular vs plural)."""
+    return RedirectResponse(f"/product/{product_id}", 303)
+
+
+@app.get("/checkout", include_in_schema=False)
+async def alias_checkout():
+    """Catch bare /checkout — route based on cart state."""
+    s = _state()
+    if s.current_user_id is None:
+        return RedirectResponse("/login", 303)
+    if not s.cart.items:
+        return RedirectResponse("/cart", 303)
+    return RedirectResponse("/checkout/address", 303)
+
+
+@app.get("/orders", include_in_schema=False)
+@app.get("/my-orders", include_in_schema=False)
+async def alias_orders():
+    return RedirectResponse("/account/orders", 303)
+
+
+@app.get("/returns", include_in_schema=False)
+async def alias_returns():
+    return RedirectResponse("/account/returns", 303)
+
+
+@app.get("/subscriptions", include_in_schema=False)
+@app.get("/subs", include_in_schema=False)
+async def alias_subscriptions():
+    return RedirectResponse("/account/subscriptions", 303)
+
+
+@app.get("/profile", include_in_schema=False)
+@app.get("/me", include_in_schema=False)
+async def alias_account():
+    return RedirectResponse("/account", 303)
+
+
+@app.get("/signin", include_in_schema=False)
+@app.get("/sign-in", include_in_schema=False)
+@app.get("/log-in", include_in_schema=False)
+async def alias_login():
+    return RedirectResponse("/login", 303)
+
+
+# Form POST endpoints sometimes get GETted by hallucinating agents.
+# Redirect them to the page they belong on.
+@app.get("/cart/add", include_in_schema=False)
+@app.get("/cart/add/{sku}", include_in_schema=False)
+@app.get("/api/cart/add", include_in_schema=False)
+async def alias_cart_add(sku: str = ""):
+    """The agent tried to GET /cart/add/{sku}. The real flow is:
+    click the [data-test-id='btn-add-to-cart'] button on a product page."""
+    s = _state()
+    # If sku looks like a product_id, send them to the product page
+    if sku and sku in s.products:
+        return RedirectResponse(f"/product/{sku}", 303)
+    return RedirectResponse("/search", 303)
 
 
 @app.get("/product/{product_id}", response_class=HTMLResponse)

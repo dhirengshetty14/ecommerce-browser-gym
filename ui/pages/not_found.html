@@ -1,0 +1,60 @@
+{% extends "_layout.html" %}
+{% block title %}Page Not Found{% endblock %}
+{% block content %}
+
+<div class="bg-white border border-slate-200 rounded-lg shadow-sm p-8 max-w-3xl mx-auto"
+     data-test-id="page-not-found">
+  <div class="text-center mb-6">
+    <div class="text-7xl mb-3">🔍</div>
+    <h1 class="text-3xl font-bold text-slate-900">Page Not Found</h1>
+    <p class="text-slate-500 mt-2">
+      The page <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm" data-test-id="lbl-bad-path">{{ attempted_path }}</code>
+      doesn't exist.
+    </p>
+  </div>
+
+  <!-- Site map — give the agent a clear way home -->
+  <div class="bg-slate-50 rounded-lg p-5 mb-4" data-test-id="sitemap">
+    <h2 class="font-bold mb-3 text-sm uppercase tracking-wider text-slate-600">Valid pages</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+      <a href="/" data-test-id="nf-link-home" class="text-emerald-700 hover:underline">→ /  (home)</a>
+      <a href="/search" data-test-id="nf-link-search" class="text-emerald-700 hover:underline">→ /search</a>
+      <a href="/category/electronics" data-test-id="nf-link-category" class="text-emerald-700 hover:underline">→ /category/{electronics|audio|books|clothing|home|pet|office}</a>
+      <a href="/deals" data-test-id="nf-link-deals" class="text-emerald-700 hover:underline">→ /deals</a>
+      <a href="/cart" data-test-id="nf-link-cart" class="text-emerald-700 hover:underline">→ /cart</a>
+      {% if user %}
+        <a href="/account" data-test-id="nf-link-account" class="text-emerald-700 hover:underline">→ /account</a>
+        <a href="/account/orders" data-test-id="nf-link-account-orders" class="text-emerald-700 hover:underline">→ /account/orders</a>
+        <a href="/account/addresses" data-test-id="nf-link-account-addresses" class="text-emerald-700 hover:underline">→ /account/addresses</a>
+        <a href="/account/payments" data-test-id="nf-link-account-payments" class="text-emerald-700 hover:underline">→ /account/payments</a>
+        <a href="/account/security" data-test-id="nf-link-account-security" class="text-emerald-700 hover:underline">→ /account/security</a>
+        <a href="/account/subscriptions" data-test-id="nf-link-account-subs" class="text-emerald-700 hover:underline">→ /account/subscriptions</a>
+        <a href="/account/returns" data-test-id="nf-link-account-returns" class="text-emerald-700 hover:underline">→ /account/returns</a>
+      {% else %}
+        <a href="/login" data-test-id="nf-link-login" class="text-emerald-700 hover:underline">→ /login</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="flex flex-wrap gap-3 justify-center">
+    <a href="/" data-test-id="btn-nf-home"
+       class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded font-semibold inline-flex items-center gap-2">
+      ← Back to Home
+    </a>
+    <a href="/search" data-test-id="btn-nf-search"
+       class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded font-semibold inline-flex items-center gap-2">
+      🔍 Browse Products
+    </a>
+  </div>
+
+  <!-- Hint for the agent reading this page -->
+  <div class="mt-6 pt-4 border-t border-slate-200 text-xs text-slate-500" data-test-id="nf-hint">
+    <strong>Tip for agents:</strong> use the click action with the data-test-id of a visible link
+    rather than guessing URLs. Products use <code>/product/&lt;product_id&gt;</code> where
+    product_id starts with <code>p_</code> (visible in the snapshot under <code>products</code>).
+    To add items to cart, click a button — never GET a path like <code>/cart/add/...</code>.
+  </div>
+</div>
+
+{% endblock %}

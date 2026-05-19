@@ -79,23 +79,66 @@ ecommerce-browser-gym/
 │   ├── state.py           entities (users/orders/returns/subscriptions...)
 │   ├── catalog.py         catalog factory (23 products, 6 categories)
 │   ├── tasks.py           9 task factories with adversarial state
-│   ├── verifiers.py       Milestone + TaskSuite + per-task suites
+│   ├── verifiers.py       Milestone + TaskSuite + failure_category labels
 │   ├── mutations.py       business logic (cart/checkout/account/...)
-│   └── main.py            FastAPI app (16 page routes + 12 form POSTs)
+│   └── main.py            FastAPI app (18+ page routes + 12 form POSTs)
 ├── ui/
-│   ├── pages/             21 Jinja templates (home/search/product/...)
-│   └── static/            CSS + tiny JS
+│   ├── pages/             23 Jinja templates — real-e-commerce surfaces
+│   │                      (hero, mega-menu, category pages, deals,
+│   │                       recommendations, sticky cart, breadcrumbs)
+│   └── static/            CSS + Alpine.js-powered interactions
 ├── harness/
-│   └── runner.py          Playwright wrapper + per-step verifier probe
+│   └── runner.py          Playwright wrapper, error + latency capture
 ├── agents/
 │   ├── oracle_agent.py    hand-coded gold trajectories per task
 │   └── llm_agent.py       Anthropic Claude DOM-action loop
 ├── eval/
-│   └── run.py             CLI runner + scorecard
+│   ├── run.py             CLI runner + scorecard (pass@1)
+│   └── pass_k.py          τ-bench-style pass^k consistency eval
 ├── demos/                 4 recorded agent runs (.webm)
-├── trajectories/llm/      10 JSONL trajectory files + scorecard
+├── trajectories/llm/      10+ JSONL trajectory files + scorecard
 └── tests/                 pytest suite (37 tests)
 ```
+
+## What changed recently (May 2026)
+
+**UI overhaul — realistic e-commerce surfaces.** The gym used to be a
+toy 4-page site. It now ships the navigation and merchandising patterns
+production agents must handle:
+
+- Sticky header with mega-menu category dropdown + **hidden "More ▾"**
+  categories (testing whether the agent explores beyond visible nav)
+- Category landing pages (`/category/electronics` etc.) with
+  breadcrumbs, faceted filters (price radios, rating, in-stock),
+  sort dropdown (featured / price / rating / reviews)
+- A dedicated `/deals` page with featured lightning deal + grid
+- Product page: image gallery thumbnails, Q&A tab, rating distribution
+  bars, related-products rail, **collapsible** Subscribe & Save form,
+  **collapsible** "More options" (wishlist / compare / share)
+- Cart: free-shipping progress bar, recommendations rail, line-level
+  gift options hidden inside `<details>` (agent must expose them)
+- Alpine.js-powered search autocomplete and account dropdown
+
+**Failure mode taxonomy (τ-bench-inspired).** Every milestone can
+declare a `failure_category` string. The verifier now surfaces a
+`primary_failure_category` per evaluation so failure analysis answers
+"why did this episode fail?" categorically (e.g.
+`picked_distractor_product`, `wrong_or_missing_promo`,
+`discount_applied_to_wrong_line`) instead of forcing reviewers to
+reverse-engineer it from missed-milestone names.
+
+**pass^k consistency metric.** `eval/pass_k.py` runs each task k times
+across distinct seeds and reports both pass@1 (single-run success) and
+pass^k (success on **all** k runs). The gap between them is the
+"reliability tax" — what separates a demo agent from a
+production-deployable one. Same idea Sierra used to show GPT-4 drops
+from 50% pass@1 to 6% pass^8 on τ-bench retail.
+
+**Explicit error + latency capture in StepRecord.** Playwright errors
+no longer silently die — they become first-class trajectory fields
+(`action_error`, `action_latency_ms`). Plus token-count slots
+(`tokens_in`, `tokens_out`) for cost accounting and training-data
+weighting.
 
 ---
 

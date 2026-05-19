@@ -264,4 +264,191 @@ def _build_catalog() -> dict[str, Product]:
             ),
             tags=["display"],
         ),
+        "p_office_chair": Product(
+            id="p_office_chair", name="Ergonomic Office Chair",
+            brand="Herman Miller", category="office", base_price=249.99,
+            rating=4.5, review_count=412, stock=10,
+            image_emoji="🪑",
+            short_description="High-back ergonomic chair.",
+            tags=["chair", "ergonomic"],
+        ),
+
+        # ─────────────────────────────────────────────────────────────
+        # ADVERSARIAL DISTRACTORS — products with names similar to task
+        # targets. These force the agent to READ NAMES CAREFULLY rather
+        # than picking the first plausible-looking SKU. Each one is
+        # named so an agent skimming would mistake it for a target.
+        # ─────────────────────────────────────────────────────────────
+
+        # --- Mice (target: p_mouse_wireless aka "Wireless Mouse") ---
+        "p_mouse_ergonomic": Product(
+            id="p_mouse_ergonomic", name="Wireless Ergonomic Mouse",
+            brand="Logitech", category="electronics", base_price=49.99,
+            rating=4.5, review_count=820, stock=33,
+            image_emoji="🖱️",
+            short_description="Wireless ergonomic vertical mouse.",
+            long_description="Reduces wrist strain. Same brand as the standard Wireless Mouse.",
+            tags=["mouse", "wireless", "ergonomic"],
+        ),
+        "p_mouse_mini": Product(
+            id="p_mouse_mini", name="Wireless Mini Mouse",
+            brand="Logitech", category="electronics", base_price=19.99,
+            rating=4.1, review_count=1432, stock=64,
+            image_emoji="🖱️",
+            short_description="Compact wireless mouse for travel.",
+            tags=["mouse", "wireless", "mini"],
+        ),
+        "p_mouse_trackpad": Product(
+            id="p_mouse_trackpad", name="Bluetooth Magic Trackpad",
+            brand="Apple", category="electronics", base_price=129.99,
+            rating=4.6, review_count=2100, stock=11,
+            image_emoji="🟦",
+            short_description="Multi-touch trackpad (not a mouse).",
+            tags=["trackpad", "bluetooth"],
+        ),
+
+        # --- T-Shirts (target: p_clothing_tshirt aka "Cotton T-Shirt") ---
+        "p_clothing_polo": Product(
+            id="p_clothing_polo", name="Cotton Polo Shirt",
+            brand="Everlane", category="clothing", base_price=34.99,
+            rating=4.3, review_count=540, stock=85,
+            image_emoji="👔",
+            short_description="Classic cotton polo shirt.",
+            long_description="Same brand as the Cotton T-Shirt — but a polo, not a tee.",
+            tags=["polo", "cotton"],
+        ),
+        "p_clothing_long_sleeve": Product(
+            id="p_clothing_long_sleeve", name="Cotton Long-Sleeve T-Shirt",
+            brand="Everlane", category="clothing", base_price=29.99,
+            rating=4.4, review_count=320, stock=60,
+            image_emoji="🥼",
+            short_description="Long-sleeve cotton tee.",
+            tags=["tshirt", "long-sleeve", "cotton"],
+        ),
+        "p_clothing_graphic": Product(
+            id="p_clothing_graphic", name="Graphic Print Cotton T-Shirt",
+            brand="UNIQLO", category="clothing", base_price=22.99,
+            rating=4.0, review_count=1820, stock=45,
+            image_emoji="👕",
+            short_description="Graphic-print cotton tee.",
+            tags=["tshirt", "graphic"],
+        ),
+        "p_clothing_tank": Product(
+            id="p_clothing_tank", name="Cotton Tank Top",
+            brand="Everlane", category="clothing", base_price=18.99,
+            rating=4.2, review_count=290, stock=70,
+            image_emoji="👚",
+            short_description="Sleeveless cotton tank.",
+            tags=["tank", "cotton"],
+        ),
+
+        # --- Laptops (target: p_laptop_studio aka "Studio Laptop 14") ---
+        "p_laptop_studio_pro": Product(
+            id="p_laptop_studio_pro", name="Studio Laptop Pro 14",
+            brand="LumeBook", category="electronics", base_price=1299.99,
+            rating=4.7, review_count=210, stock=6,
+            image_emoji="💻",
+            short_description="High-end 14-inch creator's laptop (PRO model).",
+            long_description=(
+                "Premium variant of the Studio Laptop line. Adversarial: "
+                "the C1 task wants the *Studio Laptop 14*, not the PRO."
+            ),
+            tags=["laptop", "creator", "pro"],
+        ),
+        "p_laptop_creator": Product(
+            id="p_laptop_creator", name="Creator Studio Laptop",
+            brand="GenericTech", category="electronics", base_price=949.99,
+            rating=4.4, review_count=88, stock=14,
+            image_emoji="💻",
+            short_description="Mid-range creator laptop from a different brand.",
+            tags=["laptop", "creator"],
+        ),
+
+        # --- Headphones (target: p_hp_studio aka "Bluetooth Headphone Studio") ---
+        "p_hp_studio_pro": Product(
+            id="p_hp_studio_pro", name="Bluetooth Headphone Studio Pro",
+            brand="Audio-Technica", category="audio", base_price=199.99,
+            rating=4.7, review_count=410, stock=9,
+            image_emoji="🎧",
+            short_description="Premium variant of the Studio headphone.",
+            long_description="Same brand and family as the Studio Headphone — but Pro tier.",
+            tags=["headphones", "studio", "pro"],
+        ),
+        "p_hp_kids": Product(
+            id="p_hp_kids", name="Bluetooth Kids Headphone",
+            brand="JBL", category="audio", base_price=29.99,
+            rating=4.0, review_count=820, stock=42,
+            image_emoji="🎧",
+            short_description="Volume-limited headphones for kids.",
+            tags=["headphones", "kids"],
+        ),
+
+        # --- Keyboards (target: p_kb_mech aka "Mechanical Keyboard") ---
+        "p_kb_mini": Product(
+            id="p_kb_mini", name="Mini Mechanical Keyboard",
+            brand="Keychron", category="electronics", base_price=79.99,
+            rating=4.4, review_count=320, stock=24,
+            image_emoji="⌨️",
+            short_description="60% layout mechanical mini keyboard.",
+            tags=["keyboard", "mechanical", "mini"],
+        ),
+        "p_kb_membrane": Product(
+            id="p_kb_membrane", name="Membrane Keyboard",
+            brand="Dell", category="electronics", base_price=24.99,
+            rating=3.9, review_count=2010, stock=88,
+            image_emoji="⌨️",
+            short_description="Standard membrane keyboard (NOT mechanical).",
+            tags=["keyboard", "membrane"],
+        ),
+
+        # --- Books (target: p_book_sci_fi aka "Project Hail Mary") ---
+        "p_book_sci_fi_signed": Product(
+            id="p_book_sci_fi_signed", name="Project Hail Mary (Signed Edition)",
+            brand="Ballantine", category="books", base_price=39.99,
+            rating=4.9, review_count=120, stock=3,
+            image_emoji="📚",
+            short_description="Signed-edition Andy Weir novel.",
+            tags=["fiction", "sci-fi", "signed"],
+        ),
+
+        # --- Pet food (target: p_pet_food) ---
+        "p_pet_treats": Product(
+            id="p_pet_treats", name="Premium Dog Treats",
+            brand="Wellness", category="pet", base_price=14.99,
+            rating=4.6, review_count=890, stock=80,
+            image_emoji="🦴",
+            short_description="Premium training treats — not the full meal food.",
+            long_description=(
+                "Same brand as Premium Dog Food. Adversarial: a subscription "
+                "task wanting the *food* should NOT pick the *treats*."
+            ),
+            tags=["pet", "dog", "treats"],
+            is_subscribable=True,
+        ),
+
+        # --- Generic noise (catalog richness) ---
+        "p_smartwatch": Product(
+            id="p_smartwatch", name="Smart Watch Pro",
+            brand="Garmin", category="electronics", base_price=249.99,
+            rating=4.5, review_count=1820, stock=18,
+            image_emoji="⌚",
+            short_description="Fitness-tracking smart watch.",
+            tags=["watch", "fitness"],
+        ),
+        "p_charger": Product(
+            id="p_charger", name="USB-C Fast Charger 65W",
+            brand="Anker", category="electronics", base_price=29.99,
+            rating=4.7, review_count=3210, stock=120,
+            image_emoji="🔌",
+            short_description="65W GaN USB-C charger.",
+            tags=["charger", "usb-c"],
+        ),
+        "p_home_candle": Product(
+            id="p_home_candle", name="Scented Candle Set (3)",
+            brand="Yankee Candle", category="home", base_price=34.99,
+            rating=4.5, review_count=620, stock=30,
+            image_emoji="🕯️",
+            short_description="Set of 3 scented soy candles.",
+            tags=["candle", "home"],
+        ),
     }

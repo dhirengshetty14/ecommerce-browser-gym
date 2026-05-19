@@ -381,7 +381,39 @@ async def product_page(request: Request, product_id: str,
     s = _state()
     p = s.products.get(product_id)
     if p is None:
-        raise HTTPException(404, "product not found")
+        # Smart 404 recovery — try to find similar products by ID or
+        # name so a hallucinating agent gets a useful suggestion instead
+        # of a dead end. Same idea Amazon's "Did you mean..." pages use.
+        import difflib
+        candidates = list(s.products.keys())
+        # Fuzzy by ID
+        id_matches = difflib.get_close_matches(
+            product_id.lower(), [c.lower() for c in candidates], n=5, cutoff=0.4,
+        )
+        # Also search by tokens in product names (e.g. "shirt cotton" → tshirt)
+        query_tokens = set(
+            tok for tok in product_id.replace("p_", "").lower().split("_")
+            if len(tok) > 2
+        )
+        name_matches: list[str] = []
+        for pid, prod in s.products.items():
+            name_lower = prod.name.lower()
+            if any(t in name_lower for t in query_tokens):
+                name_matches.append(pid)
+        # Dedupe, preserve order
+        suggestions: list[str] = []
+        for m in id_matches + name_matches:
+            real_id = next((c for c in candidates if c.lower() == m), m)
+            if real_id in s.products and real_id not in suggestions:
+                suggestions.append(real_id)
+        suggested_products = [s.products[sid] for sid in suggestions[:6]]
+        return templates.TemplateResponse(
+            request, "product_not_found.html",
+            _ctx(request,
+                 attempted_id=product_id,
+                 suggested_products=suggested_products),
+            status_code=404,
+        )
     log_action(s, "view_product", product_id=product_id, tab=tab)
     return templates.TemplateResponse(request, "product.html", _ctx(request, p=p, tab=tab))
 

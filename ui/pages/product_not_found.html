@@ -1,0 +1,64 @@
+{% extends "_layout.html" %}
+{% block title %}Product Not Found{% endblock %}
+{% block content %}
+
+<!-- Breadcrumbs -->
+<nav class="breadcrumbs mb-3" data-test-id="breadcrumbs">
+  <a href="/" data-test-id="breadcrumb-home">Home</a>
+  <span class="separator">›</span>
+  <span class="font-medium text-slate-900">Product not found</span>
+</nav>
+
+<div class="bg-white border border-slate-200 rounded-lg shadow-sm p-8 max-w-4xl mx-auto"
+     data-test-id="page-product-not-found">
+  <div class="text-center mb-6">
+    <div class="text-6xl mb-3">🔎</div>
+    <h1 class="text-2xl font-bold text-slate-900">We couldn't find that product</h1>
+    <p class="text-slate-500 mt-2">
+      No product with ID <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm font-mono" data-test-id="lbl-attempted-id">{{ attempted_id }}</code>.
+    </p>
+  </div>
+
+  {% if suggested_products %}
+  <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-5 mb-6">
+    <h2 class="font-bold mb-3 text-emerald-900 flex items-center gap-2">
+      <span>💡</span> Did you mean one of these?
+    </h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3" data-test-id="grid-suggestions">
+      {% for p in suggested_products %}
+        <a href="/product/{{ p.id }}" data-test-id="suggestion-{{ p.id }}"
+           class="product-card bg-white rounded-lg shadow-sm p-3 block">
+          <div class="text-4xl text-center my-2">{{ p.image_emoji }}</div>
+          <div class="text-xs text-slate-500">{{ p.brand }}</div>
+          <div class="font-semibold text-sm line-clamp-2 min-h-[40px]">{{ p.name }}</div>
+          <div class="font-bold text-emerald-700 text-sm mt-1">${{ '%.2f'|format(p.base_price) }}</div>
+          <div class="text-[10px] text-slate-400 mt-1 font-mono">{{ p.id }}</div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Recovery actions -->
+  <div class="flex flex-wrap gap-3 justify-center">
+    <a href="/" data-test-id="btn-pnf-home"
+       class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded font-semibold inline-flex items-center gap-2">
+      ← Back to Home
+    </a>
+    <a href="/search" data-test-id="btn-pnf-search"
+       class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded font-semibold inline-flex items-center gap-2">
+      🔍 Search products
+    </a>
+  </div>
+
+  <!-- Agent hint -->
+  <div class="mt-6 pt-4 border-t border-slate-200 text-xs text-slate-500" data-test-id="pnf-hint">
+    <strong>Tip for agents:</strong> product IDs are not predictable from names.
+    NEVER guess <code>/product/&lt;id&gt;</code> paths. Instead: go to
+    <a href="/search" class="text-emerald-700 underline">/search</a> with a keyword,
+    or click a category in the nav, then click the product card you want.
+    All valid product IDs are listed in the harness snapshot under <code>products</code>.
+  </div>
+</div>
+
+{% endblock %}

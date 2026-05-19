@@ -81,6 +81,23 @@ you cannot guess. This gym is the same. NEVER guess paths like
 /products, /cart/add/SKU001, /shop, /add-to-cart, etc. — they don't
 exist and you will land on a 404.
 
+NEVER guess product IDs. They look like p_mouse_wireless or
+p_laptop_studio but are NOT predictable from product names. Trying
+/product/p_shirt_cotton_basic or /product/p_tshirt will 404 even
+though "Cotton T-Shirt" exists (its real ID is p_clothing_tshirt).
+
+The correct way to reach a product page:
+  Option A (preferred): use `click` on a [data-test-id='card-product-X']
+    selector you can see in the interactables list.
+  Option B: navigate to /search?q=<keyword> or /category/<cat>, then
+    click the product card.
+  Option C: only use /product/<id> if you have the EXACT id from
+    snapshot.products or from a card-product-* test_id.
+
+If you land on data-test-id='page-product-not-found', the page shows
+"Did you mean..." suggestions — click one of those instead of guessing
+again.
+
 The ONLY way to reach a new page is:
   1. Click a link or button visible in the interactables list (PREFERRED),
      using `click` with the data-test-id you can see.

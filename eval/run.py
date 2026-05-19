@@ -76,10 +76,15 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
     shots_dir = out_screens_dir / f"{task_id.replace('/', '_')}__{seed}__{episode_id}"
     shots_dir.mkdir(parents=True, exist_ok=True)
 
+    if agent_kind == "oracle":
+        agent_name = "oracle"
+    elif agent_kind == "pixel":
+        agent_name = f"pixel[{llm_model or 'default'}]"
+    else:
+        agent_name = f"llm[{llm_model or 'default'}]"
     traj = Trajectory(
         episode_id=episode_id, task_id=task_id, seed=seed,
-        agent_name=f"oracle" if agent_kind == "oracle"
-                   else f"llm[{llm_model or 'default'}]",
+        agent_name=agent_name,
         started_at=time.time(),
         task_brief=reset["task_brief"],
         task_difficulty=reset["task_difficulty"],
@@ -101,6 +106,12 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
         if agent_kind == "oracle":
             solver = ORACLE_SOLVERS[task_id]
             await solver(bctx)
+        elif agent_kind == "pixel":
+            # Pixel/SoM agent — sees annotated screenshots, acts via mark IDs.
+            # No DOM/JSON to the agent. See agents/pixel_agent.py.
+            from agents.pixel_agent import PixelBrowserAgent
+            agent = PixelBrowserAgent(model=llm_model)
+            await agent.run(bctx, task_brief=reset["task_brief"])
         else:
             from agents.llm_agent import LLMBrowserAgent
             agent = LLMBrowserAgent(model=llm_model)
@@ -162,7 +173,11 @@ def _print_scorecard(rows: list[Trajectory]) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--agent", choices=["oracle", "llm"], required=True)
+    ap.add_argument(
+        "--agent", choices=["oracle", "llm", "pixel"], required=True,
+        help="oracle = hand-coded reference; llm = DOM/JSON observation; "
+             "pixel = SoM annotated screenshots (no DOM to the agent)",
+    )
     ap.add_argument("--tasks", default="all")
     ap.add_argument("--seeds", default="0")
     ap.add_argument("--server", default="http://localhost:8000")

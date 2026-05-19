@@ -66,6 +66,13 @@ class Milestone:
         fired_at_step:      Set by the harness when the milestone first
                             evaluates to True. Default -1 = never.
         category:           Optional grouping (for analytics).
+        failure_category:   Categorical failure label when this milestone
+                            is missed. Used to build a τ-bench-style
+                            failure mode taxonomy. If unset, defaults to
+                            the milestone name. Examples:
+                              - "wrong_product"  - "missing_required_item"
+                              - "expired_coupon" - "wrong_address"
+                              - "sequence_violation" - "goal_incomplete"
     """
     name: str
     weight: float
@@ -73,6 +80,10 @@ class Milestone:
     required_for_success: bool = False
     fired_at_step: int = -1
     category: str = ""
+    failure_category: str = ""
+
+    def effective_failure_category(self) -> str:
+        return self.failure_category or self.name
 
 
 # --------------------------------------------------------------------------- #
@@ -87,7 +98,7 @@ class TaskSuite:
     def evaluate(self, probe: Probe, current_step: int) -> dict[str, Any]:
         """Probe every milestone. For any that fire for the first time,
         mark fired_at_step. Return a summary dict (which milestones
-        just fired, full state, aggregated score)."""
+        just fired, full state, aggregated score, failure mode)."""
         newly_fired: list[str] = []
         for m in self.milestones:
             if m.fired_at_step >= 0:
@@ -99,14 +110,37 @@ class TaskSuite:
             if ok:
                 m.fired_at_step = current_step
                 newly_fired.append(m.name)
+
+        # ─── Failure mode inference (τ-bench-style) ────────────────
+        # Primary failure = the first unfired REQUIRED milestone (these
+        # are the goal-defining ones; if any of them are missing the
+        # episode cannot succeed). Fall back to the highest-weight
+        # unfired milestone if no required ones are missing.
+        primary_failure: str | None = None
+        unfired_required = [m for m in self.milestones
+                            if m.required_for_success and m.fired_at_step < 0]
+        if unfired_required:
+            primary_failure = unfired_required[0].effective_failure_category()
+        elif not self.is_success():
+            unfired = [m for m in self.milestones if m.fired_at_step < 0]
+            if unfired:
+                top = max(unfired, key=lambda m: m.weight)
+                primary_failure = top.effective_failure_category()
+
         return {
             "score":   self.aggregate_score(),
             "success": self.is_success(),
             "newly_fired": newly_fired,
+            "primary_failure_category": primary_failure,
+            "failure_categories_missed": [
+                m.effective_failure_category()
+                for m in self.milestones if m.fired_at_step < 0
+            ],
             "all_milestones": [
                 {"name": m.name, "weight": m.weight,
                  "fired_at_step": m.fired_at_step,
-                 "required": m.required_for_success}
+                 "required": m.required_for_success,
+                 "failure_category": m.effective_failure_category()}
                 for m in self.milestones
             ],
         }
@@ -177,7 +211,8 @@ def _suite_a1() -> TaskSuite:
         task_id="A1/buy_wireless_mouse",
         milestones=[
             Milestone("viewed_product_page", weight=0.15,
-                      check=lambda p: _on_url(p, "/product/p_mouse_wireless")),
+                      check=lambda p: _on_url(p, "/product/p_mouse_wireless"),
+                      failure_category="never_viewed_product"),
             Milestone("added_target_to_cart", weight=0.20,
                       check=lambda p: any(
                           it.product_id == target
@@ -186,22 +221,27 @@ def _suite_a1() -> TaskSuite:
                           it.product_id == target
                           for o in p.state.orders.values()
                           for it in o.items
-                      )),
+                      ),
+                      failure_category="wrong_product_in_cart"),
             Milestone("avoided_distractor", weight=0.10,
                       check=lambda p: not any(
                           it.product_id == distractor
                           for o in p.state.orders.values()
                           for it in o.items
-                      )),
+                      ),
+                      failure_category="picked_distractor_product"),
             Milestone("reached_checkout", weight=0.10,
-                      check=lambda p: _on_url(p, "/checkout")),
+                      check=lambda p: _on_url(p, "/checkout"),
+                      failure_category="never_reached_checkout"),
             Milestone("order_placed", weight=0.30,
                       check=lambda p: _order_with(
                           p, product_ids=(target,), exactly_n_items=1,
                       ),
-                      required_for_success=True),
+                      required_for_success=True,
+                      failure_category="goal_incomplete_no_order"),
             Milestone("on_confirmation_page", weight=0.10,
-                      check=lambda p: _on_url(p, "/order/")),
+                      check=lambda p: _on_url(p, "/order/"),
+                      failure_category="missed_confirmation_page"),
             Milestone("home_address_used", weight=0.05,
                       check=lambda p: (
                           _newest_order(p) is not None
@@ -209,7 +249,8 @@ def _suite_a1() -> TaskSuite:
                               it.ship_to_address_id == "addr_home"
                               for it in _newest_order(p).items
                           )
-                      )),
+                      ),
+                      failure_category="wrong_shipping_address"),
         ],
     )
 
@@ -460,15 +501,19 @@ def _suite_c1() -> TaskSuite:
         milestones=[
             Milestone("both_items_in_order", weight=0.25,
                       check=_order_has_both,
-                      required_for_success=True),
+                      required_for_success=True,
+                      failure_category="missing_required_item"),
             Milestone("tech20_applied", weight=0.30,
                       check=_used_correct_promo,
-                      required_for_success=True),
+                      required_for_success=True,
+                      failure_category="wrong_or_missing_promo"),
             Milestone("discount_is_20pct_of_laptop_only", weight=0.30,
                       check=_discount_matches_20pct_of_laptop_only,
-                      required_for_success=True),
+                      required_for_success=True,
+                      failure_category="discount_applied_to_wrong_line"),
             Milestone("on_confirmation_page", weight=0.15,
-                      check=lambda p: _on_url(p, "/order/")),
+                      check=lambda p: _on_url(p, "/order/"),
+                      failure_category="missed_confirmation_page"),
         ],
     )
 

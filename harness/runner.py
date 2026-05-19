@@ -44,7 +44,29 @@ from playwright.async_api import (
 
 @dataclass
 class StepRecord:
-    """One snapshot of agent activity. Captured AFTER each action."""
+    """One snapshot of agent activity. Captured AFTER each action.
+
+    Enriched fields (added 2026-05) bring our trajectory format closer
+    to tau-bench / BrowserGym quality:
+
+      action_error:    explicit Playwright/JS error if the action failed
+                       (selector not found, timeout, etc.). None on success.
+      action_latency_ms:
+                       how long the Playwright operation took to settle
+                       (incl. wait_for_load_state). Useful for analyzing
+                       slow pages or detecting hangs.
+      raw_model_output:
+                       the LLM's full response text (incl. thinking, not
+                       just the parsed tool_use). Set by the agent layer
+                       AFTER the harness creates the StepRecord.
+      tokens_in / tokens_out:
+                       prompt + completion tokens for this step's LLM
+                       call. Cost accounting + training data weighting.
+      primary_failure_category:
+                       what the verifier thinks is the dominant failure
+                       so far. Mirrors verifier output for easy diffing
+                       across steps.
+    """
     step_idx: int
     action_kind: str               # "click", "fill", "navigate", "screenshot", ...
     action_args: dict[str, Any]
@@ -54,6 +76,12 @@ class StepRecord:
     running_score: float
     snapshot_after: dict[str, Any]   # /_harness/snapshot
     reasoning: str = ""
+    action_error: str | None = None
+    action_latency_ms: int = 0
+    raw_model_output: str = ""
+    tokens_in: int = 0
+    tokens_out: int = 0
+    primary_failure_category: str | None = None
 
 
 @dataclass
@@ -138,59 +166,106 @@ class BrowserCtx:
     )
 
     # --------- helpers the agent calls ---------
+    #
+    # Each method wraps the Playwright call in a try/except so a failure
+    # (selector missing, timeout, etc.) becomes a FIRST-CLASS field in
+    # the StepRecord rather than an unhandled exception. This is the
+    # "explicit error capture" pattern from BrowserGym/WorkArena.
 
     async def goto(self, path: str, reasoning: str = "") -> StepRecord:
         url = self._abs(path)
-        await self.page.goto(url, wait_until="load")
+        t0 = time.monotonic()
+        err: str | None = None
+        try:
+            await self.page.goto(url, wait_until="load")
+        except Exception as e:
+            err = f"{type(e).__name__}: {e}"
+        latency_ms = int((time.monotonic() - t0) * 1000)
         return await self._record(
             "navigate", {"url": path}, reasoning=reasoning,
+            error=err, latency_ms=latency_ms,
         )
 
     async def click(self, selector: str, reasoning: str = "") -> StepRecord:
-        await self.page.click(selector)
-        await self.page.wait_for_load_state("load")
+        t0 = time.monotonic()
+        err: str | None = None
+        try:
+            await self.page.click(selector)
+            await self.page.wait_for_load_state("load")
+        except Exception as e:
+            err = f"{type(e).__name__}: {e}"
+        latency_ms = int((time.monotonic() - t0) * 1000)
         return await self._record(
             "click", {"selector": selector}, reasoning=reasoning,
+            error=err, latency_ms=latency_ms,
         )
 
     async def fill(self, selector: str, value: str,
                    reasoning: str = "") -> StepRecord:
-        await self.page.fill(selector, value)
+        t0 = time.monotonic()
+        err: str | None = None
+        try:
+            await self.page.fill(selector, value)
+        except Exception as e:
+            err = f"{type(e).__name__}: {e}"
+        latency_ms = int((time.monotonic() - t0) * 1000)
         return await self._record(
             "fill", {"selector": selector, "value": value},
-            reasoning=reasoning,
+            reasoning=reasoning, error=err, latency_ms=latency_ms,
         )
 
     async def select(self, selector: str, value: str,
                      reasoning: str = "") -> StepRecord:
-        await self.page.select_option(selector, value=value)
+        t0 = time.monotonic()
+        err: str | None = None
+        try:
+            await self.page.select_option(selector, value=value)
+        except Exception as e:
+            err = f"{type(e).__name__}: {e}"
+        latency_ms = int((time.monotonic() - t0) * 1000)
         return await self._record(
             "select", {"selector": selector, "value": value},
-            reasoning=reasoning,
+            reasoning=reasoning, error=err, latency_ms=latency_ms,
         )
 
     async def check(self, selector: str, reasoning: str = "") -> StepRecord:
-        await self.page.check(selector)
+        t0 = time.monotonic()
+        err: str | None = None
+        try:
+            await self.page.check(selector)
+        except Exception as e:
+            err = f"{type(e).__name__}: {e}"
+        latency_ms = int((time.monotonic() - t0) * 1000)
         return await self._record(
             "check", {"selector": selector}, reasoning=reasoning,
+            error=err, latency_ms=latency_ms,
         )
 
     async def submit(self, selector: str,
                      reasoning: str = "") -> StepRecord:
         """Submit a form by clicking a button inside it."""
-        await self.page.click(selector)
+        t0 = time.monotonic()
+        err: str | None = None
         try:
-            await self.page.wait_for_load_state("networkidle", timeout=5000)
-        except Exception:
-            pass
+            await self.page.click(selector)
+            try:
+                await self.page.wait_for_load_state("networkidle", timeout=5000)
+            except Exception:
+                pass
+        except Exception as e:
+            err = f"{type(e).__name__}: {e}"
+        latency_ms = int((time.monotonic() - t0) * 1000)
         return await self._record(
             "submit", {"selector": selector}, reasoning=reasoning,
+            error=err, latency_ms=latency_ms,
         )
 
     # --------- internal: probe + record after each action ---------
 
     async def _record(self, kind: str, args: dict[str, Any],
-                      reasoning: str = "") -> StepRecord:
+                      reasoning: str = "",
+                      error: str | None = None,
+                      latency_ms: int = 0) -> StepRecord:
         step_idx = len(self.trajectory.steps)
         url = self.page.url
 
@@ -209,6 +284,7 @@ class BrowserCtx:
         ).json()
         newly = list(verifier_resp.get("newly_fired", []))
         running_score = float(verifier_resp.get("score", 0.0))
+        primary_failure = verifier_resp.get("primary_failure_category")
 
         rec = StepRecord(
             step_idx=step_idx,
@@ -219,6 +295,9 @@ class BrowserCtx:
             running_score=running_score,
             snapshot_after=snap,
             reasoning=reasoning,
+            action_error=error,
+            action_latency_ms=latency_ms,
+            primary_failure_category=primary_failure,
         )
         self.trajectory.steps.append(rec)
         return rec

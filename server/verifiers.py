@@ -323,13 +323,16 @@ def _suite_a3() -> TaskSuite:
                               "/product/p_laptop_studio",
                               "/product/p_laptop_pro",
                           )
-                      )),
+                      ),
+                      failure_category="never_viewed_product"),
             Milestone("ordered_correct_laptop_variant", weight=0.25,
                       check=lambda p: any(
                           it.variant_id == "v_lt_32_1tb"
                           for o in p.state.orders.values()
                           for it in o.items
-                      )),
+                      ),
+                      required_for_success=True,
+                      failure_category="wrong_variant"),
             Milestone("ordered_wireless_mouse", weight=0.15,
                       check=lambda p: _order_with(
                           p, product_ids=("p_mouse_wireless",),
@@ -867,16 +870,18 @@ def _suite_c4() -> TaskSuite:
         )
 
     def _tech20_applied_correctly(p: Probe) -> bool:
+        """TECH20 = 20% off electronics. In C4 there are TWO electronics
+        items (laptop + wireless mouse), so the expected discount is
+        20% of the sum of BOTH. The t-shirt (clothing) is not eligible."""
         o = _newest_order(p)
         if o is None or o.promo_code != "TECH20":
             return False
-        laptop_total = sum(
+        electronics_total = sum(
             it.unit_price * it.quantity
             for it in o.items
             if p.state.products[it.product_id].category == "electronics"
-            and it.product_id == "p_laptop_studio"
         )
-        expected = round(laptop_total * 0.20, 2)
+        expected = round(electronics_total * 0.20, 2)
         return abs(o.discount - expected) <= 0.05
 
     def _paid_with_visa(p: Probe) -> bool:

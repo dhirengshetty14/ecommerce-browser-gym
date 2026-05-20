@@ -244,9 +244,12 @@ def test_c3_subscription_loyalty():
 
 @pytest.mark.parametrize("task_id", [
     "A1/buy_wireless_mouse", "A2/filter_laptop", "A3/configure_bundle",
+    "A4/home_office_bundle",
     "B1/add_address", "B2/track_and_return", "B3/account_overhaul",
+    "B4/subscription_juggle",
     "C1/promo_partial", "C2/split_shipping_gift",
     "C3/subscription_loyalty",
+    "C4/mega_checkout",
 ])
 def test_no_milestones_no_score(task_id):
     """Touching nothing should give score 0 and success=False."""
@@ -255,3 +258,102 @@ def test_no_milestones_no_score(task_id):
     # Most tasks will have score 0 here; allow tiny credit from URL-only
     # milestones that happen to match "/".
     assert result["success"] is False
+
+
+# --------------------------------------------------------------------------- #
+# Very-hard task verifier sanity (A4, B4, C4)
+# --------------------------------------------------------------------------- #
+
+def test_a4_full_path_scores_one():
+    """A4: 4 electronics items, < $550, Work + PayPal."""
+    sim = _Sim("A4/home_office_bundle")
+    # Add the 4 required items
+    for pid in ("p_monitor_27", "p_kb_mech",
+                "p_mouse_ergonomic", "p_charger"):
+        sim.do(lambda pid=pid: mutations.add_to_cart(
+            sim.state, product_id=pid, quantity=1,
+        ))
+    # Per-line shipping → Work
+    for line in list(sim.state.cart.items):
+        sim.do(lambda lid=line.id: mutations.update_line(
+            sim.state, line_id=lid, ship_to_address_id="addr_work",
+        ))
+    sim.go("/checkout/address")
+    sim.go("/checkout/payment")
+    sim.go("/checkout/review")
+    # place_order takes payment_id directly (no separate selection mutation)
+    sim.do(lambda: mutations.place_order(
+        sim.state, payment_id="pay_paypal",
+    ))
+    order_id = list(sim.state.orders.keys())[0]
+    result = sim.go(f"/order/{order_id}")
+    assert result["success"] is True, result
+
+
+def test_b4_full_path_scores_one():
+    """B4: cancel sub + new treats sub + 2FA + speaker-only return."""
+    sim = _Sim("B4/subscription_juggle")
+    # 1. Cancel existing dogfood sub
+    sim.do(lambda: mutations.cancel_subscription(
+        sim.state, subscription_id="sub_existing_dogfood",
+    ))
+    # 2. Create new treats sub (biweekly, 6, Work, PayPal)
+    sim.do(lambda: mutations.create_subscription(
+        sim.state, product_id="p_pet_treats", cadence="biweekly",
+        deliveries=6, address_id="addr_work", payment_id="pay_paypal",
+    ))
+    # 3. Enable 2FA
+    sim.do(lambda: mutations.enable_two_fa(
+        sim.state, code="123456",
+    ))
+    # 4. Initiate speaker-only return with store credit
+    sim.do(lambda: mutations.initiate_return(
+        sim.state, order_id="ORD-B4-9999",
+        item_ids=["ln_speaker"], reason="changed_mind",
+        refund_method="store_credit",
+    ))
+    result = sim.go("/account")
+    assert result["success"] is True, result
+
+
+def test_c4_full_path_scores_one():
+    """C4: 3 items + 3-way split shipping + TECH20 + Visa."""
+    sim = _Sim("C4/mega_checkout")
+    # Add the 3 items (t-shirt with M Black variant)
+    sim.do(lambda: mutations.add_to_cart(
+        sim.state, product_id="p_laptop_studio", quantity=1,
+    ))
+    sim.do(lambda: mutations.add_to_cart(
+        sim.state, product_id="p_clothing_tshirt", quantity=1,
+        variant_id="v_ts_m_blk",
+    ))
+    sim.do(lambda: mutations.add_to_cart(
+        sim.state, product_id="p_mouse_wireless", quantity=1,
+    ))
+    # Configure per-line shipping
+    items = list(sim.state.cart.items)
+    laptop = next(i for i in items if i.product_id == "p_laptop_studio")
+    tshirt = next(i for i in items if i.product_id == "p_clothing_tshirt")
+    mouse = next(i for i in items if i.product_id == "p_mouse_wireless")
+    sim.do(lambda: mutations.update_line(
+        sim.state, line_id=laptop.id, ship_to_address_id="addr_work",
+    ))
+    sim.do(lambda: mutations.update_line(
+        sim.state, line_id=tshirt.id, ship_to_address_id="addr_home",
+        gift_wrap=True, gift_message="Happy Birthday Mom!",
+    ))
+    sim.do(lambda: mutations.update_line(
+        sim.state, line_id=mouse.id, ship_to_address_id="addr_home",
+        gift_wrap=False,
+    ))
+    # Apply TECH20 promo (electronics only — laptop)
+    sim.do(lambda: mutations.apply_promo(
+        sim.state, code="TECH20",
+    ))
+    # Place order with Visa
+    sim.do(lambda: mutations.place_order(
+        sim.state, payment_id="pay_visa",
+    ))
+    order_id = list(sim.state.orders.keys())[0]
+    result = sim.go(f"/order/{order_id}")
+    assert result["success"] is True, result

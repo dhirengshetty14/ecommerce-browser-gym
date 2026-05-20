@@ -173,11 +173,12 @@ BRIEFS = {
         "Then in the cart: ship the LAPTOP to Work, the T-SHIRT to Home "
         "with gift wrap and message 'Happy Birthday Mom!', and the MOUSE "
         "to Home with NO gift wrap. "
-        "Apply promo code 'TECH20' — it discounts only the laptop. "
+        "Apply promo code 'TECH20' — it gives 20% off the electronics "
+        "items (the laptop and the mouse), not the t-shirt. "
         "Pay with Visa. Place the order. Submit when the confirmation "
         "page shows all three line items with correct shipping splits, "
-        "the TECH20 discount on the laptop only, and the gift wrap on "
-        "the t-shirt."
+        "the TECH20 discount on the electronics items only, and the gift "
+        "wrap on the t-shirt."
     ),
 }
 

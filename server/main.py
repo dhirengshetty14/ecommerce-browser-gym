@@ -746,6 +746,15 @@ async def api_create_subscription(
     return RedirectResponse("/account/subscriptions", 303)
 
 
+@app.post("/api/subscriptions/{subscription_id}/cancel")
+async def api_cancel_subscription(subscription_id: str):
+    """Cancel an active subscription. Idempotent — cancelling an
+    already-cancelled subscription returns ok without erroring."""
+    s = _state()
+    mutations.cancel_subscription(s, subscription_id=subscription_id)
+    return RedirectResponse("/account/subscriptions", 303)
+
+
 # --------------------------------------------------------------------------- #
 # Harness endpoints
 # --------------------------------------------------------------------------- #

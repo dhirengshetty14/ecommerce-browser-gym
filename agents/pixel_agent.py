@@ -229,11 +229,30 @@ Form filling:
   - type_text(mark_id, text) clicks-then-types — one call is enough.
   - To overwrite existing text: key("Control+a") → key("Backspace") →
     type_text(mark_id, new_text)
+  - Spinbutton (number input): same pattern — click, Control+a, type
+    the new number. For increment-only changes, key("ArrowUp") works.
 
-Dropdown selection:
-  - Turn N:   click(opener_mark)
-  - Turn N+1: the dropdown is now open; new marks appear for each
-              option; click the option you want.
+Dropdown selection — TWO KINDS, pick the right pattern:
+
+  CUSTOM dropdown (most app menus, the "More ▾" nav, "Account &
+  Lists" dropdown): clicking the opener REVEALS new option marks in
+  the DOM, so:
+      Turn N:   click(opener_mark)
+      Turn N+1: new option marks appear; click the option you want.
+
+  NATIVE <select> combobox (the OS-rendered list; you'll see roles
+  like "combobox" with a small ▼ chevron, e.g. the cadence /
+  address / payment dropdowns on subscription forms): clicking it
+  opens an OS-native option list that does NOT appear in your
+  screenshot as new marks. Instead use keyboard cycling:
+      Step 1: click(combobox_mark)  — focuses the control
+      Step 2: key("ArrowDown")      — advances to the next option;
+                                       the displayed value updates
+      Step 3: key("ArrowDown") more — keep cycling until you see the
+                                       value you want in the combobox
+      Step 4: optional key("Enter") to confirm focus elsewhere
+  This is THE workaround. Don't waste turns waiting for option marks
+  on a native combobox — they never appear.
 
 Form submission:
   - Either: click(submit_button_mark)
@@ -249,6 +268,15 @@ Recovering from errors:
 Scrolling:
   - If no mark matches what you need, the target is likely below the
     fold. Scroll down 600px and re-examine.
+
+Looking for "missing" buttons:
+  - Sometimes pages have collapsible sections (e.g. "More options ▾",
+    "Gift options" inside <details>). If you expected a button and
+    don't see it, look for a small ▾ or ▶ chevron — it may be hiding
+    inside a closed disclosure. Click the chevron mark first to expand.
+  - Each interactable card (subscription, order, address) usually has
+    its own action buttons (Cancel, Edit, View, Return) attached
+    directly to the card. They'll be marks on the card itself.
 
 ═══════════════════════════════════════════════════════════════════════════
 WHEN TO CALL finish
@@ -282,7 +310,7 @@ class PixelBrowserAgent:
     Set ANTHROPIC_API_KEY in the environment.
     """
 
-    def __init__(self, model: str | None = None, max_steps: int = 30,
+    def __init__(self, model: str | None = None, max_steps: int = 50,
                  verbose: bool = True, thinking_budget: int = 4000):
         from anthropic import Anthropic
         self.client = Anthropic()

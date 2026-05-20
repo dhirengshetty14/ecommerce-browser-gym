@@ -5,8 +5,8 @@
 <div data-test-id="list-subscriptions" class="space-y-3">
   {% for sub in subscriptions %}
     <div data-test-id="sub-row-{{ sub.id }}" class="border rounded p-3 bg-white">
-      <div class="flex items-center justify-between">
-        <div>
+      <div class="flex items-center justify-between gap-3">
+        <div class="flex-1">
           <div class="font-bold">{{ sub.id }}</div>
           <div class="text-sm">{{ state.products[sub.product_id].name }} × {{ sub.quantity }}</div>
           <div class="text-sm text-slate-500">
@@ -21,11 +21,33 @@
             </div>
           {% endif %}
         </div>
-        <span class="status-pill status-applied">{{ sub.status }}</span>
+
+        <div class="flex flex-col items-end gap-2">
+          <span class="status-pill {% if sub.status == 'active' %}status-applied{% else %}status-expired{% endif %}"
+                data-test-id="lbl-sub-status-{{ sub.id }}">
+            {{ sub.status }}
+          </span>
+
+          {% if sub.status == "active" %}
+            <form action="/api/subscriptions/{{ sub.id }}/cancel" method="post"
+                  data-test-id="form-cancel-sub-{{ sub.id }}">
+              <button type="submit"
+                      data-test-id="btn-cancel-sub-{{ sub.id }}"
+                      aria-label="Cancel subscription {{ sub.id }}"
+                      class="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded font-semibold">
+                ✕ Cancel subscription
+              </button>
+            </form>
+          {% else %}
+            <span class="text-xs text-slate-400 italic" data-test-id="lbl-sub-cancelled-{{ sub.id }}">
+              Cancelled
+            </span>
+          {% endif %}
+        </div>
       </div>
     </div>
   {% else %}
-    <div class="italic text-slate-500 py-4">No active subscriptions.</div>
+    <div class="italic text-slate-500 py-4" data-test-id="lbl-no-subs">No active subscriptions.</div>
   {% endfor %}
 </div>
 {% endblock %}

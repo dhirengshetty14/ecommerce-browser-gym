@@ -613,3 +613,26 @@ def create_subscription(state: GymState, product_id: str,
           f"Subscription {sub_id} created. {deliveries} deliveries scheduled.")
     return {"ok": True, "subscription_id": sub_id,
             "loyalty_discount_pct": loyalty}
+
+
+def cancel_subscription(state: GymState,
+                        subscription_id: str) -> dict[str, Any]:
+    """Cancel an active subscription owned by the current user."""
+    uid = _require_login(state)
+    if uid is None:
+        return {"ok": False, "error": "not logged in"}
+    sub = state.subscriptions.get(subscription_id)
+    if sub is None or sub.user_id != uid:
+        flash(state, "error", "Subscription not found.")
+        return {"ok": False, "error": "unknown subscription"}
+    if sub.status == "cancelled":
+        # Idempotent — already cancelled is treated as success.
+        return {"ok": True, "subscription_id": subscription_id,
+                "already_cancelled": True}
+    sub.status = "cancelled"
+    log_action(state, "cancel_subscription",
+               subscription_id=subscription_id,
+               product_id=sub.product_id)
+    flash(state, "success",
+          f"Subscription {subscription_id} has been cancelled.")
+    return {"ok": True, "subscription_id": subscription_id}

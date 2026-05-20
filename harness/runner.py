@@ -307,6 +307,179 @@ class BrowserCtx:
             error=err, latency_ms=latency_ms,
         )
 
+    # ─────────────────────────────────────────────────────────────────
+    # Mark-based actions (used by the pixel agent — feat/pixel-agent-fork)
+    #
+    # The pixel agent emits a discrete `mark_id`. The harness resolves
+    # that ID to a pixel coordinate (the centre of the mark's bbox) and
+    # dispatches via page.mouse / page.keyboard. The agent never sees
+    # the resolved coord — it stays inside the harness for diagnostics.
+    # ─────────────────────────────────────────────────────────────────
+
+    def _resolve_mark(self, mark_id: int, marks: list) -> Any:
+        """Look up a Mark by ID. Returns the Mark or raises ValueError."""
+        for m in marks:
+            if m.mark_id == mark_id:
+                return m
+        raise ValueError(
+            f"mark_id={mark_id} not in marks list (valid: 1..{len(marks)})"
+        )
+
+    async def click_mark(self, mark_id: int, marks: list,
+                         reasoning: str = "") -> "StepRecord":
+        """Click the centre of the mark identified by mark_id.
+
+        Args:
+            mark_id: agent-emitted discrete mark identifier (1..N).
+            marks:   the list[Mark] produced by extract_marks() this turn.
+            reasoning: agent's natural-language justification.
+        """
+        t0 = time.monotonic()
+        err: str | None = None
+        resolved: dict[str, Any] = {"mark_id": mark_id}
+        try:
+            mark = self._resolve_mark(mark_id, marks)
+            resolved.update({
+                "role": mark.role, "name": mark.name[:80],
+                "coord": list(mark.center),
+            })
+            await self._animate_cursor_at_coord(
+                mark.center, "CLICK", detail=f"{mark.role}:{mark.name[:40]}",
+            )
+            await self.page.mouse.move(*mark.center)
+            await self.page.mouse.click(*mark.center)
+            await self.page.wait_for_load_state("load")
+        except Exception as e:
+            err = f"{type(e).__name__}: {e}"
+        latency_ms = int((time.monotonic() - t0) * 1000)
+        return await self._record(
+            "click_mark", resolved, reasoning=reasoning,
+            error=err, latency_ms=latency_ms,
+        )
+
+    async def type_into_mark(self, mark_id: int, marks: list, text: str,
+                             reasoning: str = "") -> "StepRecord":
+        """Click the mark first to focus, then type the given text.
+
+        The clear-first behavior is intentionally NOT included — if the
+        agent wants to overwrite existing content it should send
+        key('Control+a') + key('Backspace') before typing. This matches
+        Anthropic Computer Use semantics.
+        """
+        t0 = time.monotonic()
+        err: str | None = None
+        resolved: dict[str, Any] = {"mark_id": mark_id, "value": text}
+        try:
+            mark = self._resolve_mark(mark_id, marks)
+            resolved.update({
+                "role": mark.role, "name": mark.name[:80],
+                "coord": list(mark.center),
+            })
+            await self._animate_cursor_at_coord(
+                mark.center, "FILL", detail=text,
+            )
+            await self.page.mouse.click(*mark.center)
+            await self.page.keyboard.type(text)
+        except Exception as e:
+            err = f"{type(e).__name__}: {e}"
+        latency_ms = int((time.monotonic() - t0) * 1000)
+        return await self._record(
+            "type_into_mark", resolved, reasoning=reasoning,
+            error=err, latency_ms=latency_ms,
+        )
+
+    async def key_press(self, name: str, reasoning: str = "") -> "StepRecord":
+        """Press a keyboard key (or chord) on the focused element.
+
+        Examples: "Enter", "Tab", "Escape", "Backspace", "ArrowDown",
+                  "Control+a", "Shift+Tab"
+        """
+        t0 = time.monotonic()
+        err: str | None = None
+        try:
+            await self.page.keyboard.press(name)
+            # Some keys (Enter on a form) trigger navigation — wait briefly
+            if name.lower() in ("enter", "return"):
+                try:
+                    await self.page.wait_for_load_state(
+                        "load", timeout=3000,
+                    )
+                except Exception:
+                    pass
+        except Exception as e:
+            err = f"{type(e).__name__}: {e}"
+        latency_ms = int((time.monotonic() - t0) * 1000)
+        return await self._record(
+            "key_press", {"key": name}, reasoning=reasoning,
+            error=err, latency_ms=latency_ms,
+        )
+
+    async def scroll_by(self, direction: str, amount_px: int,
+                        reasoning: str = "") -> "StepRecord":
+        """Scroll the viewport in `direction` by `amount_px` pixels.
+
+        direction: "up" or "down" (left/right not currently needed)
+        amount_px: positive integer (typical: 400-800)
+        """
+        t0 = time.monotonic()
+        err: str | None = None
+        try:
+            dy = amount_px if direction == "down" else -amount_px
+            await self.page.mouse.wheel(0, dy)
+            # Tiny wait so subsequent screenshot captures the new viewport
+            await asyncio.sleep(0.15)
+        except Exception as e:
+            err = f"{type(e).__name__}: {e}"
+        latency_ms = int((time.monotonic() - t0) * 1000)
+        return await self._record(
+            "scroll_by",
+            {"direction": direction, "amount_px": amount_px},
+            reasoning=reasoning, error=err, latency_ms=latency_ms,
+        )
+
+    async def _animate_cursor_at_coord(self, coord: tuple[int, int],
+                                       kind: str, detail: str = "") -> None:
+        """Same as _animate_cursor but for direct pixel coords (no selector).
+
+        The ghost cursor JS exposes a coordinate API too — we use it
+        for mark-based actions so the visual feedback still works."""
+        if not self.show_cursor:
+            return
+        try:
+            x, y = int(coord[0]), int(coord[1])
+            # Move cursor by coord directly (the JS has a moveToCoord helper
+            # — if it doesn't exist yet, we just position the existing one
+            # by injecting a temporary anchor element. Simpler: do it via JS.)
+            await self.page.evaluate(
+                """(args) => {
+                    const c = document.getElementById('__shopgym_cursor');
+                    if (!c) return;
+                    c.style.left = args.x + 'px';
+                    c.style.top = args.y + 'px';
+                    if (window.__shopgym_cursor) {
+                        window.__shopgym_cursor.showAction(args.kind, args.detail);
+                    }
+                    const lbl = document.getElementById('__shopgym_action_label');
+                    if (lbl) {
+                        lbl.style.left = args.x + 'px';
+                        lbl.style.top = (args.y - 30) + 'px';
+                    }
+                }""",
+                {"x": x, "y": y, "kind": kind, "detail": detail},
+            )
+            step_idx = len(self.trajectory.steps)
+            await self.page.evaluate(
+                "(args) => window.__shopgym_cursor && window.__shopgym_cursor.setStep(args.step, args.kind)",
+                {"step": step_idx, "kind": kind.lower()},
+            )
+            await asyncio.sleep(self.cursor_pause_ms / 1000)
+            if kind.upper() in ("CLICK", "SUBMIT"):
+                await self.page.evaluate(
+                    "() => window.__shopgym_cursor && window.__shopgym_cursor.pulse()"
+                )
+        except Exception:
+            pass  # decoration only
+
     # --------- internal: probe + record after each action ---------
 
     async def _record(self, kind: str, args: dict[str, Any],

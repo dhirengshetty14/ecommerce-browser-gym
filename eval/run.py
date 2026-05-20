@@ -76,10 +76,15 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
     shots_dir = out_screens_dir / f"{task_id.replace('/', '_')}__{seed}__{episode_id}"
     shots_dir.mkdir(parents=True, exist_ok=True)
 
+    if agent_kind == "oracle":
+        agent_name = "oracle"
+    elif agent_kind == "pixel":
+        agent_name = f"pixel[{llm_model or 'default'}]"
+    else:
+        agent_name = f"llm[{llm_model or 'default'}]"
     traj = Trajectory(
         episode_id=episode_id, task_id=task_id, seed=seed,
-        agent_name=f"oracle" if agent_kind == "oracle"
-                   else f"llm[{llm_model or 'default'}]",
+        agent_name=agent_name,
         started_at=time.time(),
         task_brief=reset["task_brief"],
         task_difficulty=reset["task_difficulty"],
@@ -90,7 +95,24 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
         screenshot_dir=shots_dir,
     )
 
-    # Initial snapshot
+    # Pre-navigate to the gym home page so the agent starts on the
+    # rendered site, not about:blank. This simulates "user opens the
+    # website in their browser" — the website loading is NOT an agent
+    # action, the agent just begins interacting from a loaded page.
+    #
+    # Without this, the pixel agent (which has no navigate() tool by
+    # design — see PIXEL_VS_JSON.md) gets stuck on about:blank with
+    # zero interactable marks and bounces uselessly through scrolls
+    # and keyboard presses. The DOM agent has navigate() and would
+    # emit navigate("/") as its first action anyway — pre-loading
+    # just saves it that step.
+    try:
+        await page.goto(f"{server_url}/", wait_until="load")
+    except Exception as e:
+        print(f"[runner] WARNING: failed to pre-load {server_url}/: {e}")
+
+    # Initial snapshot — captured AFTER pre-navigation so initial_url
+    # reflects the actual starting page (typically /), not about:blank.
     traj.initial_url = page.url
     async with httpx.AsyncClient() as c:
         snap = (await c.get(f"{server_url}/_harness/snapshot")).json()
@@ -101,6 +123,12 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
         if agent_kind == "oracle":
             solver = ORACLE_SOLVERS[task_id]
             await solver(bctx)
+        elif agent_kind == "pixel":
+            # Pixel/SoM agent — sees annotated screenshots, acts via mark IDs.
+            # No DOM/JSON to the agent. See agents/pixel_agent.py.
+            from agents.pixel_agent import PixelBrowserAgent
+            agent = PixelBrowserAgent(model=llm_model)
+            await agent.run(bctx, task_brief=reset["task_brief"])
         else:
             from agents.llm_agent import LLMBrowserAgent
             agent = LLMBrowserAgent(model=llm_model)
@@ -162,7 +190,11 @@ def _print_scorecard(rows: list[Trajectory]) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--agent", choices=["oracle", "llm"], required=True)
+    ap.add_argument(
+        "--agent", choices=["oracle", "llm", "pixel"], required=True,
+        help="oracle = hand-coded reference; llm = DOM/JSON observation; "
+             "pixel = SoM annotated screenshots (no DOM to the agent)",
+    )
     ap.add_argument("--tasks", default="all")
     ap.add_argument("--seeds", default="0")
     ap.add_argument("--server", default="http://localhost:8000")

@@ -1,0 +1,838 @@
+{
+  "episode_id": "bd897ccc",
+  "task_id": "A4/home_office_bundle",
+  "seed": 0,
+  "agent_name": "oracle",
+  "started_at": 1779394933.3375447,
+  "finished_at": 1779394956.9111283,
+  "task_brief": "I'm setting up a new home office and need four things: a large 27-inch monitor, a proper mechanical keyboard with a good typing feel, a comfortable mouse that won't wreck my wrist on long days, and a fast USB-C charger. I've got $550 for the whole lot, so keep it under that. Ship everything to my work address \u2014 I'm there during the day \u2014 and use my PayPal; I'm saving the credit card for something else this month.",
+  "task_difficulty": "hard",
+  "task_category": "A",
+  "initial_url": "http://localhost:8000/",
+  "initial_snapshot": {
+    "task_id": "A4/home_office_bundle",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/product/p_monitor_27"
+      },
+      "url_after": "http://localhost:8000/product/p_monitor_27",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_000.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 140,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-add-to-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 875,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/product/p_kb_mech"
+      },
+      "url_after": "http://localhost:8000/product/p_kb_mech",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 187,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-add-to-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 719,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/product/p_mouse_ergonomic"
+      },
+      "url_after": "http://localhost:8000/product/p_mouse_ergonomic",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 170,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-add-to-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 3,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 782,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/product/p_charger"
+      },
+      "url_after": "http://localhost:8000/product/p_charger",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 3,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 172,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-add-to-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 796,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/cart"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_008.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 188,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 9,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "summary[data-test-id='toggle-line-options-ln_850d0e19']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_009.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 8,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 545,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 10,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-ship-address-ln_850d0e19']",
+        "value": "addr_work"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_010.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 9,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 515,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 11,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-save-line-ln_850d0e19']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_011.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 10,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 780,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 12,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "summary[data-test-id='toggle-line-options-ln_b51bde50']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_012.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 11,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 609,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 13,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-ship-address-ln_b51bde50']",
+        "value": "addr_work"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_013.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 12,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 500,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 14,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-save-line-ln_b51bde50']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_014.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 13,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 781,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 15,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "summary[data-test-id='toggle-line-options-ln_8b6d7776']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_015.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 14,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 577,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 16,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-ship-address-ln_8b6d7776']",
+        "value": "addr_work"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_016.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 15,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 500,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 17,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-save-line-ln_8b6d7776']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_017.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 16,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 797,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 18,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "summary[data-test-id='toggle-line-options-ln_d734d104']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_018.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 17,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 609,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 19,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-ship-address-ln_d734d104']",
+        "value": "addr_work"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_019.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 18,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 516,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 20,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-save-line-ln_d734d104']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_020.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 19,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 782,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 21,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-proceed-checkout']"
+      },
+      "url_after": "http://localhost:8000/checkout/address",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_021.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 20,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 734,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 22,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-continue-payment']"
+      },
+      "url_after": "http://localhost:8000/checkout/payment",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_022.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 21,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 734,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 23,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-continue-review']"
+      },
+      "url_after": "http://localhost:8000/checkout/review",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_023.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 22,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 750,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 24,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-final-payment']",
+        "value": "pay_paypal"
+      },
+      "url_after": "http://localhost:8000/checkout/review",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_024.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 23,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 4,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 515,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 25,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-place-order']"
+      },
+      "url_after": "http://localhost:8000/order/ORD_D9686936",
+      "screenshot_path": "screenshots\\showcase\\A4_home_office_bundle__0__bd897ccc\\step_025.png",
+      "milestones_fired_this_step": [
+        "all_four_required_items",
+        "no_forbidden_distractor",
+        "exactly_four_line_items",
+        "all_items_electronics_category",
+        "subtotal_under_550",
+        "shipped_to_work_address",
+        "paid_with_paypal",
+        "on_confirmation_page"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "A4/home_office_bundle",
+        "step": 24,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 733,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    }
+  ],
+  "final_url": "http://localhost:8000/order/ORD_D9686936",
+  "final_snapshot": {
+    "task_id": "A4/home_office_bundle",
+    "step": 25,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 1,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "missed_milestones": [],
+    "all_milestones": [
+      {
+        "name": "all_four_required_items",
+        "weight": 0.2,
+        "fired_at_step": 25,
+        "required": true
+      },
+      {
+        "name": "no_forbidden_distractor",
+        "weight": 0.15,
+        "fired_at_step": 25,
+        "required": false
+      },
+      {
+        "name": "exactly_four_line_items",
+        "weight": 0.1,
+        "fired_at_step": 25,
+        "required": false
+      },
+      {
+        "name": "all_items_electronics_category",
+        "weight": 0.1,
+        "fired_at_step": 25,
+        "required": false
+      },
+      {
+        "name": "subtotal_under_550",
+        "weight": 0.15,
+        "fired_at_step": 25,
+        "required": false
+      },
+      {
+        "name": "shipped_to_work_address",
+        "weight": 0.1,
+        "fired_at_step": 25,
+        "required": false
+      },
+      {
+        "name": "paid_with_paypal",
+        "weight": 0.1,
+        "fired_at_step": 25,
+        "required": false
+      },
+      {
+        "name": "on_confirmation_page",
+        "weight": 0.1,
+        "fired_at_step": 25,
+        "required": false
+      }
+    ]
+  },
+  "agent_failure_class": null,
+  "video_path": "",
+  "error": null
+}

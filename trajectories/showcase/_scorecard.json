@@ -1,0 +1,17 @@
+{
+  "agent": "oracle",
+  "model": null,
+  "n_episodes": 2,
+  "overall_score": 1.0,
+  "overall_success_rate": 1.0,
+  "by_task": {
+    "D1/browse_audio_no_search": {
+      "n": 1,
+      "score": 1.0
+    },
+    "D2/drill_electronics_keyboards": {
+      "n": 1,
+      "score": 1.0
+    }
+  }
+}

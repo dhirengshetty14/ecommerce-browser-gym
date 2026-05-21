@@ -275,7 +275,7 @@ class GymState:
     finished: bool = False
     task_brief: str = ""
     task_difficulty: Literal["easy", "medium", "hard"] = "easy"
-    task_category: Literal["A", "B", "C"] = "A"     # discovery / mgmt / checkout
+    task_category: Literal["A", "B", "C", "D"] = "A"  # discovery / mgmt / checkout / taxonomy
 
     # Catalog
     products: dict[str, Product] = field(default_factory=dict)

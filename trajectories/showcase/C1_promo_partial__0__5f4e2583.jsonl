@@ -1,0 +1,415 @@
+{
+  "episode_id": "5f4e2583",
+  "task_id": "C1/promo_partial",
+  "seed": 0,
+  "agent_name": "oracle",
+  "started_at": 1779395011.144888,
+  "finished_at": 1779395022.4861283,
+  "task_brief": "Grab me a Studio Laptop and a plain cotton t-shirt. I've got a promo code, TECH20, that takes money off electronics \u2014 apply it at checkout. Ship the order to my home and pay with my Visa.",
+  "task_difficulty": "medium",
+  "task_category": "C",
+  "initial_url": "http://localhost:8000/",
+  "initial_snapshot": {
+    "task_id": "C1/promo_partial",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/product/p_laptop_studio"
+      },
+      "url_after": "http://localhost:8000/product/p_laptop_studio",
+      "screenshot_path": "screenshots\\showcase\\C1_promo_partial__0__5f4e2583\\step_000.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 125,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-add-to-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\C1_promo_partial__0__5f4e2583\\step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 719,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/product/p_clothing_tshirt"
+      },
+      "url_after": "http://localhost:8000/product/p_clothing_tshirt",
+      "screenshot_path": "screenshots\\showcase\\C1_promo_partial__0__5f4e2583\\step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 125,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-variant']",
+        "value": "v_ts_m_blk"
+      },
+      "url_after": "http://localhost:8000/product/p_clothing_tshirt",
+      "screenshot_path": "screenshots\\showcase\\C1_promo_partial__0__5f4e2583\\step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 531,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-add-to-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\C1_promo_partial__0__5f4e2583\\step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 625,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='link-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\C1_promo_partial__0__5f4e2583\\step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 655,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-proceed-checkout']"
+      },
+      "url_after": "http://localhost:8000/checkout/address",
+      "screenshot_path": "screenshots\\showcase\\C1_promo_partial__0__5f4e2583\\step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 641,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-continue-payment']"
+      },
+      "url_after": "http://localhost:8000/checkout/payment",
+      "screenshot_path": "screenshots\\showcase\\C1_promo_partial__0__5f4e2583\\step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 625,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-continue-review']"
+      },
+      "url_after": "http://localhost:8000/checkout/review",
+      "screenshot_path": "screenshots\\showcase\\C1_promo_partial__0__5f4e2583\\step_008.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 625,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 9,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='input-promo-code']",
+        "value": "TECH20"
+      },
+      "url_after": "http://localhost:8000/checkout/review",
+      "screenshot_path": "screenshots\\showcase\\C1_promo_partial__0__5f4e2583\\step_009.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 8,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 500,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 10,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-apply-promo']"
+      },
+      "url_after": "http://localhost:8000/checkout/review",
+      "screenshot_path": "screenshots\\showcase\\C1_promo_partial__0__5f4e2583\\step_010.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 9,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": "TECH20"
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 640,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 11,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-place-order']"
+      },
+      "url_after": "http://localhost:8000/order/ORD_893EE723",
+      "screenshot_path": "screenshots\\showcase\\C1_promo_partial__0__5f4e2583\\step_011.png",
+      "milestones_fired_this_step": [
+        "both_items_in_order",
+        "tech20_applied",
+        "discount_is_20pct_of_laptop_only",
+        "on_confirmation_page"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "C1/promo_partial",
+        "step": 10,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 657,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    }
+  ],
+  "final_url": "http://localhost:8000/order/ORD_893EE723",
+  "final_snapshot": {
+    "task_id": "C1/promo_partial",
+    "step": 11,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 1,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "missed_milestones": [],
+    "all_milestones": [
+      {
+        "name": "both_items_in_order",
+        "weight": 0.25,
+        "fired_at_step": 11,
+        "required": true
+      },
+      {
+        "name": "tech20_applied",
+        "weight": 0.3,
+        "fired_at_step": 11,
+        "required": true
+      },
+      {
+        "name": "discount_is_20pct_of_laptop_only",
+        "weight": 0.3,
+        "fired_at_step": 11,
+        "required": true
+      },
+      {
+        "name": "on_confirmation_page",
+        "weight": 0.15,
+        "fired_at_step": 11,
+        "required": false
+      }
+    ]
+  },
+  "agent_failure_class": null,
+  "video_path": "",
+  "error": null
+}

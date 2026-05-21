@@ -1,0 +1,563 @@
+{
+  "episode_id": "cfc094ea",
+  "task_id": "C2/split_shipping_gift",
+  "seed": 0,
+  "agent_name": "oracle",
+  "started_at": 1779395023.6761212,
+  "finished_at": 1779395037.8370292,
+  "task_brief": "I'm buying two things and they go to different places. The Bluetooth headphones \u2014 the studio pair \u2014 are a birthday gift for a friend: send them to my home address, gift-wrapped, with the note 'Happy birthday'. The wireless mouse is for me at the office, so ship that one to my work address, no gift wrap. Put it all on my Visa.",
+  "task_difficulty": "medium",
+  "task_category": "C",
+  "initial_url": "http://localhost:8000/",
+  "initial_snapshot": {
+    "task_id": "C2/split_shipping_gift",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/product/p_hp_studio"
+      },
+      "url_after": "http://localhost:8000/product/p_hp_studio",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_000.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 140,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-add-to-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 687,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/product/p_mouse_wireless"
+      },
+      "url_after": "http://localhost:8000/product/p_mouse_wireless",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 108,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-add-to-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 672,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/cart"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 94,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "summary[data-test-id='toggle-line-options-ln_af9fd163']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 532,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "check",
+      "action_args": {
+        "selector": "input[data-test-id='cb-gift-wrap-ln_af9fd163']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 515,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='input-gift-message-ln_af9fd163']",
+        "value": "Happy birthday"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 483,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-ship-address-ln_af9fd163']",
+        "value": "addr_home"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_008.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 469,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 9,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-save-line-ln_af9fd163']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_009.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 8,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 656,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 10,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "summary[data-test-id='toggle-line-options-ln_1d4e9886']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_010.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 9,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 546,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 11,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-ship-address-ln_1d4e9886']",
+        "value": "addr_work"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_011.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 10,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 483,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 12,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-save-line-ln_1d4e9886']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_012.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 11,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 625,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 13,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-proceed-checkout']"
+      },
+      "url_after": "http://localhost:8000/checkout/address",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_013.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 12,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 640,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 14,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-continue-payment']"
+      },
+      "url_after": "http://localhost:8000/checkout/payment",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_014.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 13,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 625,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 15,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-continue-review']"
+      },
+      "url_after": "http://localhost:8000/checkout/review",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_015.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 14,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 625,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 16,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-place-order']"
+      },
+      "url_after": "http://localhost:8000/order/ORD_10DA5151",
+      "screenshot_path": "screenshots\\showcase\\C2_split_shipping_gift__0__cfc094ea\\step_016.png",
+      "milestones_fired_this_step": [
+        "two_items_ordered",
+        "headphones_home_with_giftwrap",
+        "mouse_work_no_giftwrap",
+        "two_shipments_in_confirmation",
+        "on_confirmation_page"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "C2/split_shipping_gift",
+        "step": 15,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 625,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    }
+  ],
+  "final_url": "http://localhost:8000/order/ORD_10DA5151",
+  "final_snapshot": {
+    "task_id": "C2/split_shipping_gift",
+    "step": 16,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 1,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "missed_milestones": [],
+    "all_milestones": [
+      {
+        "name": "two_items_ordered",
+        "weight": 0.15,
+        "fired_at_step": 16,
+        "required": true
+      },
+      {
+        "name": "headphones_home_with_giftwrap",
+        "weight": 0.3,
+        "fired_at_step": 16,
+        "required": true
+      },
+      {
+        "name": "mouse_work_no_giftwrap",
+        "weight": 0.25,
+        "fired_at_step": 16,
+        "required": true
+      },
+      {
+        "name": "two_shipments_in_confirmation",
+        "weight": 0.2,
+        "fired_at_step": 16,
+        "required": true
+      },
+      {
+        "name": "on_confirmation_page",
+        "weight": 0.1,
+        "fired_at_step": 16,
+        "required": false
+      }
+    ]
+  },
+  "agent_failure_class": null,
+  "video_path": "",
+  "error": null
+}

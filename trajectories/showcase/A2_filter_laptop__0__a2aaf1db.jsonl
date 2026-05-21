@@ -1,0 +1,425 @@
+{
+  "episode_id": "a2aaf1db",
+  "task_id": "A2/filter_laptop",
+  "seed": 0,
+  "agent_name": "oracle",
+  "started_at": 1779394906.7021482,
+  "finished_at": 1779394918.318233,
+  "task_brief": "I'm shopping for a reliable laptop. My budget tops out at $1,000, and I only buy well-reviewed products \u2014 4.5 stars or better. Find one that fits and buy it. Ship it home and charge my Visa.",
+  "task_difficulty": "medium",
+  "task_category": "A",
+  "initial_url": "http://localhost:8000/",
+  "initial_snapshot": {
+    "task_id": "A2/filter_laptop",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/search?category=electronics"
+      },
+      "url_after": "http://localhost:8000/search?category=electronics",
+      "screenshot_path": "screenshots\\showcase\\A2_filter_laptop__0__a2aaf1db\\step_000.png",
+      "milestones_fired_this_step": [
+        "searched_or_filtered_laptops"
+      ],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "A2/filter_laptop",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 125,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='filter-category']",
+        "value": "electronics"
+      },
+      "url_after": "http://localhost:8000/search?category=electronics",
+      "screenshot_path": "screenshots\\showcase\\A2_filter_laptop__0__a2aaf1db\\step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "A2/filter_laptop",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 516,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='filter-max-price']",
+        "value": "1000"
+      },
+      "url_after": "http://localhost:8000/search?category=electronics",
+      "screenshot_path": "screenshots\\showcase\\A2_filter_laptop__0__a2aaf1db\\step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "A2/filter_laptop",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 500,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='filter-min-rating']",
+        "value": "4.5"
+      },
+      "url_after": "http://localhost:8000/search?category=electronics",
+      "screenshot_path": "screenshots\\showcase\\A2_filter_laptop__0__a2aaf1db\\step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "A2/filter_laptop",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 484,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-apply-filters']"
+      },
+      "url_after": "http://localhost:8000/search?q=&sort=featured&category=electronics&max_price=1000&min_rating=4.5",
+      "screenshot_path": "screenshots\\showcase\\A2_filter_laptop__0__a2aaf1db\\step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "A2/filter_laptop",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 657,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='card-product-p_laptop_studio']"
+      },
+      "url_after": "http://localhost:8000/product/p_laptop_studio",
+      "screenshot_path": "screenshots\\showcase\\A2_filter_laptop__0__a2aaf1db\\step_005.png",
+      "milestones_fired_this_step": [
+        "viewed_an_electronics_laptop"
+      ],
+      "running_score": 0.35,
+      "snapshot_after": {
+        "task_id": "A2/filter_laptop",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 687,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-add-to-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A2_filter_laptop__0__a2aaf1db\\step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.35,
+      "snapshot_after": {
+        "task_id": "A2/filter_laptop",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 640,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='link-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A2_filter_laptop__0__a2aaf1db\\step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.35,
+      "snapshot_after": {
+        "task_id": "A2/filter_laptop",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 655,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-proceed-checkout']"
+      },
+      "url_after": "http://localhost:8000/checkout/address",
+      "screenshot_path": "screenshots\\showcase\\A2_filter_laptop__0__a2aaf1db\\step_008.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.35,
+      "snapshot_after": {
+        "task_id": "A2/filter_laptop",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 592,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 9,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-continue-payment']"
+      },
+      "url_after": "http://localhost:8000/checkout/payment",
+      "screenshot_path": "screenshots\\showcase\\A2_filter_laptop__0__a2aaf1db\\step_009.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.35,
+      "snapshot_after": {
+        "task_id": "A2/filter_laptop",
+        "step": 8,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 655,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 10,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-continue-review']"
+      },
+      "url_after": "http://localhost:8000/checkout/review",
+      "screenshot_path": "screenshots\\showcase\\A2_filter_laptop__0__a2aaf1db\\step_010.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.35,
+      "snapshot_after": {
+        "task_id": "A2/filter_laptop",
+        "step": 9,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 594,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 11,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-place-order']"
+      },
+      "url_after": "http://localhost:8000/order/ORD_57BBE045",
+      "screenshot_path": "screenshots\\showcase\\A2_filter_laptop__0__a2aaf1db\\step_011.png",
+      "milestones_fired_this_step": [
+        "ordered_a_laptop",
+        "under_1000_subtotal",
+        "ordered_product_rating_ge_45"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "A2/filter_laptop",
+        "step": 10,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 670,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    }
+  ],
+  "final_url": "http://localhost:8000/order/ORD_57BBE045",
+  "final_snapshot": {
+    "task_id": "A2/filter_laptop",
+    "step": 11,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 1,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "missed_milestones": [],
+    "all_milestones": [
+      {
+        "name": "searched_or_filtered_laptops",
+        "weight": 0.2,
+        "fired_at_step": 0,
+        "required": false
+      },
+      {
+        "name": "viewed_an_electronics_laptop",
+        "weight": 0.15,
+        "fired_at_step": 5,
+        "required": false
+      },
+      {
+        "name": "ordered_a_laptop",
+        "weight": 0.3,
+        "fired_at_step": 11,
+        "required": true
+      },
+      {
+        "name": "under_1000_subtotal",
+        "weight": 0.2,
+        "fired_at_step": 11,
+        "required": false
+      },
+      {
+        "name": "ordered_product_rating_ge_45",
+        "weight": 0.15,
+        "fired_at_step": 11,
+        "required": false
+      }
+    ]
+  },
+  "agent_failure_class": null,
+  "video_path": "",
+  "error": null
+}

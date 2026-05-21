@@ -1,0 +1,336 @@
+{
+  "episode_id": "5247c281",
+  "task_id": "B1/add_address",
+  "seed": 0,
+  "agent_name": "oracle",
+  "started_at": 1779394958.5512006,
+  "finished_at": 1779394969.0423632,
+  "task_brief": "Add my beach house to my saved addresses \u2014 it's at 17 Ocean Drive, Montauk, NY 11954, under my name, Alice Anderson. From now on I want everything shipped there by default.",
+  "task_difficulty": "easy",
+  "task_category": "B",
+  "initial_url": "http://localhost:8000/",
+  "initial_snapshot": {
+    "task_id": "B1/add_address",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/account/addresses"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\showcase\\B1_add_address__0__5247c281\\step_000.png",
+      "milestones_fired_this_step": [
+        "navigated_to_addresses"
+      ],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 140,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='input-addr-label']",
+        "value": "Beach House"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\showcase\\B1_add_address__0__5247c281\\step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 577,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='input-addr-full-name']",
+        "value": "Alice Anderson"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\showcase\\B1_add_address__0__5247c281\\step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 500,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='input-addr-line1']",
+        "value": "17 Ocean Drive"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\showcase\\B1_add_address__0__5247c281\\step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 515,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='input-addr-city']",
+        "value": "Montauk"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\showcase\\B1_add_address__0__5247c281\\step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 500,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='input-addr-state']",
+        "value": "NY"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\showcase\\B1_add_address__0__5247c281\\step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 516,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='input-addr-zip']",
+        "value": "11954"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\showcase\\B1_add_address__0__5247c281\\step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 500,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "check",
+      "action_args": {
+        "selector": "input[data-test-id='cb-set-default']"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\showcase\\B1_add_address__0__5247c281\\step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.2,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 545,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-save-address']"
+      },
+      "url_after": "http://localhost:8000/account/addresses",
+      "screenshot_path": "screenshots\\showcase\\B1_add_address__0__5247c281\\step_008.png",
+      "milestones_fired_this_step": [
+        "address_added",
+        "address_fields_correct",
+        "address_set_as_default"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "B1/add_address",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 797,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    }
+  ],
+  "final_url": "http://localhost:8000/account/addresses",
+  "final_snapshot": {
+    "task_id": "B1/add_address",
+    "step": 8,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "missed_milestones": [],
+    "all_milestones": [
+      {
+        "name": "navigated_to_addresses",
+        "weight": 0.2,
+        "fired_at_step": 0,
+        "required": false
+      },
+      {
+        "name": "address_added",
+        "weight": 0.3,
+        "fired_at_step": 8,
+        "required": true
+      },
+      {
+        "name": "address_fields_correct",
+        "weight": 0.2,
+        "fired_at_step": 8,
+        "required": false
+      },
+      {
+        "name": "address_set_as_default",
+        "weight": 0.3,
+        "fired_at_step": 8,
+        "required": true
+      }
+    ]
+  },
+  "agent_failure_class": null,
+  "video_path": "",
+  "error": null
+}

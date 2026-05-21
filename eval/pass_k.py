@@ -123,7 +123,7 @@ def _per_task_summary(task_id: str, trajectories: list[Trajectory]) -> dict:
     n = len(trajectories)
     successes = [bool(t.verifier_result.get("success", False)) for t in trajectories]
     scores = [float(t.verifier_result.get("score", 0.0)) for t in trajectories]
-    failures = [t.verifier_result.get("primary_failure_category")
+    failures = [t.agent_failure_class
                 for t in trajectories
                 if not t.verifier_result.get("success", False)]
     failure_counts = Counter(f for f in failures if f)
@@ -224,7 +224,7 @@ def main() -> None:
             ))
             score = traj.verifier_result.get("score", 0.0)
             success = traj.verifier_result.get("success", False)
-            fail = traj.verifier_result.get("primary_failure_category") or "-"
+            fail = traj.agent_failure_class or "-"
             print(f"    seed={seed}: score={score:.2f}  success={success}  failure={fail}")
             trajs.append(traj)
 

@@ -1,0 +1,326 @@
+{
+  "episode_id": "4b166990",
+  "task_id": "B2/track_and_return",
+  "seed": 0,
+  "agent_name": "oracle",
+  "started_at": 1779394970.7198436,
+  "finished_at": 1779394980.4752328,
+  "task_brief": "The wireless mouse from my order ORD-EXISTING-1234 stopped working \u2014 it's defective. Pull up that order and check the tracking so I know it actually got delivered, then start a return for just the mouse and refund it back to my original payment method.",
+  "task_difficulty": "medium",
+  "task_category": "B",
+  "initial_url": "http://localhost:8000/",
+  "initial_snapshot": {
+    "task_id": "B2/track_and_return",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 1,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/account/orders"
+      },
+      "url_after": "http://localhost:8000/account/orders",
+      "screenshot_path": "screenshots\\showcase\\B2_track_and_return__0__4b166990\\step_000.png",
+      "milestones_fired_this_step": [
+        "navigated_to_orders"
+      ],
+      "running_score": 0.15,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 140,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='link-order-ORD-EXISTING-1234']"
+      },
+      "url_after": "http://localhost:8000/account/orders/ORD-EXISTING-1234",
+      "screenshot_path": "screenshots\\showcase\\B2_track_and_return__0__4b166990\\step_001.png",
+      "milestones_fired_this_step": [
+        "opened_order_detail"
+      ],
+      "running_score": 0.3,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 842,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/account/orders/ORD-EXISTING-1234/track"
+      },
+      "url_after": "http://localhost:8000/account/orders/ORD-EXISTING-1234/track",
+      "screenshot_path": "screenshots\\showcase\\B2_track_and_return__0__4b166990\\step_002.png",
+      "milestones_fired_this_step": [
+        "opened_tracking_modal"
+      ],
+      "running_score": 0.45,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "View tracking before initiating return.",
+      "action_error": null,
+      "action_latency_ms": 188,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/account/returns/new?order_id=ORD-EXISTING-1234"
+      },
+      "url_after": "http://localhost:8000/account/returns/new?order_id=ORD-EXISTING-1234",
+      "screenshot_path": "screenshots\\showcase\\B2_track_and_return__0__4b166990\\step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.45,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 187,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "check",
+      "action_args": {
+        "selector": "input[data-test-id='cb-return-item-ln_mouse']"
+      },
+      "url_after": "http://localhost:8000/account/returns/new?order_id=ORD-EXISTING-1234",
+      "screenshot_path": "screenshots\\showcase\\B2_track_and_return__0__4b166990\\step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.45,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 545,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-return-reason']",
+        "value": "defective"
+      },
+      "url_after": "http://localhost:8000/account/returns/new?order_id=ORD-EXISTING-1234",
+      "screenshot_path": "screenshots\\showcase\\B2_track_and_return__0__4b166990\\step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.45,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 515,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "input[data-test-id='radio-refund-original']"
+      },
+      "url_after": "http://localhost:8000/account/returns/new?order_id=ORD-EXISTING-1234",
+      "screenshot_path": "screenshots\\showcase\\B2_track_and_return__0__4b166990\\step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.45,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 577,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-submit-return']"
+      },
+      "url_after": "http://localhost:8000/account/returns",
+      "screenshot_path": "screenshots\\showcase\\B2_track_and_return__0__4b166990\\step_007.png",
+      "milestones_fired_this_step": [
+        "return_initiated",
+        "return_is_for_mouse_only",
+        "return_reason_defective",
+        "refund_method_original_payment"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "B2/track_and_return",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 1,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 797,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    }
+  ],
+  "final_url": "http://localhost:8000/account/returns",
+  "final_snapshot": {
+    "task_id": "B2/track_and_return",
+    "step": 7,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 1,
+    "returns_count": 1,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "missed_milestones": [],
+    "all_milestones": [
+      {
+        "name": "navigated_to_orders",
+        "weight": 0.15,
+        "fired_at_step": 0,
+        "required": false
+      },
+      {
+        "name": "opened_order_detail",
+        "weight": 0.15,
+        "fired_at_step": 1,
+        "required": false
+      },
+      {
+        "name": "opened_tracking_modal",
+        "weight": 0.15,
+        "fired_at_step": 2,
+        "required": false
+      },
+      {
+        "name": "return_initiated",
+        "weight": 0.25,
+        "fired_at_step": 7,
+        "required": true
+      },
+      {
+        "name": "return_is_for_mouse_only",
+        "weight": 0.2,
+        "fired_at_step": 7,
+        "required": true
+      },
+      {
+        "name": "return_reason_defective",
+        "weight": 0.05,
+        "fired_at_step": 7,
+        "required": false
+      },
+      {
+        "name": "refund_method_original_payment",
+        "weight": 0.05,
+        "fired_at_step": 7,
+        "required": false
+      }
+    ]
+  },
+  "agent_failure_class": null,
+  "video_path": "",
+  "error": null
+}

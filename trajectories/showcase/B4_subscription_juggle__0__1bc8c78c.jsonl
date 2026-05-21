@@ -1,0 +1,570 @@
+{
+  "episode_id": "1bc8c78c",
+  "task_id": "B4/subscription_juggle",
+  "seed": 0,
+  "agent_name": "oracle",
+  "started_at": 1779394996.5717888,
+  "finished_at": 1779395009.9332693,
+  "task_brief": "I'm switching my dog from kibble over to treats, so a few things in my account. First, cancel my current premium dog food subscription. Then set me up on a new one for the premium dog treats \u2014 every two weeks, six deliveries, shipped to my work address and billed to PayPal. While you're in there, turn on two-factor authentication for me; the code is 123456. Oh, and I changed my mind about the Bluetooth speaker from my recent order \u2014 send just the speaker back (keep the mouse, that one's great) and take store credit, since there's a 5% bonus for it.",
+  "task_difficulty": "hard",
+  "task_category": "B",
+  "initial_url": "http://localhost:8000/",
+  "initial_snapshot": {
+    "task_id": "B4/subscription_juggle",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 1,
+    "returns_count": 0,
+    "subscriptions_count": 1,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/account/subscriptions"
+      },
+      "url_after": "http://localhost:8000/account/subscriptions",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_000.png",
+      "milestones_fired_this_step": [
+        "avoided_returning_mouse"
+      ],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 1,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 140,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-cancel-sub-sub_existing_dogfood']"
+      },
+      "url_after": "http://localhost:8000/account/subscriptions",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_001.png",
+      "milestones_fired_this_step": [
+        "dogfood_sub_cancelled"
+      ],
+      "running_score": 0.3,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 1,
+        "applied_promo": null
+      },
+      "reasoning": "Cancel the pre-seeded active dog food subscription.",
+      "action_error": null,
+      "action_latency_ms": 641,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/product/p_pet_treats"
+      },
+      "url_after": "http://localhost:8000/product/p_pet_treats",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.3,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 1,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 94,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-toggle-subscribe']"
+      },
+      "url_after": "http://localhost:8000/product/p_pet_treats",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.3,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 1,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 515,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-cadence']",
+        "value": "biweekly"
+      },
+      "url_after": "http://localhost:8000/product/p_pet_treats",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.3,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 1,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 484,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='input-deliveries']",
+        "value": "6"
+      },
+      "url_after": "http://localhost:8000/product/p_pet_treats",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.3,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 1,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 484,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-sub-address']",
+        "value": "addr_work"
+      },
+      "url_after": "http://localhost:8000/product/p_pet_treats",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.3,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 1,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 484,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-sub-payment']",
+        "value": "pay_paypal"
+      },
+      "url_after": "http://localhost:8000/product/p_pet_treats",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.3,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 1,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 483,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-create-subscription']"
+      },
+      "url_after": "http://localhost:8000/account/subscriptions",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_008.png",
+      "milestones_fired_this_step": [
+        "dog_treats_sub_created_correctly"
+      ],
+      "running_score": 0.6,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 2,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 592,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 9,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/account/security"
+      },
+      "url_after": "http://localhost:8000/account/security",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_009.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.6,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 8,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 2,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 77,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 10,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='input-2fa-code']",
+        "value": "123456"
+      },
+      "url_after": "http://localhost:8000/account/security",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_010.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.6,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 9,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 2,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 500,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 11,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-enable-2fa']"
+      },
+      "url_after": "http://localhost:8000/account/security",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_011.png",
+      "milestones_fired_this_step": [
+        "two_fa_enabled"
+      ],
+      "running_score": 0.75,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 10,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 2,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 672,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 12,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/account/returns/new?order_id=ORD-B4-9999"
+      },
+      "url_after": "http://localhost:8000/account/returns/new?order_id=ORD-B4-9999",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_012.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.75,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 11,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 2,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 109,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 13,
+      "action_kind": "check",
+      "action_args": {
+        "selector": "input[data-test-id='cb-return-item-ln_speaker']"
+      },
+      "url_after": "http://localhost:8000/account/returns/new?order_id=ORD-B4-9999",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_013.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.75,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 12,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 2,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 531,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 14,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-return-reason']",
+        "value": "changed_mind"
+      },
+      "url_after": "http://localhost:8000/account/returns/new?order_id=ORD-B4-9999",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_014.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.75,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 13,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 2,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 484,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 15,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "input[data-test-id='radio-refund-credit']"
+      },
+      "url_after": "http://localhost:8000/account/returns/new?order_id=ORD-B4-9999",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_015.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.75,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 14,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 2,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 530,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 16,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-submit-return']"
+      },
+      "url_after": "http://localhost:8000/account/returns",
+      "screenshot_path": "screenshots\\showcase\\B4_subscription_juggle__0__1bc8c78c\\step_016.png",
+      "milestones_fired_this_step": [
+        "speaker_only_return_with_correct_options"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "B4/subscription_juggle",
+        "step": 15,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 1,
+        "subscriptions_count": 2,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 640,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    }
+  ],
+  "final_url": "http://localhost:8000/account/returns",
+  "final_snapshot": {
+    "task_id": "B4/subscription_juggle",
+    "step": 16,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 1,
+    "returns_count": 1,
+    "subscriptions_count": 2,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "missed_milestones": [],
+    "all_milestones": [
+      {
+        "name": "dogfood_sub_cancelled",
+        "weight": 0.2,
+        "fired_at_step": 1,
+        "required": true
+      },
+      {
+        "name": "dog_treats_sub_created_correctly",
+        "weight": 0.3,
+        "fired_at_step": 8,
+        "required": true
+      },
+      {
+        "name": "two_fa_enabled",
+        "weight": 0.15,
+        "fired_at_step": 11,
+        "required": true
+      },
+      {
+        "name": "speaker_only_return_with_correct_options",
+        "weight": 0.25,
+        "fired_at_step": 16,
+        "required": true
+      },
+      {
+        "name": "avoided_returning_mouse",
+        "weight": 0.1,
+        "fired_at_step": 0,
+        "required": false
+      }
+    ]
+  },
+  "agent_failure_class": null,
+  "video_path": "",
+  "error": null
+}

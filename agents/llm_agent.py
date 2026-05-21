@@ -200,7 +200,7 @@ class LLMBrowserAgent:
     ANTHROPIC_API_KEY env var.
     """
 
-    def __init__(self, model: str | None = None, max_steps: int = 30,
+    def __init__(self, model: str | None = None, max_steps: int = 50,
                  verbose: bool = True):
         from anthropic import Anthropic
         self.client = Anthropic()

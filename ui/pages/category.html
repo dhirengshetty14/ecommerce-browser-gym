@@ -34,6 +34,33 @@
   </div>
 </section>
 
+<!-- ─── SUBCATEGORY DRILL-DOWN ─────────────────────────────────── -->
+{% if subcats %}
+<nav data-test-id="subcategory-nav"
+     class="flex flex-wrap items-center gap-2 mb-5">
+  <span class="text-sm font-semibold text-slate-600 mr-1">Browse {{ meta.label }}:</span>
+  <a href="/category/{{ cat }}" data-test-id="subcat-all"
+     class="px-3 py-1.5 rounded-full text-sm border
+            {% if not sub %}bg-emerald-600 text-white border-emerald-600{% else %}bg-white border-slate-300 hover:bg-slate-50{% endif %}">
+    All
+  </a>
+  {% for sc in subcats %}
+    <a href="/category/{{ cat }}?sub={{ sc }}" data-test-id="subcat-{{ sc }}"
+       class="px-3 py-1.5 rounded-full text-sm border capitalize
+              {% if sub == sc %}bg-emerald-600 text-white border-emerald-600{% else %}bg-white border-slate-300 hover:bg-slate-50{% endif %}">
+      {{ sc }}
+    </a>
+  {% endfor %}
+</nav>
+{% if sub %}
+  <div class="breadcrumbs mb-3" data-test-id="subcategory-breadcrumb">
+    <a href="/category/{{ cat }}">{{ meta.label }}</a>
+    <span class="separator">›</span>
+    <span class="font-medium text-slate-900 capitalize">{{ sub }}</span>
+  </div>
+{% endif %}
+{% endif %}
+
 <div class="grid grid-cols-12 gap-6">
 
   <!-- ─── FILTER SIDEBAR ─────────────────────────────────────── -->

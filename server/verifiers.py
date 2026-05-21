@@ -53,26 +53,26 @@ class Probe:
 class Milestone:
     """One checkpoint along the agent's path to task completion.
 
+    A milestone is purely a SCORING unit: a weighted predicate that
+    fires once, the first time it becomes true. Milestones intentionally
+    no longer carry a per-task `failure_category` label — that approach
+    was task-coupled and didn't generalize to novel tasks. Failure
+    classification now happens at the trajectory level via the universal
+    taxonomy in ``harness/failure_classifier.py``.
+
     Attributes:
-        name:               Human-readable identifier. Shown in details.
+        name:               Human-readable identifier (used in details +
+                            for debugging which scoring unit was missed).
         weight:             Contribution to final score (sum across all
-                            milestones in a task should typically = 1.0).
+                            milestones in a task should = 1.0).
         check:              ``(probe) -> bool``. The predicate.
         required_for_success:
                             If True, missing this means the episode
                             cannot be marked ``success=True`` regardless
-                            of score. Used for goal-defining milestones
-                            (e.g. "order placed").
+                            of score (goal-defining milestones).
         fired_at_step:      Set by the harness when the milestone first
                             evaluates to True. Default -1 = never.
-        category:           Optional grouping (for analytics).
-        failure_category:   Categorical failure label when this milestone
-                            is missed. Used to build a τ-bench-style
-                            failure mode taxonomy. If unset, defaults to
-                            the milestone name. Examples:
-                              - "wrong_product"  - "missing_required_item"
-                              - "expired_coupon" - "wrong_address"
-                              - "sequence_violation" - "goal_incomplete"
+        category:           Optional grouping string (analytics only).
     """
     name: str
     weight: float
@@ -80,10 +80,6 @@ class Milestone:
     required_for_success: bool = False
     fired_at_step: int = -1
     category: str = ""
-    failure_category: str = ""
-
-    def effective_failure_category(self) -> str:
-        return self.failure_category or self.name
 
 
 # --------------------------------------------------------------------------- #
@@ -97,8 +93,15 @@ class TaskSuite:
 
     def evaluate(self, probe: Probe, current_step: int) -> dict[str, Any]:
         """Probe every milestone. For any that fire for the first time,
-        mark fired_at_step. Return a summary dict (which milestones
-        just fired, full state, aggregated score, failure mode)."""
+        mark fired_at_step. Return a summary dict (which milestones just
+        fired, aggregated score, success).
+
+        Failure CLASSIFICATION is no longer done here — it happens once
+        per episode at the trajectory level via
+        ``harness/failure_classifier.classify``. The verifier's job is
+        purely scoring + success determination. ``missed_milestones``
+        is still surfaced for debugging which scoring unit didn't fire.
+        """
         newly_fired: list[str] = []
         for m in self.milestones:
             if m.fired_at_step >= 0:
@@ -111,36 +114,17 @@ class TaskSuite:
                 m.fired_at_step = current_step
                 newly_fired.append(m.name)
 
-        # ─── Failure mode inference (τ-bench-style) ────────────────
-        # Primary failure = the first unfired REQUIRED milestone (these
-        # are the goal-defining ones; if any of them are missing the
-        # episode cannot succeed). Fall back to the highest-weight
-        # unfired milestone if no required ones are missing.
-        primary_failure: str | None = None
-        unfired_required = [m for m in self.milestones
-                            if m.required_for_success and m.fired_at_step < 0]
-        if unfired_required:
-            primary_failure = unfired_required[0].effective_failure_category()
-        elif not self.is_success():
-            unfired = [m for m in self.milestones if m.fired_at_step < 0]
-            if unfired:
-                top = max(unfired, key=lambda m: m.weight)
-                primary_failure = top.effective_failure_category()
-
         return {
             "score":   self.aggregate_score(),
             "success": self.is_success(),
             "newly_fired": newly_fired,
-            "primary_failure_category": primary_failure,
-            "failure_categories_missed": [
-                m.effective_failure_category()
-                for m in self.milestones if m.fired_at_step < 0
+            "missed_milestones": [
+                m.name for m in self.milestones if m.fired_at_step < 0
             ],
             "all_milestones": [
                 {"name": m.name, "weight": m.weight,
                  "fired_at_step": m.fired_at_step,
-                 "required": m.required_for_success,
-                 "failure_category": m.effective_failure_category()}
+                 "required": m.required_for_success}
                 for m in self.milestones
             ],
         }
@@ -198,6 +182,22 @@ def _newest_order(probe: Probe):
                key=lambda o: o.placed_at)
 
 
+def _log_has(probe: Probe, kind: str, **fields: Any) -> bool:
+    """True if the action_log contains an event of `kind` whose fields
+    all match. Used by taxonomy-navigation verifiers to confirm the
+    agent browsed categories/subcategories rather than searching."""
+    for e in probe.state.action_log:
+        if e.get("kind") != kind:
+            continue
+        if all(e.get(k) == v for k, v in fields.items()):
+            return True
+    return False
+
+
+def _log_count(probe: Probe, kind: str) -> int:
+    return sum(1 for e in probe.state.action_log if e.get("kind") == kind)
+
+
 # --------------------------------------------------------------------------- #
 # Per-task suite builders
 # --------------------------------------------------------------------------- #
@@ -218,8 +218,7 @@ def _suite_a1() -> TaskSuite:
         task_id="A1/buy_wireless_mouse",
         milestones=[
             Milestone("viewed_product_page", weight=0.15,
-                      check=lambda p: _on_url(p, "/product/p_mouse_wireless"),
-                      failure_category="never_viewed_product"),
+                      check=lambda p: _on_url(p, "/product/p_mouse_wireless")),
             Milestone("added_target_to_cart", weight=0.20,
                       check=lambda p: any(
                           it.product_id == target
@@ -228,28 +227,23 @@ def _suite_a1() -> TaskSuite:
                           it.product_id == target
                           for o in p.state.orders.values()
                           for it in o.items
-                      ),
-                      failure_category="wrong_product_in_cart"),
+                      )),
             Milestone("avoided_all_distractors", weight=0.10,
                       check=lambda p: not any(
                           it.product_id in mouse_distractors
                           for o in p.state.orders.values()
                           for it in o.items
-                      ),
-                      failure_category="picked_distractor_product"),
+                      )),
             Milestone("reached_checkout", weight=0.10,
-                      check=lambda p: _on_url(p, "/checkout"),
-                      failure_category="never_reached_checkout"),
+                      check=lambda p: _on_url(p, "/checkout")),
             Milestone("order_placed", weight=0.30,
                       check=lambda p: _order_with(
                           p, product_ids=(target,), exactly_n_items=1,
                           exclude_product_ids=mouse_distractors,
                       ),
-                      required_for_success=True,
-                      failure_category="goal_incomplete_no_order"),
+                      required_for_success=True),
             Milestone("on_confirmation_page", weight=0.10,
-                      check=lambda p: _on_url(p, "/order/"),
-                      failure_category="missed_confirmation_page"),
+                      check=lambda p: _on_url(p, "/order/")),
             Milestone("home_address_used", weight=0.05,
                       check=lambda p: (
                           _newest_order(p) is not None
@@ -257,8 +251,7 @@ def _suite_a1() -> TaskSuite:
                               it.ship_to_address_id == "addr_home"
                               for it in _newest_order(p).items
                           )
-                      ),
-                      failure_category="wrong_shipping_address"),
+                      )),
         ],
     )
 
@@ -273,8 +266,7 @@ def _suite_a2() -> TaskSuite:
                       check=lambda p: (
                           _on_url(p, "/search")
                           or _on_url(p, "/category/electronics")
-                      ),
-                      failure_category="never_searched"),
+                      )),
             Milestone("viewed_an_electronics_laptop", weight=0.15,
                       check=lambda p: any(
                           s in p.url for s in (
@@ -329,7 +321,8 @@ def _suite_a3() -> TaskSuite:
                           it.variant_id == "v_lt_32_1tb"
                           for o in p.state.orders.values()
                           for it in o.items
-                      )),
+                      ),
+                      required_for_success=True),
             Milestone("ordered_wireless_mouse", weight=0.15,
                       check=lambda p: _order_with(
                           p, product_ids=("p_mouse_wireless",),
@@ -518,19 +511,15 @@ def _suite_c1() -> TaskSuite:
         milestones=[
             Milestone("both_items_in_order", weight=0.25,
                       check=_order_has_both,
-                      required_for_success=True,
-                      failure_category="missing_required_item"),
+                      required_for_success=True),
             Milestone("tech20_applied", weight=0.30,
                       check=_used_correct_promo,
-                      required_for_success=True,
-                      failure_category="wrong_or_missing_promo"),
+                      required_for_success=True),
             Milestone("discount_is_20pct_of_laptop_only", weight=0.30,
                       check=_discount_matches_20pct_of_laptop_only,
-                      required_for_success=True,
-                      failure_category="discount_applied_to_wrong_line"),
+                      required_for_success=True),
             Milestone("on_confirmation_page", weight=0.15,
-                      check=lambda p: _on_url(p, "/order/"),
-                      failure_category="missed_confirmation_page"),
+                      check=lambda p: _on_url(p, "/order/")),
         ],
     )
 
@@ -699,26 +688,19 @@ def _suite_a4() -> TaskSuite:
         task_id="A4/home_office_bundle",
         milestones=[
             Milestone("all_four_required_items", weight=0.20,
-                      check=_has_all_required, required_for_success=True,
-                      failure_category="missing_required_item"),
+                      check=_has_all_required, required_for_success=True),
             Milestone("no_forbidden_distractor", weight=0.15,
-                      check=_no_forbidden,
-                      failure_category="picked_distractor_product"),
+                      check=_no_forbidden),
             Milestone("exactly_four_line_items", weight=0.10,
-                      check=_exactly_four_items,
-                      failure_category="wrong_item_count"),
+                      check=_exactly_four_items),
             Milestone("all_items_electronics_category", weight=0.10,
-                      check=_all_electronics,
-                      failure_category="wrong_category"),
+                      check=_all_electronics),
             Milestone("subtotal_under_550", weight=0.15,
-                      check=_subtotal_under_550,
-                      failure_category="over_budget"),
+                      check=_subtotal_under_550),
             Milestone("shipped_to_work_address", weight=0.10,
-                      check=_shipped_to_work,
-                      failure_category="wrong_shipping_address"),
+                      check=_shipped_to_work),
             Milestone("paid_with_paypal", weight=0.10,
-                      check=_paid_with_paypal,
-                      failure_category="wrong_payment_method"),
+                      check=_paid_with_paypal),
             Milestone("on_confirmation_page", weight=0.10,
                       check=lambda p: _on_url(p, "/order/")),
         ],
@@ -775,23 +757,18 @@ def _suite_b4() -> TaskSuite:
         milestones=[
             Milestone("dogfood_sub_cancelled", weight=0.20,
                       check=_dogfood_cancelled,
-                      required_for_success=True,
-                      failure_category="failed_to_cancel_subscription"),
+                      required_for_success=True),
             Milestone("dog_treats_sub_created_correctly", weight=0.30,
                       check=_new_treats_subscription,
-                      required_for_success=True,
-                      failure_category="wrong_subscription_setup"),
+                      required_for_success=True),
             Milestone("two_fa_enabled", weight=0.15,
                       check=_two_fa_on,
-                      required_for_success=True,
-                      failure_category="two_fa_not_enabled"),
+                      required_for_success=True),
             Milestone("speaker_only_return_with_correct_options", weight=0.25,
                       check=_speaker_return_only,
-                      required_for_success=True,
-                      failure_category="wrong_return_setup"),
+                      required_for_success=True),
             Milestone("avoided_returning_mouse", weight=0.10,
-                      check=_no_mouse_in_return,
-                      failure_category="returned_wrong_item"),
+                      check=_no_mouse_in_return),
         ],
     )
 
@@ -867,16 +844,18 @@ def _suite_c4() -> TaskSuite:
         )
 
     def _tech20_applied_correctly(p: Probe) -> bool:
+        """TECH20 = 20% off electronics. In C4 there are TWO electronics
+        items (laptop + wireless mouse), so the expected discount is
+        20% of the sum of BOTH. The t-shirt (clothing) is not eligible."""
         o = _newest_order(p)
         if o is None or o.promo_code != "TECH20":
             return False
-        laptop_total = sum(
+        electronics_total = sum(
             it.unit_price * it.quantity
             for it in o.items
             if p.state.products[it.product_id].category == "electronics"
-            and it.product_id == "p_laptop_studio"
         )
-        expected = round(laptop_total * 0.20, 2)
+        expected = round(electronics_total * 0.20, 2)
         return abs(o.discount - expected) <= 0.05
 
     def _paid_with_visa(p: Probe) -> bool:
@@ -887,30 +866,102 @@ def _suite_c4() -> TaskSuite:
         task_id="C4/mega_checkout",
         milestones=[
             Milestone("all_three_required_items", weight=0.15,
-                      check=_has_all_three, required_for_success=True,
-                      failure_category="missing_required_item"),
+                      check=_has_all_three, required_for_success=True),
             Milestone("no_distractor_picked", weight=0.10,
-                      check=_no_distractors,
-                      failure_category="picked_distractor_product"),
+                      check=_no_distractors),
             Milestone("tshirt_size_m_black", weight=0.10,
-                      check=_tshirt_size_m_black,
-                      failure_category="wrong_variant"),
+                      check=_tshirt_size_m_black),
             Milestone("laptop_shipped_to_work", weight=0.10,
-                      check=_laptop_to_work,
-                      failure_category="wrong_shipping_address"),
+                      check=_laptop_to_work),
             Milestone("tshirt_home_with_giftwrap_message", weight=0.15,
-                      check=_tshirt_home_giftwrap_message,
-                      failure_category="wrong_gift_options"),
+                      check=_tshirt_home_giftwrap_message),
             Milestone("mouse_home_no_giftwrap", weight=0.10,
-                      check=_mouse_home_no_giftwrap,
-                      failure_category="wrong_gift_options"),
-            Milestone("tech20_applied_to_laptop_only", weight=0.15,
+                      check=_mouse_home_no_giftwrap),
+            Milestone("tech20_discount_on_all_electronics", weight=0.15,
                       check=_tech20_applied_correctly,
-                      required_for_success=True,
-                      failure_category="discount_applied_to_wrong_line"),
+                      required_for_success=True),
             Milestone("paid_with_visa", weight=0.05,
-                      check=_paid_with_visa,
-                      failure_category="wrong_payment_method"),
+                      check=_paid_with_visa),
+            Milestone("on_confirmation_page", weight=0.10,
+                      check=lambda p: _on_url(p, "/order/")),
+        ],
+    )
+
+
+# --------------------------------------------------------------------------- #
+# Category D: taxonomy navigation
+# --------------------------------------------------------------------------- #
+
+# --- D1: browse_audio_no_search ---
+
+def _suite_d1() -> TaskSuite:
+    """Browse Audio -> headphones, pick a 4.5+ pair, WITHOUT the search bar."""
+    QUALIFYING_HP = {"p_hp_premium", "p_hp_studio", "p_hp_studio_pro"}  # rating >= 4.5
+
+    def _ordered_qualifying_hp(p: Probe) -> bool:
+        o = _newest_order(p)
+        if o is None:
+            return False
+        return any(
+            (it.product_id in QUALIFYING_HP
+             and p.state.products[it.product_id].rating >= 4.5)
+            for it in o.items
+        )
+
+    return TaskSuite(
+        task_id="D1/browse_audio_no_search",
+        milestones=[
+            Milestone("visited_audio_category", weight=0.20,
+                      check=lambda p: _log_has(p, "view_category", category="audio"),
+                      required_for_success=True),
+            Milestone("browsed_headphones_subcategory", weight=0.20,
+                      check=lambda p: _log_has(p, "view_subcategory",
+                                               category="audio", sub="headphones")),
+            Milestone("avoided_search_bar", weight=0.15,
+                      check=lambda p: _log_count(p, "search") == 0),
+            Milestone("ordered_qualifying_headphone", weight=0.35,
+                      check=_ordered_qualifying_hp,
+                      required_for_success=True),
+            Milestone("on_confirmation_page", weight=0.10,
+                      check=lambda p: _on_url(p, "/order/")),
+        ],
+    )
+
+
+# --- D2: drill_electronics_keyboards ---
+
+def _suite_d2() -> TaskSuite:
+    """Drill Electronics -> keyboards subcategory, buy the mechanical one
+    (p_kb_mech), avoiding the membrane keyboard. Browse, don't search."""
+
+    def _ordered_mechanical(p: Probe) -> bool:
+        return _order_with(p, product_ids=("p_kb_mech",))
+
+    def _avoided_membrane(p: Probe) -> bool:
+        o = _newest_order(p)
+        if o is None:
+            return True  # nothing ordered yet → hasn't picked the wrong one
+        return not any(it.product_id == "p_kb_membrane" for it in o.items)
+
+    return TaskSuite(
+        task_id="D2/drill_electronics_keyboards",
+        milestones=[
+            Milestone("visited_electronics_category", weight=0.15,
+                      check=lambda p: _log_has(p, "view_category",
+                                               category="electronics"),
+                      required_for_success=True),
+            Milestone("drilled_keyboards_subcategory", weight=0.25,
+                      check=lambda p: _log_has(p, "view_subcategory",
+                                               category="electronics",
+                                               sub="keyboards"),
+                      required_for_success=True),
+            Milestone("avoided_search_bar", weight=0.15,
+                      check=lambda p: _log_count(p, "search") == 0),
+            Milestone("ordered_mechanical_keyboard", weight=0.30,
+                      check=_ordered_mechanical,
+                      required_for_success=True),
+            Milestone("avoided_membrane_keyboard", weight=0.05,
+                      check=_avoided_membrane),
             Milestone("on_confirmation_page", weight=0.10,
                       check=lambda p: _on_url(p, "/order/")),
         ],
@@ -934,6 +985,8 @@ SUITE_FACTORIES = {
     "C2/split_shipping_gift":    _suite_c2,
     "C3/subscription_loyalty":   _suite_c3,
     "C4/mega_checkout":          _suite_c4,
+    "D1/browse_audio_no_search":     _suite_d1,
+    "D2/drill_electronics_keyboards": _suite_d2,
 }
 
 

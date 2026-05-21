@@ -1,0 +1,345 @@
+{
+  "episode_id": "ee3629fc",
+  "task_id": "D2/drill_electronics_keyboards",
+  "seed": 0,
+  "agent_name": "oracle",
+  "started_at": 1779397333.9754024,
+  "finished_at": 1779397343.548938,
+  "task_brief": "Walk me through the Electronics department to the keyboards section \u2014 I want to see what's there rather than search. Pick me out a proper mechanical keyboard with real tactile feedback, not one of the cheap membrane ones. Buy it, ship home, pay with Visa.",
+  "task_difficulty": "hard",
+  "task_category": "D",
+  "initial_url": "http://localhost:8000/",
+  "initial_snapshot": {
+    "task_id": "D2/drill_electronics_keyboards",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/category/electronics"
+      },
+      "url_after": "http://localhost:8000/category/electronics",
+      "screenshot_path": "screenshots\\showcase\\D2_drill_electronics_keyboards__0__ee3629fc\\step_000.png",
+      "milestones_fired_this_step": [
+        "visited_electronics_category",
+        "avoided_search_bar",
+        "avoided_membrane_keyboard"
+      ],
+      "running_score": 0.35,
+      "snapshot_after": {
+        "task_id": "D2/drill_electronics_keyboards",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Browse the Electronics department.",
+      "action_error": null,
+      "action_latency_ms": 125,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/category/electronics?sub=keyboards"
+      },
+      "url_after": "http://localhost:8000/category/electronics?sub=keyboards",
+      "screenshot_path": "screenshots\\showcase\\D2_drill_electronics_keyboards__0__ee3629fc\\step_001.png",
+      "milestones_fired_this_step": [
+        "drilled_keyboards_subcategory"
+      ],
+      "running_score": 0.6,
+      "snapshot_after": {
+        "task_id": "D2/drill_electronics_keyboards",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Drill into the keyboards subcategory.",
+      "action_error": null,
+      "action_latency_ms": 94,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='card-product-p_kb_mech']"
+      },
+      "url_after": "http://localhost:8000/product/p_kb_mech",
+      "screenshot_path": "screenshots\\showcase\\D2_drill_electronics_keyboards__0__ee3629fc\\step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.6,
+      "snapshot_after": {
+        "task_id": "D2/drill_electronics_keyboards",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 640,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-add-to-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\D2_drill_electronics_keyboards__0__ee3629fc\\step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.6,
+      "snapshot_after": {
+        "task_id": "D2/drill_electronics_keyboards",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 656,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='link-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\D2_drill_electronics_keyboards__0__ee3629fc\\step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.6,
+      "snapshot_after": {
+        "task_id": "D2/drill_electronics_keyboards",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 655,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-proceed-checkout']"
+      },
+      "url_after": "http://localhost:8000/checkout/address",
+      "screenshot_path": "screenshots\\showcase\\D2_drill_electronics_keyboards__0__ee3629fc\\step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.6,
+      "snapshot_after": {
+        "task_id": "D2/drill_electronics_keyboards",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 656,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-continue-payment']"
+      },
+      "url_after": "http://localhost:8000/checkout/payment",
+      "screenshot_path": "screenshots\\showcase\\D2_drill_electronics_keyboards__0__ee3629fc\\step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.6,
+      "snapshot_after": {
+        "task_id": "D2/drill_electronics_keyboards",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 625,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-continue-review']"
+      },
+      "url_after": "http://localhost:8000/checkout/review",
+      "screenshot_path": "screenshots\\showcase\\D2_drill_electronics_keyboards__0__ee3629fc\\step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.6,
+      "snapshot_after": {
+        "task_id": "D2/drill_electronics_keyboards",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 640,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-place-order']"
+      },
+      "url_after": "http://localhost:8000/order/ORD_AD8B1F27",
+      "screenshot_path": "screenshots\\showcase\\D2_drill_electronics_keyboards__0__ee3629fc\\step_008.png",
+      "milestones_fired_this_step": [
+        "ordered_mechanical_keyboard",
+        "on_confirmation_page"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "D2/drill_electronics_keyboards",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 655,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    }
+  ],
+  "final_url": "http://localhost:8000/order/ORD_AD8B1F27",
+  "final_snapshot": {
+    "task_id": "D2/drill_electronics_keyboards",
+    "step": 8,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 1,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "missed_milestones": [],
+    "all_milestones": [
+      {
+        "name": "visited_electronics_category",
+        "weight": 0.15,
+        "fired_at_step": 0,
+        "required": true
+      },
+      {
+        "name": "drilled_keyboards_subcategory",
+        "weight": 0.25,
+        "fired_at_step": 1,
+        "required": true
+      },
+      {
+        "name": "avoided_search_bar",
+        "weight": 0.15,
+        "fired_at_step": 0,
+        "required": false
+      },
+      {
+        "name": "ordered_mechanical_keyboard",
+        "weight": 0.3,
+        "fired_at_step": 8,
+        "required": true
+      },
+      {
+        "name": "avoided_membrane_keyboard",
+        "weight": 0.05,
+        "fired_at_step": 0,
+        "required": false
+      },
+      {
+        "name": "on_confirmation_page",
+        "weight": 0.1,
+        "fired_at_step": 8,
+        "required": false
+      }
+    ]
+  },
+  "agent_failure_class": null,
+  "video_path": "",
+  "error": null
+}

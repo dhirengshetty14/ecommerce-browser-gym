@@ -1,0 +1,278 @@
+{
+  "episode_id": "de3ed409",
+  "task_id": "C3/subscription_loyalty",
+  "seed": 0,
+  "agent_name": "oracle",
+  "started_at": 1779395039.0271072,
+  "finished_at": 1779395046.7766857,
+  "task_brief": "Set me up on auto-delivery for the premium dog food \u2014 once a week, four deliveries to start. Ship it home and bill my Visa. I'm a gold member, so I should be getting my loyalty discount automatically on each delivery.",
+  "task_difficulty": "hard",
+  "task_category": "C",
+  "initial_url": "http://localhost:8000/",
+  "initial_snapshot": {
+    "task_id": "C3/subscription_loyalty",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/product/p_pet_food"
+      },
+      "url_after": "http://localhost:8000/product/p_pet_food",
+      "screenshot_path": "screenshots\\showcase\\C3_subscription_loyalty__0__de3ed409\\step_000.png",
+      "milestones_fired_this_step": [
+        "on_pet_food_product_page"
+      ],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "C3/subscription_loyalty",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 125,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-toggle-subscribe']"
+      },
+      "url_after": "http://localhost:8000/product/p_pet_food",
+      "screenshot_path": "screenshots\\showcase\\C3_subscription_loyalty__0__de3ed409\\step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "C3/subscription_loyalty",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 561,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-cadence']",
+        "value": "weekly"
+      },
+      "url_after": "http://localhost:8000/product/p_pet_food",
+      "screenshot_path": "screenshots\\showcase\\C3_subscription_loyalty__0__de3ed409\\step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "C3/subscription_loyalty",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 484,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='input-deliveries']",
+        "value": "4"
+      },
+      "url_after": "http://localhost:8000/product/p_pet_food",
+      "screenshot_path": "screenshots\\showcase\\C3_subscription_loyalty__0__de3ed409\\step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "C3/subscription_loyalty",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 484,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-sub-address']",
+        "value": "addr_home"
+      },
+      "url_after": "http://localhost:8000/product/p_pet_food",
+      "screenshot_path": "screenshots\\showcase\\C3_subscription_loyalty__0__de3ed409\\step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "C3/subscription_loyalty",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 484,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-sub-payment']",
+        "value": "pay_visa"
+      },
+      "url_after": "http://localhost:8000/product/p_pet_food",
+      "screenshot_path": "screenshots\\showcase\\C3_subscription_loyalty__0__de3ed409\\step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "C3/subscription_loyalty",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 483,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-create-subscription']"
+      },
+      "url_after": "http://localhost:8000/account/subscriptions",
+      "screenshot_path": "screenshots\\showcase\\C3_subscription_loyalty__0__de3ed409\\step_006.png",
+      "milestones_fired_this_step": [
+        "subscription_created",
+        "loyalty_10pct_recorded",
+        "on_subscription_confirmation"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "C3/subscription_loyalty",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 1,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 625,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    }
+  ],
+  "final_url": "http://localhost:8000/account/subscriptions",
+  "final_snapshot": {
+    "task_id": "C3/subscription_loyalty",
+    "step": 6,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 1,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "missed_milestones": [],
+    "all_milestones": [
+      {
+        "name": "on_pet_food_product_page",
+        "weight": 0.1,
+        "fired_at_step": 0,
+        "required": false
+      },
+      {
+        "name": "subscription_created",
+        "weight": 0.4,
+        "fired_at_step": 6,
+        "required": true
+      },
+      {
+        "name": "loyalty_10pct_recorded",
+        "weight": 0.3,
+        "fired_at_step": 6,
+        "required": true
+      },
+      {
+        "name": "on_subscription_confirmation",
+        "weight": 0.2,
+        "fired_at_step": 6,
+        "required": false
+      }
+    ]
+  },
+  "agent_failure_class": null,
+  "video_path": "",
+  "error": null
+}

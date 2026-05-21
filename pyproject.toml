@@ -16,6 +16,7 @@ dependencies = [
   "anthropic>=0.40",
   "openai>=1.30",
   "litellm>=1.40",
+  "pillow>=10.0",                 # Set-of-Mark image annotation
 ]
 
 [project.optional-dependencies]

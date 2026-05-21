@@ -1,0 +1,436 @@
+{
+  "episode_id": "15c2c237",
+  "task_id": "A3/configure_bundle",
+  "seed": 0,
+  "agent_name": "oracle",
+  "started_at": 1779394919.468022,
+  "finished_at": 1779394931.789002,
+  "task_brief": "I'm putting together a work setup. Get me the Studio Laptop configured with the most memory and storage it offers \u2014 I want 32GB of RAM and a 1TB SSD. Add a wireless mouse and a mechanical keyboard to go with it. Keep the whole cart under $1,900. Ship everything home and pay with my Visa.",
+  "task_difficulty": "hard",
+  "task_category": "A",
+  "initial_url": "http://localhost:8000/",
+  "initial_snapshot": {
+    "task_id": "A3/configure_bundle",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/product/p_laptop_studio"
+      },
+      "url_after": "http://localhost:8000/product/p_laptop_studio",
+      "screenshot_path": "screenshots\\showcase\\A3_configure_bundle__0__15c2c237\\step_000.png",
+      "milestones_fired_this_step": [
+        "opened_variant_picker_on_laptop"
+      ],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "A3/configure_bundle",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 140,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "select",
+      "action_args": {
+        "selector": "select[data-test-id='select-variant']",
+        "value": "v_lt_32_1tb"
+      },
+      "url_after": "http://localhost:8000/product/p_laptop_studio",
+      "screenshot_path": "screenshots\\showcase\\A3_configure_bundle__0__15c2c237\\step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "A3/configure_bundle",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 547,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-add-to-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A3_configure_bundle__0__15c2c237\\step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "A3/configure_bundle",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 844,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/product/p_mouse_wireless"
+      },
+      "url_after": "http://localhost:8000/product/p_mouse_wireless",
+      "screenshot_path": "screenshots\\showcase\\A3_configure_bundle__0__15c2c237\\step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "A3/configure_bundle",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 187,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-add-to-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A3_configure_bundle__0__15c2c237\\step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "A3/configure_bundle",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 655,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/product/p_kb_mech"
+      },
+      "url_after": "http://localhost:8000/product/p_kb_mech",
+      "screenshot_path": "screenshots\\showcase\\A3_configure_bundle__0__15c2c237\\step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "A3/configure_bundle",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 2,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 77,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-add-to-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A3_configure_bundle__0__15c2c237\\step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "A3/configure_bundle",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 3,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 655,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='link-cart']"
+      },
+      "url_after": "http://localhost:8000/cart",
+      "screenshot_path": "screenshots\\showcase\\A3_configure_bundle__0__15c2c237\\step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "A3/configure_bundle",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 3,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 687,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-proceed-checkout']"
+      },
+      "url_after": "http://localhost:8000/checkout/address",
+      "screenshot_path": "screenshots\\showcase\\A3_configure_bundle__0__15c2c237\\step_008.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "A3/configure_bundle",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 3,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 719,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 9,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-continue-payment']"
+      },
+      "url_after": "http://localhost:8000/checkout/payment",
+      "screenshot_path": "screenshots\\showcase\\A3_configure_bundle__0__15c2c237\\step_009.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "A3/configure_bundle",
+        "step": 8,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 3,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 750,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 10,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "a[data-test-id='btn-continue-review']"
+      },
+      "url_after": "http://localhost:8000/checkout/review",
+      "screenshot_path": "screenshots\\showcase\\A3_configure_bundle__0__15c2c237\\step_010.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.1,
+      "snapshot_after": {
+        "task_id": "A3/configure_bundle",
+        "step": 9,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 3,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 688,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "step_idx": 11,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-place-order']"
+      },
+      "url_after": "http://localhost:8000/order/ORD_E8A27F6E",
+      "screenshot_path": "screenshots\\showcase\\A3_configure_bundle__0__15c2c237\\step_011.png",
+      "milestones_fired_this_step": [
+        "ordered_correct_laptop_variant",
+        "ordered_wireless_mouse",
+        "ordered_mechanical_keyboard",
+        "subtotal_under_1900",
+        "three_items_in_order",
+        "on_confirmation_page"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "A3/configure_bundle",
+        "step": 10,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 797,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0
+    }
+  ],
+  "final_url": "http://localhost:8000/order/ORD_E8A27F6E",
+  "final_snapshot": {
+    "task_id": "A3/configure_bundle",
+    "step": 11,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 1,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "missed_milestones": [],
+    "all_milestones": [
+      {
+        "name": "opened_variant_picker_on_laptop",
+        "weight": 0.1,
+        "fired_at_step": 0,
+        "required": false
+      },
+      {
+        "name": "ordered_correct_laptop_variant",
+        "weight": 0.25,
+        "fired_at_step": 11,
+        "required": true
+      },
+      {
+        "name": "ordered_wireless_mouse",
+        "weight": 0.15,
+        "fired_at_step": 11,
+        "required": false
+      },
+      {
+        "name": "ordered_mechanical_keyboard",
+        "weight": 0.15,
+        "fired_at_step": 11,
+        "required": false
+      },
+      {
+        "name": "subtotal_under_1900",
+        "weight": 0.2,
+        "fired_at_step": 11,
+        "required": false
+      },
+      {
+        "name": "three_items_in_order",
+        "weight": 0.1,
+        "fired_at_step": 11,
+        "required": true
+      },
+      {
+        "name": "on_confirmation_page",
+        "weight": 0.05,
+        "fired_at_step": 11,
+        "required": false
+      }
+    ]
+  },
+  "agent_failure_class": null,
+  "video_path": "",
+  "error": null
+}

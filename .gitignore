@@ -37,3 +37,7 @@ screenshots/
 !demos/
 !trajectories/llm/
 !trajectories/oracle/
+
+# SoM inspection artifacts (local only)
+som_inspection/
+test_som_home_annotated.png

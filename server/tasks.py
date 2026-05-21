@@ -64,120 +64,131 @@ def _alice() -> User:
 # Brief copy (these are what shows up in the task banner)
 # --------------------------------------------------------------------------- #
 
+# Briefs are written the way a REAL USER would phrase a request — natural
+# language with intent and context, NOT spoon-fed "(NOT the X, NOT the Y)"
+# disambiguation. The agent has to interpret the intent and decide which
+# product/option matches, just like a human shopper would. Adversarial
+# look-alikes in the catalog (gaming mouse, office-category monitor, dog
+# treats vs food, Studio Laptop vs Studio Laptop Pro, etc.) are the traps
+# the agent must reason past on its own.
 BRIEFS = {
     "A1": (
-        "You're logged in as Alice. Find and buy exactly 1 unit of the "
-        "'Wireless Mouse' (NOT the 'Wireless Gaming Mouse' — that's a "
-        "different product). Use your default Home address and Visa "
-        "card. When the confirmation page shows your order ID, click "
-        "'Submit task'."
+        "I need a basic wireless mouse for my office desk — just the "
+        "standard model for everyday clicking, nothing specialized. "
+        "Order one for me, ship it to my home, and put it on my Visa."
     ),
     "A2": (
-        "Find a laptop in the Electronics category under $1,000 with a "
-        "rating of 4.5 stars or higher. Buy 1 unit (default variant is "
-        "fine). Use Home + Visa. Submit when confirmation shows."
+        "I'm shopping for a reliable laptop. My budget tops out at "
+        "$1,000, and I only buy well-reviewed products — 4.5 stars or "
+        "better. Find one that fits and buy it. Ship it home and charge "
+        "my Visa."
     ),
     "A3": (
-        "Configure and buy ONE laptop with the '32GB RAM / 1TB SSD' "
-        "variant. Add the Wireless Mouse and the Mechanical Keyboard "
-        "as accessories. Combined cart subtotal must be under $1,900. "
-        "Ship to Home with Visa. Submit when the order is placed."
+        "I'm putting together a work setup. Get me the Studio Laptop "
+        "configured with the most memory and storage it offers — I want "
+        "32GB of RAM and a 1TB SSD. Add a wireless mouse and a mechanical "
+        "keyboard to go with it. Keep the whole cart under $1,900. Ship "
+        "everything home and pay with my Visa."
     ),
 
     "B1": (
-        "You're logged in as Alice. Go to your Account → Addresses and "
-        "add a new address. Label it 'Beach House', recipient 'Alice "
-        "Anderson', line 1 '17 Ocean Drive', city 'Montauk', state 'NY', "
-        "zip '11954'. Set it as the new default address. Submit when "
-        "you see the new address in the list marked default."
+        "Add my beach house to my saved addresses — it's at 17 Ocean "
+        "Drive, Montauk, NY 11954, under my name, Alice Anderson. From "
+        "now on I want everything shipped there by default."
     ),
     "B2": (
-        "Order ORDER_REF_HERE is in your order history. View its tracking "
-        "modal (the carrier and tracking number should be visible), then "
-        "initiate a return for the Wireless Mouse only. Reason: "
-        "'defective'. Refund method: 'original payment'. Submit when the "
-        "return is created."
+        "The wireless mouse from my order ORDER_REF_HERE stopped working "
+        "— it's defective. Pull up that order and check the tracking so I "
+        "know it actually got delivered, then start a return for just the "
+        "mouse and refund it back to my original payment method."
     ),
     "B3": (
-        "Make these account changes in one session: "
-        "(1) set 'Work' as your default shipping address; "
-        "(2) add a new payment method — label 'Backup Card', kind "
-        "'credit_card', card number '4111111111111111', expires '12/29', "
-        "CVV '123', and set it as the new default payment; "
-        "(3) enable two-factor authentication using code '123456'. "
-        "Submit once all three are done."
+        "Tidy up my account for me, please. Make my Work address the "
+        "default for shipping. Add a backup credit card — number "
+        "4111 1111 1111 1111, expiring 12/29, CVV 123 — and make that my "
+        "default way to pay. And turn on two-factor authentication; use "
+        "123456 as the verification code."
     ),
 
     "C1": (
-        "Add 1 of the Studio Laptop AND 1 of the Cotton T-Shirt to your "
-        "cart. At checkout, apply promo code 'TECH20' — it should "
-        "discount only the electronics item, not the t-shirt. Place the "
-        "order using Home + Visa. Submit when confirmation shows the "
-        "discount applied to the laptop only."
+        "Grab me a Studio Laptop and a plain cotton t-shirt. I've got a "
+        "promo code, TECH20, that takes money off electronics — apply it "
+        "at checkout. Ship the order to my home and pay with my Visa."
     ),
     "C2": (
-        "Buy 1 Bluetooth Headphone Studio AND 1 Wireless Mouse. Ship "
-        "the headphones to your 'Home' address with gift wrap (gift "
-        "message: 'Happy birthday'). Ship the mouse to your 'Work' "
-        "address with NO gift wrap. Pay with Visa. Submit when "
-        "confirmation shows TWO shipments."
+        "I'm buying two things and they go to different places. The "
+        "Bluetooth headphones — the studio pair — are a birthday gift for "
+        "a friend: send them to my home address, gift-wrapped, with the "
+        "note 'Happy birthday'. The wireless mouse is for me at the "
+        "office, so ship that one to my work address, no gift wrap. Put "
+        "it all on my Visa."
     ),
     "C3": (
-        "Set up a weekly subscription for the Premium Dog Food: "
-        "4 deliveries, ship to Home, pay with Visa. As a gold-tier "
-        "member you should automatically receive a 10% loyalty "
-        "discount. Submit when the subscription confirmation page "
-        "shows the 4-delivery schedule and the loyalty discount line."
+        "Set me up on auto-delivery for the premium dog food — once a "
+        "week, four deliveries to start. Ship it home and bill my Visa. "
+        "I'm a gold member, so I should be getting my loyalty discount "
+        "automatically on each delivery."
     ),
 
     # ──────────────────────────────────────────────────────────────
-    # VERY HARD tasks (May 2026) — each tests a distinct edge case
-    # cluster plus heavy adversarial pressure.
+    # VERY HARD tasks — multi-step, multi-constraint, real-user phrasing.
+    # No "(NOT the X)" hand-holding: the agent must infer which product
+    # and option each natural description points to.
     # ──────────────────────────────────────────────────────────────
 
     "A4": (
-        "Build a complete home office bundle in a single order: "
-        "(1) ONE 27-inch monitor (the 1440p one, not the 24-inch), "
-        "(2) ONE mechanical keyboard (not the wireless one, not the "
-        "mini variant, not the membrane keyboard), "
-        "(3) ONE Wireless Ergonomic Mouse (NOT the standard Wireless "
-        "Mouse and NOT the Gaming Mouse), "
-        "(4) ONE USB-C Fast Charger. "
-        "ALL FOUR items must be in the 'electronics' category — the "
-        "'office' category contains adversarial look-alikes. "
-        "Cart subtotal MUST be under $550. Ship the entire order to "
-        "your Work address (not Home). Pay with PayPal (not Visa). "
-        "Submit when the confirmation page shows all 4 line items."
+        "I'm setting up a new home office and need four things: a large "
+        "27-inch monitor, a proper mechanical keyboard with a good typing "
+        "feel, a comfortable mouse that won't wreck my wrist on long days, "
+        "and a fast USB-C charger. I've got $550 for the whole lot, so "
+        "keep it under that. Ship everything to my work address — I'm "
+        "there during the day — and use my PayPal; I'm saving the credit "
+        "card for something else this month."
     ),
 
     "B4": (
-        "You currently have one ACTIVE subscription for Premium Dog "
-        "Food. Make these account changes IN A SINGLE SESSION: "
-        "(1) Cancel the existing Premium Dog Food subscription. "
-        "(2) Create a NEW subscription for the Premium Dog TREATS — "
-        "biweekly cadence, exactly 6 deliveries, ship to your Work "
-        "address, pay with PayPal (NOT Visa). "
-        "(3) Enable two-factor authentication with code '123456'. "
-        "(4) Initiate a return on the existing order in your history "
-        "for the Bluetooth Speaker ONLY (not the Mouse) — reason "
-        "'changed_mind', refund as 'store_credit' (you want the 5% bonus). "
-        "Submit when all four changes are reflected in your account."
+        "I'm switching my dog from kibble over to treats, so a few things "
+        "in my account. First, cancel my current premium dog food "
+        "subscription. Then set me up on a new one for the premium dog "
+        "treats — every two weeks, six deliveries, shipped to my work "
+        "address and billed to PayPal. While you're in there, turn on "
+        "two-factor authentication for me; the code is 123456. Oh, and I "
+        "changed my mind about the Bluetooth speaker from my recent order "
+        "— send just the speaker back (keep the mouse, that one's great) "
+        "and take store credit, since there's a 5% bonus for it."
     ),
 
     "C4": (
-        "Complex multi-item checkout with all the constraints: "
-        "(1) Add 1 Studio Laptop 14 (NOT the Pro 14) to cart. "
-        "(2) Add 1 Cotton T-Shirt — Size M, color BLACK. "
-        "(3) Add 1 Wireless Mouse (the standard one, NOT ergonomic or "
-        "gaming). "
-        "Then in the cart: ship the LAPTOP to Work, the T-SHIRT to Home "
-        "with gift wrap and message 'Happy Birthday Mom!', and the MOUSE "
-        "to Home with NO gift wrap. "
-        "Apply promo code 'TECH20' — it discounts only the laptop. "
-        "Pay with Visa. Place the order. Submit when the confirmation "
-        "page shows all three line items with correct shipping splits, "
-        "the TECH20 discount on the laptop only, and the gift wrap on "
-        "the t-shirt."
+        "Big order, bear with me. I need a Studio Laptop, a black cotton "
+        "t-shirt in medium, and a basic wireless mouse. The laptop ships "
+        "to my work address. The t-shirt is a birthday present for my mom "
+        "— send it to my home, gift-wrapped, with the message 'Happy "
+        "Birthday Mom!'. The mouse goes home too, but no gift wrap on "
+        "that. I've got a TECH20 promo code for the electronics discount "
+        "— apply it. Pay with my Visa and place the order."
+    ),
+
+    # ──────────────────────────────────────────────────────────────
+    # TAXONOMY-NAVIGATION tasks — the agent must BROWSE the category /
+    # subcategory tree to find products, the way a shopper browses when
+    # they don't know the exact product name. Searching the search bar
+    # is the lazy shortcut these tasks are designed to discourage.
+    # ──────────────────────────────────────────────────────────────
+
+    "D1": (
+        "I'm in the mood to browse rather than search for something "
+        "specific. Take me through the Audio department, look at the "
+        "headphones, and pick out a well-reviewed pair — 4.5 stars or "
+        "better. Buy it, ship it home, and use my Visa. (I'd rather you "
+        "browse the store than type in the search box.)"
+    ),
+
+    "D2": (
+        "Walk me through the Electronics department to the keyboards "
+        "section — I want to see what's there rather than search. Pick "
+        "me out a proper mechanical keyboard with real tactile feedback, "
+        "not one of the cheap membrane ones. Buy it, ship home, pay with "
+        "Visa."
     ),
 }
 
@@ -452,6 +463,20 @@ def task_c4_mega_checkout(seed: int) -> GymState:
     return state
 
 
+# ----- Category D: taxonomy navigation ------------------------------------- #
+
+def task_d1_browse_audio(seed: int) -> GymState:
+    """Browse the Audio category -> headphones subcategory, no search."""
+    return _base_state(seed, "D1/browse_audio_no_search", "medium", "D",
+                       with_login=True)
+
+
+def task_d2_drill_keyboards(seed: int) -> GymState:
+    """Drill Electronics -> keyboards subcategory, pick a mechanical one."""
+    return _base_state(seed, "D2/drill_electronics_keyboards", "hard", "D",
+                       with_login=True)
+
+
 # --------------------------------------------------------------------------- #
 # Registry
 # --------------------------------------------------------------------------- #
@@ -469,6 +494,8 @@ TASKS = {
     "C2/split_shipping_gift":    task_c2_split_shipping,
     "C3/subscription_loyalty":   task_c3_subscription,
     "C4/mega_checkout":          task_c4_mega_checkout,
+    "D1/browse_audio_no_search":     task_d1_browse_audio,
+    "D2/drill_electronics_keyboards": task_d2_drill_keyboards,
 }
 
 
